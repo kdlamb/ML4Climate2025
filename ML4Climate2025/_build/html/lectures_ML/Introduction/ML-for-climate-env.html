@@ -1,0 +1,597 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Machine Learning for Climate and Environmental Sustainability &#8212; Earth Data Science &amp; Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lectures_ML/Introduction/ML-for-climate-env';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Computing Environment for Class" href="computing-environment.html" />
+    <link rel="prev" title="What is machine learning?" href="What-is-ML.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo_class.png" class="logo__image only-light" alt="Earth Data Science & Machine Learning - Home"/>
+    <script>document.write(`<img src="../../_static/logo_class.png" class="logo__image only-dark" alt="Earth Data Science & Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Welcome to the Earth Data Science and Machine Learning Course Series
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="What-is-ML.html">What is machine learning?</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Machine Learning for Climate and Environmental Sustainability</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="computing-environment.html">Computing Environment for Class</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Preprocessing and Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreprocessing.html">Data Exploration and Data Pre-Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreparation.html">Data Exploration and Preprocessing</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/kdlamb/ML4Climate2025" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/kdlamb/ML4Climate2025/issues/new?title=Issue%20on%20page%20%2Flectures_ML/Introduction/ML-for-climate-env.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/lectures_ML/Introduction/ML-for-climate-env.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Machine Learning for Climate and Environmental Sustainability</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Machine Learning for Climate and Environmental Sustainability</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pros-and-cons-of-machine-learning-in-the-environmental-sciences">Pros and cons of machine learning in the environmental sciences</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-recent-successes-of-ml-applied-to-climate-and-environmental-applications">Examples of recent successes of ML applied to climate and environmental applications</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-numerical-weather-prediction-nwp">AI Numerical Weather Prediction (NWP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remote-sensing">Remote sensing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-model-parameterization-development-tuning-and-evaluation">Climate model parameterization development, tuning, and evaluation</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="machine-learning-for-climate-and-environmental-sustainability">
+<h1>Machine Learning for Climate and Environmental Sustainability<a class="headerlink" href="#machine-learning-for-climate-and-environmental-sustainability" title="Permalink to this heading">#</a></h1>
+<p>In the last decade, machine learning has become an invaluable tool in accelerating scientific discovery. This is because
+machine learning algorithms can help with several aspects of the scientific discovery process. In particular, ML can:</p>
+<ul class="simple">
+<li><p><strong>Increase efficiency</strong>: Machine learning can automate the analysis of large and complex data sets, allowing for faster processing and integration of new observations</p></li>
+<li><p><strong>New insights and discoveries</strong>: Machine learning can identify patterns and relationships in complex data sets, leading to new insights</p></li>
+<li><p><strong>Improved predictive modeling</strong>: Machine learning can be used to build accurate predictive models that can help scientists better understand complex environmental systems. These models can be both faster and more accurate than traditional physics-based models.</p></li>
+</ul>
+<section id="pros-and-cons-of-machine-learning-in-the-environmental-sciences">
+<h2>Pros and cons of machine learning in the environmental sciences<a class="headerlink" href="#pros-and-cons-of-machine-learning-in-the-environmental-sciences" title="Permalink to this heading">#</a></h2>
+<p>Problems in the environmental sciences are typically complex, meaning that we have many different variables that can play a role.
+We often do not have a full mathematical model that can describe every aspect of the systems that we are interested in. This makes
+environmental problems good candidates for the use of data-driven methods, but there are many problems where machine learning is not
+necessarily the best choice. It’s a good rule of thumb to start with simpler models first, and then try out more complex, less interpretable data-driven models.
+In general, it’s good to keep in mind the strengths and weaknesses of machine learning methods.<br></p>
+<p>Machine learning is good at:</p>
+<ul class="simple">
+<li><p>Non-linear prediction tasks</p></li>
+<li><p>Pattern recognition</p></li>
+<li><p>Processing through large amounts of data</p></li>
+<li><p>Fast prediction (compared to traditional physics-based models)</p></li>
+</ul>
+<p>However, machine learning can come with trade-offs that should be considered:</p>
+<ul class="simple">
+<li><p>We typically need very large data sets to train machine learning models</p></li>
+<li><p>Machine learning models will learn the biases of the data sets they are trained on. Compared to physics-based models, they also typically do a poor job of extrapolating to unseen data regimes (that is, they do not perform well when given data that is in a different regime than the data they were trained on)</p></li>
+<li><p>Machine learning models are less interpretable than physics-based models</p></li>
+<li><p>It can also be challenging to integrate machine learning models with existing physics-based models that have been developed by the scientific community over many years</p></li>
+<li><p>Energy costs associated with training large models is increasingly becoming a significant concern</p></li>
+</ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="examples-of-recent-successes-of-ml-applied-to-climate-and-environmental-applications">
+<h1>Examples of recent successes of ML applied to climate and environmental applications<a class="headerlink" href="#examples-of-recent-successes-of-ml-applied-to-climate-and-environmental-applications" title="Permalink to this heading">#</a></h1>
+<p>Despite both the pros and cons of using machine learning methods, there has been a huge amount of progress in the application of these methods across
+weather, climate, and environmental applications in recent years. In this class, we will explore some of these applications.</p>
+<p>Here, we highlight a few use-cases where machine learning is currently leading to major advances:</p>
+<section id="ai-numerical-weather-prediction-nwp">
+<h2>AI Numerical Weather Prediction (NWP)<a class="headerlink" href="#ai-numerical-weather-prediction-nwp" title="Permalink to this heading">#</a></h2>
+<p>AI models are rapidly become as or more skillful than traditional physics-based numerical weather prediction models. Machine learning based forecasting models have recently demonstrated skill on par with state of the art
+weather forecasting models.
+<img alt="GraphCast" src="../../_images/Graphcast.gif" /></p>
+<p><em>Image source: Lam et al., Learning skillful medium-range global weather forecasting, Science 382, 6677. 1416-1421 (2023)</em></p>
+</section>
+<section id="remote-sensing">
+<h2>Remote sensing<a class="headerlink" href="#remote-sensing" title="Permalink to this heading">#</a></h2>
+<p>One major use case where deep learning has demonstrated increasing skill and progress in recent years is in the realm of
+<strong>computer vision</strong>– using machines to understand and identify objects in images of videos. Pattern recognition lends itself to a number of different use cases (feature detection, processing very large image data sets, and anomaly detection).
+Pattern recognition in the geosciences can also extend to the analysis of time series, spatio-temporal patterns, or observational data sets from specialized instrumentation.</p>
+<p>A very important example is the application of these methods to satellite remote sensing. Satellites provide images of the Earth at high temporal and spatial frequencies, and the application of computer vision methods to these data sets has led to improved understanding of atmospheric and oceanic processes and faster and more accurate response to natural disasters.<br />
+Some example use cases are fire detection, wildfire burnt area mapping, coastline and flood mapping, forest canopy height prediction, monitoring of glaciers and sea ice extent, and classifying clouds.</p>
+<p><img alt="Satellite Classification" src="../../_images/SatelliteClassification.png" /></p>
+<p><em>Image source: <img alt="https://github.com/satellite-image-deep-learning/techniques" src="https://github.com/satellite-image-deep-learning/techniques" /></em></p>
+<p><img alt="SatelliteSegmentation" src="../../_images/SatelliteSegmentation.png" /></p>
+<p><em>Image source: <img alt="https://github.com/satellite-image-deep-learning/techniques" src="https://github.com/satellite-image-deep-learning/techniques" /></em></p>
+</section>
+<section id="climate-model-parameterization-development-tuning-and-evaluation">
+<h2>Climate model parameterization development, tuning, and evaluation<a class="headerlink" href="#climate-model-parameterization-development-tuning-and-evaluation" title="Permalink to this heading">#</a></h2>
+<p><img alt="ImprovingClimate" src="../../_images/ImprovedClimate.jpg" /></p>
+<p>Tradition climate models require the development of models, or parameterizations, of many different atmospheric, oceanic, and land processes. These
+parameterizations often require trade-offs in terms of the speed and accuracy with which we can represent the underlying processes, in order to have climate
+models that computationally efficient enough to run projections over 100’s or 1000’s of years. Machine learning methods have enabled us to improve the accuracy and speed
+with which we can model specific climate processes.</p>
+<p>In addition, climate models have a number of free parameters that are tuned in order to best match existing climate observations. Machine learning can help to
+improve this climate model tuning process, by allowing us to emulate climate models in a very fast way using machine learning models.</p>
+<p>Finally, machine learning methods allow us post-process the huge amount of data that is output from climate models, enabling more rapid evaluation and improved understanding.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./lectures_ML/Introduction"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="What-is-ML.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">What is machine learning?</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="computing-environment.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Computing Environment for Class</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Machine Learning for Climate and Environmental Sustainability</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pros-and-cons-of-machine-learning-in-the-environmental-sciences">Pros and cons of machine learning in the environmental sciences</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-recent-successes-of-ml-applied-to-climate-and-environmental-applications">Examples of recent successes of ML applied to climate and environmental applications</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-numerical-weather-prediction-nwp">AI Numerical Weather Prediction (NWP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remote-sensing">Remote sensing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#climate-model-parameterization-development-tuning-and-evaluation">Climate model parameterization development, tuning, and evaluation</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Kara Lamb & Dhruv Balwada
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
