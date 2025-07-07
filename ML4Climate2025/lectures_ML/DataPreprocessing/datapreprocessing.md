@@ -1,7 +1,7 @@
 # Data Exploration and Data Pre-Processing
 
-Data exploration and pre-processing are the first steps in any machine learning pipeline. Data exploring refers to visualizing and understanding
-our data sets before we start applying any machine learning algorithm. Data-preprocessing are the steps we perform to prepare and standardize data
+Data exploration and pre-processing are the first steps in any machine learning pipeline. Data exploration refers to visualizing and understanding
+our data sets before we start applying any machine learning algorithm. Data-preprocessing is the steps we perform to prepare and standardize data
 sets to be fed into machine learning algorithms.
 
 ## Data Exploration
@@ -15,7 +15,7 @@ We want to ask questions like:
 - Do we have missing values or outliers in our data sets?
 - If the variables are categorical (i.e. divided up into different classes), how many different classes are represented in our data sets?
 - Are the classes relatively balanced (i.e. do we have a similar number of samples for each class?), or are they imbalanced (do some classes have
-a lot of sample and some have very few?)
+a lot of samples and some have very few?)
 - What order of magnitude are the variables in our data sets?
 - Are variables strongly spatially or temporally correlated?
 
