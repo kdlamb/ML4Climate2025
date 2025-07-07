@@ -34,7 +34,7 @@ By the end of this course, students will:
 - Explore future trends and emerging technologies
 
 ## Course structure
-Most of our classes will consist of lectures and hands-on coding assignments. You are expected to bring a laptop to class and follow along with the
+Most of our classes will consist of lectures and hands-on coding tutorials. You are expected to bring a laptop to class and follow along with the
 lectures, and be prepared to work together in groups on small coding assignments during class.
 
 ## Policy on Use of ChatGPT and AI Tools

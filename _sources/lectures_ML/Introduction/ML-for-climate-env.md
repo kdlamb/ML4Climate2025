@@ -58,7 +58,7 @@ Some example use cases are fire detection, wildfire burnt area mapping, coastlin
 ## Climate model parameterization development, tuning, and evaluation
 ![ImprovingClimate](images/ImprovedClimate.jpg)
 
-Tradition climate models require the development of models, or parameterizations, of many different atmospheric, oceanic, and land processes. These 
+Traditional climate models require the development of models, or parameterizations, of many different atmospheric, oceanic, and land processes. These 
 parameterizations often require trade-offs in terms of the speed and accuracy with which we can represent the underlying processes, in order to have climate 
 models that computationally efficient enough to run projections over 100's or 1000's of years. Machine learning methods have enabled us to improve the accuracy and speed
 with which we can model specific climate processes. 
