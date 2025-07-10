@@ -13,6 +13,7 @@ parts:
     chapters:
     - file: lectures_ML/DataPreprocessing/datapreprocessing
     - file: lectures_ML/DataPreprocessing/datapreparation
+    - file: assignments/Assignment1
 #  - caption: Supervised Machine Learning
 #    chapters:
 #    - file: lectures_ML/SupervisedML/logisticregression
