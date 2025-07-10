@@ -17,4 +17,4 @@ There are a number of different software libraries that can be used for machine 
 for machine learning. Many of the most popular libraries for machine learning have been developed in Python, including `PyTorch`, `TensorFlow`, `JAX`, and `Keras`. Julia, a newer programming language focused on 
 performance computing in scientific and technical fields also supports machine learning libraries. 
 
-In this class, we will work with Python. We will use classic machine learning algorithms in the `sci-kit learn` library, as well as deep learning models implemented in `PyTorch`.
+In this class, we will work with Python. We will use classic machine learning algorithms in the `sci-kit learn` library, as well as deep learning models implemented in `Tensorflow`.
