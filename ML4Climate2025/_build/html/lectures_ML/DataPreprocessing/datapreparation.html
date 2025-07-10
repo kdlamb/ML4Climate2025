@@ -65,6 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'lectures_ML/DataPreprocessing/datapreparation';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records" href="../../assignments/Assignment1.html" />
     <link rel="prev" title="Data Exploration and Data Pre-Processing" href="datapreprocessing.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -178,6 +179,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="datapreprocessing.html">Data Exploration and Data Pre-Processing</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Tutorial on Data Preprocessing (US Wildfires)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/Assignment1.html">Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records</a></li>
 </ul>
 
     </div>
@@ -380,6 +382,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-missing-irregular-data">Handling missing/irregular data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-scaling">Feature Scaling</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-categorical-variables">Encoding categorical variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-pipeline-to-preprocess-our-features">Creating a pipeline to preprocess our features</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-training-validation-and-test-data-set">Creating a training, validation, and test data set</a></li>
 </ul>
             </nav>
@@ -408,9 +411,7 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: kagglehub in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (0.2.9)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: packaging in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from kagglehub) (24.1)
+Requirement already satisfied: packaging in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from kagglehub) (24.1)
 Requirement already satisfied: requests in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from kagglehub) (2.32.3)
 Requirement already satisfied: tqdm in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from kagglehub) (4.66.5)
 Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from requests-&gt;kagglehub) (3.3.2)
@@ -1033,8 +1034,7 @@ memory usage: 18.2+ MB
 </div>
 </div>
 </div>
-<p>It’s always important to understand your data before you do anything with it! If you don’t understand your data, your analysis will be difficult and conclusions can be incorrect.</p>
-<p>First we will get a subsection of the data into a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> object by using the variable names we have chosen.</p>
+<p>First we will put this subsection of the data into a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> object by using the variable names we have chosen.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">wildfiresdb</span><span class="p">[</span><span class="n">variables</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -1204,197 +1204,32 @@ memory usage: 18.2+ MB
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.PairGrid at 0x14f7cdd30&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.PairGrid at 0x126dd1d00&gt;
 </pre></div>
 </div>
 <img alt="../../_images/a941c8129f41ebbdb18a825eee31ef601a853953e021170dc9de26c63c803454.png" src="../../_images/a941c8129f41ebbdb18a825eee31ef601a853953e021170dc9de26c63c803454.png" />
 </div>
 </div>
-<p>The plots above along the diagnol are not particularly useful, since we are just looking at how the variables are correlated with itself. Another option we can try is to plot the variable’s marginal distributions on the diagnols, while plotting joint distributions on the off diagnols.</p>
+<p>We can also look for correlations between the variables in our data set, using the <code class="docutils literal notranslate"><span class="pre">pandas</span></code> DataFrame <code class="docutils literal notranslate"><span class="pre">corr</span></code> method. The <code class="docutils literal notranslate"><span class="pre">numeric_only</span></code> argument needs to be set to True to avoid an error. This makes sure it only uses the variables in our dataframe that have numeric values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># these lines make this plot, but, beware, they are very slow if we don&#39;t first subsample our dataframe</span>
-<span class="n">sampled_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-
-<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">PairGrid</span><span class="p">(</span><span class="n">sampled_df</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">map_diag</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">map_offdiag</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">numeric_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a heatmap of the correlation matrix</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span> <span class="c1"># Adjust figure size as needed</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Correlation Matrix Heatmap&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.PairGrid at 0x1526caa00&gt;
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error in callback &lt;function _draw_all_if_interactive at 0x1492e9f70&gt; (for post_execute):
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/pyplot.py:120,</span> in <span class="ni">_draw_all_if_interactive</span><span class="nt">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">118</span> <span class="k">def</span> <span class="nf">_draw_all_if_interactive</span><span class="p">():</span>
-<span class="g g-Whitespace">    </span><span class="mi">119</span>     <span class="k">if</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">is_interactive</span><span class="p">():</span>
-<span class="ne">--&gt; </span><span class="mi">120</span>         <span class="n">draw_all</span><span class="p">()</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/_pylab_helpers.py:132,</span> in <span class="ni">Gcf.draw_all</span><span class="nt">(cls, force)</span>
-<span class="g g-Whitespace">    </span><span class="mi">130</span> <span class="k">for</span> <span class="n">manager</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_all_fig_managers</span><span class="p">():</span>
-<span class="g g-Whitespace">    </span><span class="mi">131</span>     <span class="k">if</span> <span class="n">force</span> <span class="ow">or</span> <span class="n">manager</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">stale</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">132</span>         <span class="n">manager</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw_idle</span><span class="p">()</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/backend_bases.py:2082,</span> in <span class="ni">FigureCanvasBase.draw_idle</span><span class="nt">(self, *args, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2080</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_idle_drawing</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2081</span>     <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_idle_draw_cntx</span><span class="p">():</span>
-<span class="ne">-&gt; </span><span class="mi">2082</span>         <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:400,</span> in <span class="ni">FigureCanvasAgg.draw</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">396</span> <span class="c1"># Acquire a lock on the shared font cache.</span>
-<span class="g g-Whitespace">    </span><span class="mi">397</span> <span class="k">with</span> <span class="n">RendererAgg</span><span class="o">.</span><span class="n">lock</span><span class="p">,</span> \
-<span class="g g-Whitespace">    </span><span class="mi">398</span>      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolbar</span><span class="o">.</span><span class="n">_wait_cursor_for_draw_cm</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">toolbar</span>
-<span class="g g-Whitespace">    </span><span class="mi">399</span>       <span class="k">else</span> <span class="n">nullcontext</span><span class="p">()):</span>
-<span class="ne">--&gt; </span><span class="mi">400</span>     <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">401</span>     <span class="c1"># A GUI class may be need to update a window using this draw, so</span>
-<span class="g g-Whitespace">    </span><span class="mi">402</span>     <span class="c1"># don&#39;t forget to call the superclass.</span>
-<span class="g g-Whitespace">    </span><span class="mi">403</span>     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/artist.py:95,</span> in <span class="ni">_finalize_rasterization.&lt;locals&gt;.draw_wrapper</span><span class="nt">(artist, renderer, *args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">93</span> <span class="nd">@wraps</span><span class="p">(</span><span class="n">draw</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">94</span> <span class="k">def</span> <span class="nf">draw_wrapper</span><span class="p">(</span><span class="n">artist</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">95</span>     <span class="n">result</span> <span class="o">=</span> <span class="n">draw</span><span class="p">(</span><span class="n">artist</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">96</span>     <span class="k">if</span> <span class="n">renderer</span><span class="o">.</span><span class="n">_rasterizing</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">97</span>         <span class="n">renderer</span><span class="o">.</span><span class="n">stop_rasterizing</span><span class="p">()</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/artist.py:72,</span> in <span class="ni">allow_rasterization.&lt;locals&gt;.draw_wrapper</span><span class="nt">(artist, renderer)</span>
-<span class="g g-Whitespace">     </span><span class="mi">69</span>     <span class="k">if</span> <span class="n">artist</span><span class="o">.</span><span class="n">get_agg_filter</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">70</span>         <span class="n">renderer</span><span class="o">.</span><span class="n">start_filter</span><span class="p">()</span>
-<span class="ne">---&gt; </span><span class="mi">72</span>     <span class="k">return</span> <span class="n">draw</span><span class="p">(</span><span class="n">artist</span><span class="p">,</span> <span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">73</span> <span class="k">finally</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">74</span>     <span class="k">if</span> <span class="n">artist</span><span class="o">.</span><span class="n">get_agg_filter</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/figure.py:3175,</span> in <span class="ni">Figure.draw</span><span class="nt">(self, renderer)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3172</span>         <span class="c1"># ValueError can occur when resizing a window.</span>
-<span class="g g-Whitespace">   </span><span class="mi">3174</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">3175</span> <span class="n">mimage</span><span class="o">.</span><span class="n">_draw_list_compositing_images</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">3176</span>     <span class="n">renderer</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">artists</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">suppressComposite</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3178</span> <span class="k">for</span> <span class="n">sfig</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subfigs</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">3179</span>     <span class="n">sfig</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/image.py:131,</span> in <span class="ni">_draw_list_compositing_images</span><span class="nt">(renderer, parent, artists, suppress_composite)</span>
-<span class="g g-Whitespace">    </span><span class="mi">129</span> <span class="k">if</span> <span class="n">not_composite</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">has_images</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">130</span>     <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">artists</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">131</span>         <span class="n">a</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">132</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">133</span>     <span class="c1"># Composite any adjacent images together</span>
-<span class="g g-Whitespace">    </span><span class="mi">134</span>     <span class="n">image_group</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/artist.py:72,</span> in <span class="ni">allow_rasterization.&lt;locals&gt;.draw_wrapper</span><span class="nt">(artist, renderer)</span>
-<span class="g g-Whitespace">     </span><span class="mi">69</span>     <span class="k">if</span> <span class="n">artist</span><span class="o">.</span><span class="n">get_agg_filter</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">70</span>         <span class="n">renderer</span><span class="o">.</span><span class="n">start_filter</span><span class="p">()</span>
-<span class="ne">---&gt; </span><span class="mi">72</span>     <span class="k">return</span> <span class="n">draw</span><span class="p">(</span><span class="n">artist</span><span class="p">,</span> <span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">73</span> <span class="k">finally</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">74</span>     <span class="k">if</span> <span class="n">artist</span><span class="o">.</span><span class="n">get_agg_filter</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/axes/_base.py:3064,</span> in <span class="ni">_AxesBase.draw</span><span class="nt">(self, renderer)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3061</span> <span class="k">if</span> <span class="n">artists_rasterized</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">3062</span>     <span class="n">_draw_rasterized</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">artists_rasterized</span><span class="p">,</span> <span class="n">renderer</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">3064</span> <span class="n">mimage</span><span class="o">.</span><span class="n">_draw_list_compositing_images</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">3065</span>     <span class="n">renderer</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">artists</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">suppressComposite</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3067</span> <span class="n">renderer</span><span class="o">.</span><span class="n">close_group</span><span class="p">(</span><span class="s1">&#39;axes&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3068</span> <span class="bp">self</span><span class="o">.</span><span class="n">stale</span> <span class="o">=</span> <span class="kc">False</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/image.py:131,</span> in <span class="ni">_draw_list_compositing_images</span><span class="nt">(renderer, parent, artists, suppress_composite)</span>
-<span class="g g-Whitespace">    </span><span class="mi">129</span> <span class="k">if</span> <span class="n">not_composite</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">has_images</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">130</span>     <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">artists</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">131</span>         <span class="n">a</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">132</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">133</span>     <span class="c1"># Composite any adjacent images together</span>
-<span class="g g-Whitespace">    </span><span class="mi">134</span>     <span class="n">image_group</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/artist.py:72,</span> in <span class="ni">allow_rasterization.&lt;locals&gt;.draw_wrapper</span><span class="nt">(artist, renderer)</span>
-<span class="g g-Whitespace">     </span><span class="mi">69</span>     <span class="k">if</span> <span class="n">artist</span><span class="o">.</span><span class="n">get_agg_filter</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">70</span>         <span class="n">renderer</span><span class="o">.</span><span class="n">start_filter</span><span class="p">()</span>
-<span class="ne">---&gt; </span><span class="mi">72</span>     <span class="k">return</span> <span class="n">draw</span><span class="p">(</span><span class="n">artist</span><span class="p">,</span> <span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">73</span> <span class="k">finally</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">74</span>     <span class="k">if</span> <span class="n">artist</span><span class="o">.</span><span class="n">get_agg_filter</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/patches.py:591,</span> in <span class="ni">Patch.draw</span><span class="nt">(self, renderer)</span>
-<span class="g g-Whitespace">    </span><span class="mi">589</span> <span class="n">tpath</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">transform_path_non_affine</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">590</span> <span class="n">affine</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">get_affine</span><span class="p">()</span>
-<span class="ne">--&gt; </span><span class="mi">591</span> <span class="bp">self</span><span class="o">.</span><span class="n">_draw_paths_with_artist_properties</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">592</span>     <span class="n">renderer</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">593</span>     <span class="p">[(</span><span class="n">tpath</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">594</span>       <span class="c1"># Work around a bug in the PDF and SVG renderers, which</span>
-<span class="g g-Whitespace">    </span><span class="mi">595</span>       <span class="c1"># do not draw the hatches if the facecolor is fully</span>
-<span class="g g-Whitespace">    </span><span class="mi">596</span>       <span class="c1"># transparent, but do if it is None.</span>
-<span class="g g-Whitespace">    </span><span class="mi">597</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_facecolor</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_facecolor</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)])</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/patches.py:576,</span> in <span class="ni">Patch._draw_paths_with_artist_properties</span><span class="nt">(self, renderer, draw_path_args_list)</span>
-<span class="g g-Whitespace">    </span><span class="mi">573</span>     <span class="n">renderer</span> <span class="o">=</span> <span class="n">PathEffectRenderer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_path_effects</span><span class="p">(),</span> <span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">575</span> <span class="k">for</span> <span class="n">draw_path_args</span> <span class="ow">in</span> <span class="n">draw_path_args_list</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">576</span>     <span class="n">renderer</span><span class="o">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">gc</span><span class="p">,</span> <span class="o">*</span><span class="n">draw_path_args</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">578</span> <span class="n">gc</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">579</span> <span class="n">renderer</span><span class="o">.</span><span class="n">close_group</span><span class="p">(</span><span class="s1">&#39;patch&#39;</span><span class="p">)</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/backends/backend_agg.py:146,</span> in <span class="ni">RendererAgg.draw_path</span><span class="nt">(self, gc, path, transform, rgbFace)</span>
-<span class="g g-Whitespace">    </span><span class="mi">144</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">145</span>     <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">146</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_renderer</span><span class="o">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">gc</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">rgbFace</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">147</span>     <span class="k">except</span> <span class="ne">OverflowError</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">148</span>         <span class="n">cant_chunk</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/transforms.py:251,</span> in <span class="ni">BboxBase.__array__</span><span class="nt">(self, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">250</span> <span class="k">def</span> <span class="nf">__array__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">251</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/transforms.py:1116,</span> in <span class="ni">TransformedBbox.get_points</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1112</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bbox</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">1113</span> <span class="c1"># Transform all four points, then make a new bounding box</span>
-<span class="g g-Whitespace">   </span><span class="mi">1114</span> <span class="c1"># from the result, taking care to make the orientation the</span>
-<span class="g g-Whitespace">   </span><span class="mi">1115</span> <span class="c1"># same.</span>
-<span class="ne">-&gt; </span><span class="mi">1116</span> <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1117</span>     <span class="p">[[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
-<span class="g g-Whitespace">   </span><span class="mi">1118</span>      <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
-<span class="g g-Whitespace">   </span><span class="mi">1119</span>      <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
-<span class="g g-Whitespace">   </span><span class="mi">1120</span>      <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]])</span>
-<span class="g g-Whitespace">   </span><span class="mi">1121</span> <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1123</span> <span class="n">xs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]),</span> <span class="nb">max</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/transforms.py:1498,</span> in <span class="ni">Transform.transform</span><span class="nt">(self, values)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1495</span> <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_dims</span><span class="p">))</span>
-<span class="g g-Whitespace">   </span><span class="mi">1497</span> <span class="c1"># Transform the values</span>
-<span class="ne">-&gt; </span><span class="mi">1498</span> <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_affine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transform_non_affine</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
-<span class="g g-Whitespace">   </span><span class="mi">1500</span> <span class="c1"># Convert the result back to the shape of the input values.</span>
-<span class="g g-Whitespace">   </span><span class="mi">1501</span> <span class="k">if</span> <span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/transforms.py:2423,</span> in <span class="ni">CompositeGenericTransform.transform_affine</span><span class="nt">(self, points)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2421</span> <span class="k">def</span> <span class="nf">transform_affine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">2422</span>     <span class="c1"># docstring inherited</span>
-<span class="ne">-&gt; </span><span class="mi">2423</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_affine</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/transforms.py:2450,</span> in <span class="ni">CompositeGenericTransform.get_affine</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2447</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">get_affine</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">2448</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2449</span>     <span class="k">return</span> <span class="n">Affine2D</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">get_affine</span><span class="p">()</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">(),</span>
-<span class="ne">-&gt; </span><span class="mi">2450</span>                            <span class="bp">self</span><span class="o">.</span><span class="n">_a</span><span class="o">.</span><span class="n">get_affine</span><span class="p">()</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()))</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/transforms.py:2450,</span> in <span class="ni">CompositeGenericTransform.get_affine</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2447</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">get_affine</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">2448</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2449</span>     <span class="k">return</span> <span class="n">Affine2D</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">get_affine</span><span class="p">()</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">(),</span>
-<span class="ne">-&gt; </span><span class="mi">2450</span>                            <span class="bp">self</span><span class="o">.</span><span class="n">_a</span><span class="o">.</span><span class="n">get_affine</span><span class="p">()</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()))</span>
-
-<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/transforms.py:2611,</span> in <span class="ni">BboxTransformTo.get_matrix</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2609</span> <span class="k">if</span> <span class="n">DEBUG</span> <span class="ow">and</span> <span class="p">(</span><span class="n">outw</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">outh</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">2610</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Transforming to a singular bounding box.&quot;</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">2611</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mtx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">outw</span><span class="p">,</span>  <span class="mf">0.0</span><span class="p">,</span> <span class="n">outl</span><span class="p">],</span>
-<span class="g g-Whitespace">   </span><span class="mi">2612</span>                       <span class="p">[</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">outh</span><span class="p">,</span> <span class="n">outb</span><span class="p">],</span>
-<span class="g g-Whitespace">   </span><span class="mi">2613</span>                       <span class="p">[</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="mf">0.0</span><span class="p">,</span>  <span class="mf">1.0</span><span class="p">]],</span>
-<span class="g g-Whitespace">   </span><span class="mi">2614</span>                      <span class="nb">float</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2615</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverted</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="g g-Whitespace">   </span><span class="mi">2616</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
-</pre></div>
-</div>
+<img alt="../../_images/e9acaf9ef3f66f5135a57252e25d09159a31c968280cfc95519fa215e45719b0.png" src="../../_images/e9acaf9ef3f66f5135a57252e25d09159a31c968280cfc95519fa215e45719b0.png" />
 </div>
 </div>
 </section>
@@ -1614,21 +1449,330 @@ Name: putout_time_float, dtype: float64
 </div>
 </div>
 </div>
-<p>There is some correlation between fire size and the time it takes to put out the fire size, but the relationship is not entirely clear.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;fire_size&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;putout_time_float&#39;</span><span class="p">])</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Fire size (acres)&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Put out time (days)&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/5882179af87133244d5053274bc76f66277aa425bf2767415e079f50acf31374.png" src="../../_images/5882179af87133244d5053274bc76f66277aa425bf2767415e079f50acf31374.png" />
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fire_size</th>
+      <th>fire_size_class</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>putout_time</th>
+      <th>disc_pre_year</th>
+      <th>Vegetation</th>
+      <th>Temp_cont</th>
+      <th>Wind_cont</th>
+      <th>Hum_cont</th>
+      <th>Prec_cont</th>
+      <th>putout_time_float</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.0</td>
+      <td>C</td>
+      <td>18.105072</td>
+      <td>-66.753044</td>
+      <td>NaN</td>
+      <td>2007</td>
+      <td>12</td>
+      <td>24.527961</td>
+      <td>3.250413</td>
+      <td>78.724370</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3.0</td>
+      <td>B</td>
+      <td>35.038330</td>
+      <td>-87.610000</td>
+      <td>NaN</td>
+      <td>2006</td>
+      <td>15</td>
+      <td>10.448298</td>
+      <td>2.122320</td>
+      <td>81.682678</td>
+      <td>86.8</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>60.0</td>
+      <td>C</td>
+      <td>34.947800</td>
+      <td>-88.722500</td>
+      <td>NaN</td>
+      <td>2004</td>
+      <td>16</td>
+      <td>13.696600</td>
+      <td>3.369050</td>
+      <td>65.063800</td>
+      <td>124.5</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.0</td>
+      <td>B</td>
+      <td>39.641400</td>
+      <td>-119.308300</td>
+      <td>0 days 00:00:00.000000000</td>
+      <td>2005</td>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2.0</td>
+      <td>B</td>
+      <td>30.700600</td>
+      <td>-90.591400</td>
+      <td>NaN</td>
+      <td>1999</td>
+      <td>12</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+      <td>-1.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>55362</th>
+      <td>6289.0</td>
+      <td>G</td>
+      <td>39.180000</td>
+      <td>-96.784167</td>
+      <td>NaN</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>13.242324</td>
+      <td>3.804803</td>
+      <td>55.042092</td>
+      <td>249.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>55363</th>
+      <td>70868.0</td>
+      <td>G</td>
+      <td>38.342719</td>
+      <td>-120.695967</td>
+      <td>22</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+      <td>-1.0</td>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>55364</th>
+      <td>5702.0</td>
+      <td>G</td>
+      <td>37.262607</td>
+      <td>-119.511139</td>
+      <td>NaN</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>27.646067</td>
+      <td>2.529158</td>
+      <td>35.924406</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>55365</th>
+      <td>3261.0</td>
+      <td>F</td>
+      <td>40.604300</td>
+      <td>-123.080450</td>
+      <td>43</td>
+      <td>2015</td>
+      <td>15</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+      <td>-1.0</td>
+      <td>43.0</td>
+    </tr>
+    <tr>
+      <th>55366</th>
+      <td>76067.0</td>
+      <td>G</td>
+      <td>38.843988</td>
+      <td>-122.759707</td>
+      <td>NaN</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>19.016883</td>
+      <td>1.208073</td>
+      <td>58.063802</td>
+      <td>18.8</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>55367 rows × 12 columns</p>
+</div></div></div>
 </div>
+<p>We’ll drop the original column now, since we have fixed the irregular data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;putout_time&#39;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fire_size</th>
+      <th>fire_size_class</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>disc_pre_year</th>
+      <th>Vegetation</th>
+      <th>Temp_cont</th>
+      <th>Wind_cont</th>
+      <th>Hum_cont</th>
+      <th>Prec_cont</th>
+      <th>putout_time_float</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.0</td>
+      <td>C</td>
+      <td>18.105072</td>
+      <td>-66.753044</td>
+      <td>2007</td>
+      <td>12</td>
+      <td>24.527961</td>
+      <td>3.250413</td>
+      <td>78.724370</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3.0</td>
+      <td>B</td>
+      <td>35.038330</td>
+      <td>-87.610000</td>
+      <td>2006</td>
+      <td>15</td>
+      <td>10.448298</td>
+      <td>2.122320</td>
+      <td>81.682678</td>
+      <td>86.8</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>60.0</td>
+      <td>C</td>
+      <td>34.947800</td>
+      <td>-88.722500</td>
+      <td>2004</td>
+      <td>16</td>
+      <td>13.696600</td>
+      <td>3.369050</td>
+      <td>65.063800</td>
+      <td>124.5</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.0</td>
+      <td>B</td>
+      <td>39.641400</td>
+      <td>-119.308300</td>
+      <td>2005</td>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2.0</td>
+      <td>B</td>
+      <td>30.700600</td>
+      <td>-90.591400</td>
+      <td>1999</td>
+      <td>12</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+      <td>-1.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>If we look at the meteorological variables (Prec_cont, Wind_cont, Temp_cont, Hum_cont), we also notice that the distributions look strange. This is because they have 0 and -1 for missing values. We can guess this because it’s not physically reasonable that these values are negative, or that the Wind_cont, Temp_cont, Hum_cont are exactly 0.0000, especially during fire season.</p>
 <div class="cell docutils container">
@@ -1675,6 +1819,7 @@ Name: Temp_cont, Length: 55367, dtype: float64
 </div>
 </div>
 </div>
+<p>We can replace these suspicious values with NaN’s using the <code class="docutils literal notranslate"><span class="pre">replace</span></code> method.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Temp_cont&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Temp_cont&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">([</span><span class="mf">0.0000</span><span class="p">,</span><span class="o">-</span><span class="mf">1.0000</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
@@ -1730,13 +1875,6 @@ Number of rows (after removing NaN&#39;s): 5892
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;logfiresize&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;fire_size&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-</div>
 <p>We can also remove the very high outliers for <code class="docutils literal notranslate"><span class="pre">putout_time_float</span></code> (&gt;99.995%):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1767,16 +1905,6 @@ Number of rows (after removing outliers): 5891
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;logfiresize&#39;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;putout_time_float&#39;</span><span class="p">,</span><span class="n">hue</span><span class="o">=</span><span class="s2">&quot;fire_size_class&quot;</span><span class="p">,</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;kde&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/07a315442720e8690093e09eb45aaed468f7c9ae1822e32c3f47d0cf77442d4c.png" src="../../_images/07a315442720e8690093e09eb45aaed468f7c9ae1822e32c3f47d0cf77442d4c.png" />
-</div>
-</div>
 <p>We can also fill the NaN’s with a value instead, using the <code class="docutils literal notranslate"><span class="pre">fillna()</span></code> method:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1785,12 +1913,457 @@ Number of rows (after removing outliers): 5891
 </div>
 </div>
 </div>
-<p>Finally, we can interpolate, using the <code class="docutils literal notranslate"><span class="pre">interpolate()</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_filled</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fire_size</th>
+      <th>fire_size_class</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>disc_pre_year</th>
+      <th>Vegetation</th>
+      <th>Temp_cont</th>
+      <th>Wind_cont</th>
+      <th>Hum_cont</th>
+      <th>Prec_cont</th>
+      <th>putout_time_float</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.0</td>
+      <td>C</td>
+      <td>18.105072</td>
+      <td>-66.753044</td>
+      <td>2007</td>
+      <td>12</td>
+      <td>24.527961</td>
+      <td>3.250413</td>
+      <td>78.724370</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3.0</td>
+      <td>B</td>
+      <td>35.038330</td>
+      <td>-87.610000</td>
+      <td>2006</td>
+      <td>15</td>
+      <td>10.448298</td>
+      <td>2.122320</td>
+      <td>81.682678</td>
+      <td>86.8</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>60.0</td>
+      <td>C</td>
+      <td>34.947800</td>
+      <td>-88.722500</td>
+      <td>2004</td>
+      <td>16</td>
+      <td>13.696600</td>
+      <td>3.369050</td>
+      <td>65.063800</td>
+      <td>124.5</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.0</td>
+      <td>B</td>
+      <td>39.641400</td>
+      <td>-119.308300</td>
+      <td>2005</td>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2.0</td>
+      <td>B</td>
+      <td>30.700600</td>
+      <td>-90.591400</td>
+      <td>1999</td>
+      <td>12</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>55362</th>
+      <td>6289.0</td>
+      <td>G</td>
+      <td>39.180000</td>
+      <td>-96.784167</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>13.242324</td>
+      <td>3.804803</td>
+      <td>55.042092</td>
+      <td>249.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>55363</th>
+      <td>70868.0</td>
+      <td>G</td>
+      <td>38.342719</td>
+      <td>-120.695967</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>55364</th>
+      <td>5702.0</td>
+      <td>G</td>
+      <td>37.262607</td>
+      <td>-119.511139</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>27.646067</td>
+      <td>2.529158</td>
+      <td>35.924406</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>55365</th>
+      <td>3261.0</td>
+      <td>F</td>
+      <td>40.604300</td>
+      <td>-123.080450</td>
+      <td>2015</td>
+      <td>15</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>43.0</td>
+    </tr>
+    <tr>
+      <th>55366</th>
+      <td>76067.0</td>
+      <td>G</td>
+      <td>38.843988</td>
+      <td>-122.759707</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>19.016883</td>
+      <td>1.208073</td>
+      <td>58.063802</td>
+      <td>18.8</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>55367 rows × 11 columns</p>
+</div></div></div>
+</div>
+<p>Rather than filling with a specific value, it’s also possible to fill with the <code class="docutils literal notranslate"><span class="pre">median</span></code> or <code class="docutils literal notranslate"><span class="pre">mean</span></code> of the column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_fill_mean</span><span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">meantime</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;putout_time_float&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">df_fill_mean</span><span class="p">[</span><span class="s1">&#39;putout_time_float&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">meantime</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df_fill_mean</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fire_size</th>
+      <th>fire_size_class</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>disc_pre_year</th>
+      <th>Vegetation</th>
+      <th>Temp_cont</th>
+      <th>Wind_cont</th>
+      <th>Hum_cont</th>
+      <th>Prec_cont</th>
+      <th>putout_time_float</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.0</td>
+      <td>C</td>
+      <td>18.105072</td>
+      <td>-66.753044</td>
+      <td>2007</td>
+      <td>12</td>
+      <td>24.527961</td>
+      <td>3.250413</td>
+      <td>78.724370</td>
+      <td>0.0</td>
+      <td>6.033592</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3.0</td>
+      <td>B</td>
+      <td>35.038330</td>
+      <td>-87.610000</td>
+      <td>2006</td>
+      <td>15</td>
+      <td>10.448298</td>
+      <td>2.122320</td>
+      <td>81.682678</td>
+      <td>86.8</td>
+      <td>6.033592</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>60.0</td>
+      <td>C</td>
+      <td>34.947800</td>
+      <td>-88.722500</td>
+      <td>2004</td>
+      <td>16</td>
+      <td>13.696600</td>
+      <td>3.369050</td>
+      <td>65.063800</td>
+      <td>124.5</td>
+      <td>6.033592</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.0</td>
+      <td>B</td>
+      <td>39.641400</td>
+      <td>-119.308300</td>
+      <td>2005</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2.0</td>
+      <td>B</td>
+      <td>30.700600</td>
+      <td>-90.591400</td>
+      <td>1999</td>
+      <td>12</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>6.033592</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>55362</th>
+      <td>6289.0</td>
+      <td>G</td>
+      <td>39.180000</td>
+      <td>-96.784167</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>13.242324</td>
+      <td>3.804803</td>
+      <td>55.042092</td>
+      <td>249.0</td>
+      <td>6.033592</td>
+    </tr>
+    <tr>
+      <th>55363</th>
+      <td>70868.0</td>
+      <td>G</td>
+      <td>38.342719</td>
+      <td>-120.695967</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>22.000000</td>
+    </tr>
+    <tr>
+      <th>55364</th>
+      <td>5702.0</td>
+      <td>G</td>
+      <td>37.262607</td>
+      <td>-119.511139</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>27.646067</td>
+      <td>2.529158</td>
+      <td>35.924406</td>
+      <td>0.0</td>
+      <td>6.033592</td>
+    </tr>
+    <tr>
+      <th>55365</th>
+      <td>3261.0</td>
+      <td>F</td>
+      <td>40.604300</td>
+      <td>-123.080450</td>
+      <td>2015</td>
+      <td>15</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>43.000000</td>
+    </tr>
+    <tr>
+      <th>55366</th>
+      <td>76067.0</td>
+      <td>G</td>
+      <td>38.843988</td>
+      <td>-122.759707</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>19.016883</td>
+      <td>1.208073</td>
+      <td>58.063802</td>
+      <td>18.8</td>
+      <td>6.033592</td>
+    </tr>
+  </tbody>
+</table>
+<p>55367 rows × 11 columns</p>
+</div></div></div>
+</div>
+<p>Finally, we can interpolate, using the <code class="docutils literal notranslate"><span class="pre">interpolate()</span></code> method. Interpolate refers to filling in using the values based on estimating from surrounding non-NaN data in a column.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_interp</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+</div>
+<p>Interpolation doesn’t make a lot of sense for this data set since the fires are independent of one another. Interpolation makes more sense in the context of a time series, where we are missing specific values in our sequence. To illustrate this, we will look at the effect of using the <code class="docutils literal notranslate"><span class="pre">Interpolate()</span></code> method on a sine wave that has 20% of its data missing.</p>
+<p>This code just generates the time series and puts it into a dataframe</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>                      
+<span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>         <span class="c1"># 0 → 2π</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">y_noisy</span> <span class="o">=</span> <span class="n">y</span><span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># knock out ~10 % of points</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.20</span> <span class="o">*</span> <span class="n">n</span><span class="p">),</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">y_noisy</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="n">dfsine</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s2">&quot;sine&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span><span class="s2">&quot;noisy_sine&quot;</span><span class="p">:</span> <span class="n">y_noisy</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can apply the interpolate function to the sine wave to estimate the missing values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfsine_interp</span> <span class="o">=</span> <span class="n">dfsine</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">dfsine</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">],</span><span class="n">dfsine</span><span class="p">[</span><span class="s1">&#39;noisy_sine&#39;</span><span class="p">],</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;original&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">dfsine_interp</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">],</span><span class="n">dfsine_interp</span><span class="p">[</span><span class="s1">&#39;noisy_sine&#39;</span><span class="p">],</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;interpolated&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x168b3c490&gt;
+</pre></div>
+</div>
+<img alt="../../_images/1709543047d83000a88a4f2da7dbb9a833cd4b617e979d3cb7de0d144dcc295c.png" src="../../_images/1709543047d83000a88a4f2da7dbb9a833cd4b617e979d3cb7de0d144dcc295c.png" />
 </div>
 </div>
 <p>Using interpolation or filling missing values can potentially bias our data sets, so it’s important to keep in mind what problem we are interested in solving when choosing a method to deal with missing data.</p>
@@ -1883,6 +2456,13 @@ Number of rows (after removing outliers): 5891
 </div>
 <div class="cell_output docutils container">
 <img alt="../../_images/864cf4abfdc3b789efb575f22f1352f5994e04a386fbb18ad104ffac3ef98114.png" src="../../_images/864cf4abfdc3b789efb575f22f1352f5994e04a386fbb18ad104ffac3ef98114.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_filtered</span><span class="p">[</span><span class="s2">&quot;log_fire_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_fire_size</span>
+</pre></div>
+</div>
 </div>
 </div>
 </section>
@@ -2084,8 +2664,522 @@ Name: count, dtype: int64
 </div>
 </div>
 </section>
+<section id="creating-a-pipeline-to-preprocess-our-features">
+<h2>Creating a pipeline to preprocess our features<a class="headerlink" href="#creating-a-pipeline-to-preprocess-our-features" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_filtered</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fire_size</th>
+      <th>fire_size_class</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>disc_pre_year</th>
+      <th>Vegetation</th>
+      <th>Temp_cont</th>
+      <th>Wind_cont</th>
+      <th>Hum_cont</th>
+      <th>Prec_cont</th>
+      <th>putout_time_float</th>
+      <th>log_fire_size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>36</th>
+      <td>1420.0</td>
+      <td>F</td>
+      <td>33.241800</td>
+      <td>-104.912200</td>
+      <td>1994</td>
+      <td>16</td>
+      <td>36.241176</td>
+      <td>4.217647</td>
+      <td>17.058824</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>7.258412</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>15.3</td>
+      <td>C</td>
+      <td>36.586500</td>
+      <td>-96.323220</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>5.258333</td>
+      <td>3.558333</td>
+      <td>71.500000</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>2.727853</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>270.0</td>
+      <td>D</td>
+      <td>35.473333</td>
+      <td>-84.450000</td>
+      <td>1999</td>
+      <td>15</td>
+      <td>16.431034</td>
+      <td>0.982759</td>
+      <td>67.050000</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>5.598422</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>57.0</td>
+      <td>C</td>
+      <td>36.816667</td>
+      <td>-82.651667</td>
+      <td>1995</td>
+      <td>0</td>
+      <td>13.002083</td>
+      <td>1.950000</td>
+      <td>37.854167</td>
+      <td>0.0</td>
+      <td>2.0</td>
+      <td>4.043051</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>450.0</td>
+      <td>E</td>
+      <td>34.330000</td>
+      <td>-117.513056</td>
+      <td>2006</td>
+      <td>16</td>
+      <td>33.900000</td>
+      <td>2.237500</td>
+      <td>39.375000</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>6.109248</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>55347</th>
+      <td>3200.0</td>
+      <td>F</td>
+      <td>46.679234</td>
+      <td>-93.270841</td>
+      <td>2015</td>
+      <td>15</td>
+      <td>10.666667</td>
+      <td>4.813889</td>
+      <td>51.583333</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>8.070906</td>
+    </tr>
+    <tr>
+      <th>55349</th>
+      <td>17831.0</td>
+      <td>G</td>
+      <td>30.005000</td>
+      <td>-100.391167</td>
+      <td>2015</td>
+      <td>12</td>
+      <td>28.250580</td>
+      <td>2.360093</td>
+      <td>58.243619</td>
+      <td>0.0</td>
+      <td>6.0</td>
+      <td>9.788694</td>
+    </tr>
+    <tr>
+      <th>55350</th>
+      <td>3452.0</td>
+      <td>F</td>
+      <td>30.400883</td>
+      <td>-101.331933</td>
+      <td>2015</td>
+      <td>12</td>
+      <td>28.793750</td>
+      <td>3.082979</td>
+      <td>39.510638</td>
+      <td>0.0</td>
+      <td>2.0</td>
+      <td>8.146709</td>
+    </tr>
+    <tr>
+      <th>55351</th>
+      <td>8300.0</td>
+      <td>G</td>
+      <td>45.922100</td>
+      <td>-111.422500</td>
+      <td>2015</td>
+      <td>15</td>
+      <td>11.032231</td>
+      <td>3.367769</td>
+      <td>48.628099</td>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>9.024011</td>
+    </tr>
+    <tr>
+      <th>55352</th>
+      <td>4704.0</td>
+      <td>F</td>
+      <td>48.937900</td>
+      <td>-119.309100</td>
+      <td>2015</td>
+      <td>15</td>
+      <td>21.204970</td>
+      <td>4.537914</td>
+      <td>36.257773</td>
+      <td>4.4</td>
+      <td>140.0</td>
+      <td>8.456168</td>
+    </tr>
+  </tbody>
+</table>
+<p>5891 rows × 12 columns</p>
+</div></div></div>
+</div>
+<p>Let’s say that we are interested in predicting the time it takes to put out a fire, given the other variables in our data set. First, we will scale the <code class="docutils literal notranslate"><span class="pre">putout_time_float</span></code> using the standard scaler and put it into an array called <code class="docutils literal notranslate"><span class="pre">y</span></code>, since its our target variable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">std_scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">std_scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">[[</span><span class="s2">&quot;putout_time_float&quot;</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next we will create a feature matrix <code class="docutils literal notranslate"><span class="pre">X</span></code>, which will be the input to our model. First let’s remove our target variable from the dataframe.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;putout_time_float&quot;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">features</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fire_size</th>
+      <th>fire_size_class</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>disc_pre_year</th>
+      <th>Vegetation</th>
+      <th>Temp_cont</th>
+      <th>Wind_cont</th>
+      <th>Hum_cont</th>
+      <th>Prec_cont</th>
+      <th>log_fire_size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>36</th>
+      <td>1420.0</td>
+      <td>F</td>
+      <td>33.241800</td>
+      <td>-104.912200</td>
+      <td>1994</td>
+      <td>16</td>
+      <td>36.241176</td>
+      <td>4.217647</td>
+      <td>17.058824</td>
+      <td>0.0</td>
+      <td>7.258412</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>15.3</td>
+      <td>C</td>
+      <td>36.586500</td>
+      <td>-96.323220</td>
+      <td>2015</td>
+      <td>0</td>
+      <td>5.258333</td>
+      <td>3.558333</td>
+      <td>71.500000</td>
+      <td>0.0</td>
+      <td>2.727853</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>270.0</td>
+      <td>D</td>
+      <td>35.473333</td>
+      <td>-84.450000</td>
+      <td>1999</td>
+      <td>15</td>
+      <td>16.431034</td>
+      <td>0.982759</td>
+      <td>67.050000</td>
+      <td>0.0</td>
+      <td>5.598422</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>57.0</td>
+      <td>C</td>
+      <td>36.816667</td>
+      <td>-82.651667</td>
+      <td>1995</td>
+      <td>0</td>
+      <td>13.002083</td>
+      <td>1.950000</td>
+      <td>37.854167</td>
+      <td>0.0</td>
+      <td>4.043051</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>450.0</td>
+      <td>E</td>
+      <td>34.330000</td>
+      <td>-117.513056</td>
+      <td>2006</td>
+      <td>16</td>
+      <td>33.900000</td>
+      <td>2.237500</td>
+      <td>39.375000</td>
+      <td>0.0</td>
+      <td>6.109248</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>55347</th>
+      <td>3200.0</td>
+      <td>F</td>
+      <td>46.679234</td>
+      <td>-93.270841</td>
+      <td>2015</td>
+      <td>15</td>
+      <td>10.666667</td>
+      <td>4.813889</td>
+      <td>51.583333</td>
+      <td>0.0</td>
+      <td>8.070906</td>
+    </tr>
+    <tr>
+      <th>55349</th>
+      <td>17831.0</td>
+      <td>G</td>
+      <td>30.005000</td>
+      <td>-100.391167</td>
+      <td>2015</td>
+      <td>12</td>
+      <td>28.250580</td>
+      <td>2.360093</td>
+      <td>58.243619</td>
+      <td>0.0</td>
+      <td>9.788694</td>
+    </tr>
+    <tr>
+      <th>55350</th>
+      <td>3452.0</td>
+      <td>F</td>
+      <td>30.400883</td>
+      <td>-101.331933</td>
+      <td>2015</td>
+      <td>12</td>
+      <td>28.793750</td>
+      <td>3.082979</td>
+      <td>39.510638</td>
+      <td>0.0</td>
+      <td>8.146709</td>
+    </tr>
+    <tr>
+      <th>55351</th>
+      <td>8300.0</td>
+      <td>G</td>
+      <td>45.922100</td>
+      <td>-111.422500</td>
+      <td>2015</td>
+      <td>15</td>
+      <td>11.032231</td>
+      <td>3.367769</td>
+      <td>48.628099</td>
+      <td>0.0</td>
+      <td>9.024011</td>
+    </tr>
+    <tr>
+      <th>55352</th>
+      <td>4704.0</td>
+      <td>F</td>
+      <td>48.937900</td>
+      <td>-119.309100</td>
+      <td>2015</td>
+      <td>15</td>
+      <td>21.204970</td>
+      <td>4.537914</td>
+      <td>36.257773</td>
+      <td>4.4</td>
+      <td>8.456168</td>
+    </tr>
+  </tbody>
+</table>
+<p>5891 rows × 11 columns</p>
+</div></div></div>
+</div>
+<p>Now we can apply a pipeline of transformations to our data set. <code class="docutils literal notranslate"><span class="pre">sci-kit</span> <span class="pre">learn</span></code> allows up to create separate pipelines for categorical and numerical variables and then run them on our entire dataframe simultaneously.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <span class="n">ColumnTransformer</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We need to separate our variables based on how we want to transform them though.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">categorical_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fire_size_class&quot;</span><span class="p">]</span>
+<span class="n">numerical_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fire_size&quot;</span><span class="p">,</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span><span class="s2">&quot;disc_pre_year&quot;</span><span class="p">,</span><span class="s2">&quot;Vegetation&quot;</span><span class="p">,</span><span class="s2">&quot;Temp_cont&quot;</span><span class="p">,</span><span class="s2">&quot;Wind_cont&quot;</span><span class="p">,</span><span class="s2">&quot;Hum_cont&quot;</span><span class="p">,</span><span class="s2">&quot;Prec_cont&quot;</span><span class="p">,</span><span class="s2">&quot;log_fire_size&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cat_pipeline</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">OrdinalEncoder</span><span class="p">(),</span><span class="n">StandardScaler</span><span class="p">())</span>
+<span class="n">num_pipeline</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">MinMaxScaler</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preprocessor</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;num&quot;</span><span class="p">,</span><span class="n">num_pipeline</span><span class="p">,</span><span class="n">numerical_cols</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span><span class="n">cat_pipeline</span><span class="p">,</span><span class="n">categorical_cols</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(5891, 11)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preprocessor</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;num__fire_size&#39;, &#39;num__latitude&#39;, &#39;num__longitude&#39;,
+       &#39;num__disc_pre_year&#39;, &#39;num__Vegetation&#39;, &#39;num__Temp_cont&#39;,
+       &#39;num__Wind_cont&#39;, &#39;num__Hum_cont&#39;, &#39;num__Prec_cont&#39;,
+       &#39;num__log_fire_size&#39;, &#39;cat__fire_size_class&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">PairGrid</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">columns</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()))</span>
+<span class="n">g</span><span class="o">.</span><span class="n">map_diag</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">map_offdiag</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.PairGrid at 0x1696448e0&gt;
+</pre></div>
+</div>
+<img alt="../../_images/70aab853148f256898f9401f6d29cff61b8c79d0d4f805a04a2da58cafc0e264.png" src="../../_images/70aab853148f256898f9401f6d29cff61b8c79d0d4f805a04a2da58cafc0e264.png" />
+</div>
+</div>
+</section>
 <section id="creating-a-training-validation-and-test-data-set">
 <h2>Creating a training, validation, and test data set<a class="headerlink" href="#creating-a-training-validation-and-test-data-set" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Sci-kit</span> <span class="pre">learn</span></code> has several built in functions to facilitate create separate training and test data sets. The simplest one to use is <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code>, which returns the features and targets split into train and test data sets. If we want to also create a validation data set using this function, we will need to split the data set twice.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
@@ -2095,33 +3189,14 @@ Name: count, dtype: int64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_filtered</span><span class="o">.</span><span class="n">columns</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;fire_size&#39;, &#39;fire_size_class&#39;, &#39;latitude&#39;, &#39;longitude&#39;, &#39;putout_time&#39;,
-       &#39;disc_pre_year&#39;, &#39;Vegetation&#39;, &#39;Temp_cont&#39;, &#39;Wind_cont&#39;, &#39;Hum_cont&#39;,
-       &#39;Prec_cont&#39;, &#39;putout_time_float&#39;, &#39;logfiresize&#39;],
-      dtype=&#39;object&#39;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test_val</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="p">[</span><span class="s1">&#39;fire_size&#39;</span><span class="p">]</span>
-
-<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span><span class="s2">&quot;Vegetation&quot;</span><span class="p">,</span><span class="s2">&quot;Temp_cont&quot;</span><span class="p">,</span><span class="s2">&quot;Wind_cont&quot;</span><span class="p">,</span><span class="s2">&quot;Hum_cont&quot;</span><span class="p">,</span><span class="s2">&quot;Prec_cont&quot;</span><span class="p">]</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="p">[</span><span class="n">features</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_full</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train_full</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">X_train</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_train_full</span><span class="p">,</span> <span class="n">y_train_full</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_val</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_test_val</span><span class="p">,</span><span class="n">y_test_val</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2133,7 +3208,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(3534, 7) (1178, 7) (1179, 7)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2945, 11) (1473, 11) (1473, 11)
 </pre></div>
 </div>
 </div>
@@ -2180,6 +3255,15 @@ Name: count, dtype: int64
         <p class="prev-next-title">Data Exploration and Data Pre-Processing</p>
       </div>
     </a>
+    <a class="right-next"
+       href="../../assignments/Assignment1.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -2202,6 +3286,7 @@ Name: count, dtype: int64
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-missing-irregular-data">Handling missing/irregular data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-scaling">Feature Scaling</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-categorical-variables">Encoding categorical variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-pipeline-to-preprocess-our-features">Creating a pipeline to preprocess our features</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-training-validation-and-test-data-set">Creating a training, validation, and test data set</a></li>
 </ul>
   </nav></div>
