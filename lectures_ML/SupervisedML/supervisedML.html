@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Data Preprocessing and Feature Engineering &#8212; Earth Data Science &amp; Machine Learning</title>
+    <title>Supervised Machine Learning &#8212; Earth Data Science &amp; Machine Learning</title>
   
   
   
@@ -62,10 +62,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'lectures_ML/SupervisedML/supervisedML';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lectures_ML/SupervisedML/supervisedml';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="Data Preprocessing and Feature Engineering" href="../DataPreprocessing/datapreparation.html" />
+    <link rel="next" title="Decision Trees and Random Forests (Wildfire cause prediction)" href="randomforests.html" />
+    <link rel="prev" title="Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records" href="../../assignments/Assignment1.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -176,11 +177,14 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Preprocessing and Feature Engineering</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreparation.html">Data Preprocessing and Feature Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreprocessing.html">Data Exploration and Data Pre-Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreparation.html">Tutorial on Data Preprocessing (US Wildfires)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/Assignment1.html">Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Supervised Machine Learning</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Data Preprocessing and Feature Engineering</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Supervised Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="randomforests.html">Decision Trees and Random Forests (Wildfire cause prediction)</a></li>
 </ul>
 
     </div>
@@ -235,7 +239,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+      <li><a href="https://github.com/kdlamb/ML4Climate2025" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -252,7 +256,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Flectures_ML/SupervisedML/supervisedML.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/kdlamb/ML4Climate2025/issues/new?title=Issue%20on%20page%20%2Flectures_ML/SupervisedML/supervisedml.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -282,7 +286,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../../_sources/lectures_ML/SupervisedML/supervisedML.ipynb" target="_blank"
+      <li><a href="../../_sources/lectures_ML/SupervisedML/supervisedml.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -292,7 +296,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.ipynb</span>
+<span class="btn__text-container">.md</span>
 </a>
 </li>
       
@@ -353,7 +357,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -364,11 +370,20 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Data Preprocessing and Feature Engineering</h1>
+    <h1>Supervised Machine Learning</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-and-regression">Classification and Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-categorical-variables-in-environmental-and-climate-science">Examples of categorical variables in environmental and climate science</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -378,8 +393,25 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="data-preprocessing-and-feature-engineering">
-<h1>Data Preprocessing and Feature Engineering<a class="headerlink" href="#data-preprocessing-and-feature-engineering" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="supervised-machine-learning">
+<h1>Supervised Machine Learning<a class="headerlink" href="#supervised-machine-learning" title="Permalink to this heading">#</a></h1>
+<p>Supervised machine learning refers to training algorithms to learn from labeled data sets. We provided labeled examples, and then optimize an
+algorithm against the ground truth labeled data sets.</p>
+<section id="classification-and-regression">
+<h2>Classification and Regression<a class="headerlink" href="#classification-and-regression" title="Permalink to this heading">#</a></h2>
+<p>Two examples of supervised machine learning tasks that we can solve are <strong>classification</strong> and <strong>regression</strong>.</p>
+<p>Classification refers to the prediction of a category, or class, given a set of input features. The target will be a categorical variable. Classification
+problems can be binary (predicting one of two classes), or multi-class (predicting one of several mutually-exclusive classes).</p>
+<p>Regression refers to the prediction of a real number, given a set of input features. The target will be a <em>numerical</em> variable.</p>
+</section>
+<section id="examples-of-categorical-variables-in-environmental-and-climate-science">
+<h2>Examples of categorical variables in environmental and climate science<a class="headerlink" href="#examples-of-categorical-variables-in-environmental-and-climate-science" title="Permalink to this heading">#</a></h2>
+<p>A number of different problems in environmental science can be viewed as classification problems. For example,
+hurricanes and tornadoes are classified according to severity scale, and air quality can be classified in terms of how healthy or hazardous it is.
+We also cast problems where we are asking whether an event occurred or not as a binary classification problem (for example, was there a wildfire or not?)</p>
+<p>In addition, many in situ and remote sensing applications require classifying observations into a variety of classes. For example, land usage or cloud type can be categorized using
+satellite images.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -413,13 +445,22 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../DataPreprocessing/datapreparation.html"
+       href="../../assignments/Assignment1.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Data Preprocessing and Feature Engineering</p>
+        <p class="prev-next-title">Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="randomforests.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Decision Trees and Random Forests (Wildfire cause prediction)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -427,6 +468,21 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-and-regression">Classification and Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-categorical-variables-in-environmental-and-climate-science">Examples of categorical variables in environmental and climate science</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Tutorial on Logistic Regression (US Wildfires) &#8212; Earth Data Science &amp; Machine Learning</title>
+    <title>Logistic Regression &#8212; Earth Data Science &amp; Machine Learning</title>
   
   
   
@@ -177,6 +177,11 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreprocessing.html">Data Exploration and Data Pre-Processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreparation.html">Tutorial on Data Preprocessing (US Wildfires)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/Assignment1.html">Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supervised Machine Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="supervisedml.html">Supervised Machine Learning</a></li>
 </ul>
 
     </div>
@@ -360,7 +365,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Tutorial on Logistic Regression (US Wildfires)</h1>
+    <h1>Logistic Regression</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -374,11 +379,412 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="tutorial-on-logistic-regression-us-wildfires">
-<h1>Tutorial on Logistic Regression (US Wildfires)<a class="headerlink" href="#tutorial-on-logistic-regression-us-wildfires" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="logistic-regression">
+<h1>Logistic Regression<a class="headerlink" href="#logistic-regression" title="Permalink to this heading">#</a></h1>
 <p>Logistic regression is a method that can be used to classify objects into different categories, given a set of features (variables) associated with each object.</p>
 <p>In this tuturial, we will continue with the data set of US Wildfires from 1990 - 2016 that we used in the preprocessing tutorial. This data set includes the location and time of 50,000 recent wildfires, as well as information about the type of vegetation and co-located meteorological data during the time when the fires occurred. It is a subset of a much larger data set of 1.8 million US Wildfires.</p>
 <p>The data set is available on Kaggle: <a class="reference external" href="https://www.kaggle.com/datasets/capcloudcoder/us-wildfire-data-plus-other-attributes?select=Wildfire_att_description.txt">US Wildfires and other attributes</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">kagglehub</span>
+
+<span class="c1"># Download latest version</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">kagglehub</span><span class="o">.</span><span class="n">dataset_download</span><span class="p">(</span><span class="s2">&quot;michaelbryantds/tornadoes&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Path to dataset files:&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning: Looks like you&#39;re using an outdated `kagglehub` version, please consider updating (latest version: 0.3.12)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Path to dataset files: /Users/karalamb/.cache/kagglehub/datasets/michaelbryantds/tornadoes/versions/1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;SPC_severe_database_description.pdf&#39;, &#39;1950-2021_all_tornadoes.csv&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">tornadodb</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="s1">&#39;1950-2021_all_tornadoes.csv&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tornadodb</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>om</th>
+      <th>yr</th>
+      <th>mo</th>
+      <th>dy</th>
+      <th>date</th>
+      <th>time</th>
+      <th>tz</th>
+      <th>st</th>
+      <th>stf</th>
+      <th>stn</th>
+      <th>...</th>
+      <th>len</th>
+      <th>wid</th>
+      <th>ns</th>
+      <th>sn</th>
+      <th>sg</th>
+      <th>f1</th>
+      <th>f2</th>
+      <th>f3</th>
+      <th>f4</th>
+      <th>fc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>192</td>
+      <td>1950</td>
+      <td>10</td>
+      <td>1</td>
+      <td>1950-10-01</td>
+      <td>21:00:00</td>
+      <td>3</td>
+      <td>OK</td>
+      <td>40</td>
+      <td>23</td>
+      <td>...</td>
+      <td>15.80</td>
+      <td>10</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>25</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>193</td>
+      <td>1950</td>
+      <td>10</td>
+      <td>9</td>
+      <td>1950-10-09</td>
+      <td>02:15:00</td>
+      <td>3</td>
+      <td>NC</td>
+      <td>37</td>
+      <td>9</td>
+      <td>...</td>
+      <td>2.00</td>
+      <td>880</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>47</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>195</td>
+      <td>1950</td>
+      <td>11</td>
+      <td>20</td>
+      <td>1950-11-20</td>
+      <td>02:20:00</td>
+      <td>3</td>
+      <td>KY</td>
+      <td>21</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0.10</td>
+      <td>10</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>177</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>196</td>
+      <td>1950</td>
+      <td>11</td>
+      <td>20</td>
+      <td>1950-11-20</td>
+      <td>04:00:00</td>
+      <td>3</td>
+      <td>KY</td>
+      <td>21</td>
+      <td>2</td>
+      <td>...</td>
+      <td>0.10</td>
+      <td>10</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>209</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>197</td>
+      <td>1950</td>
+      <td>11</td>
+      <td>20</td>
+      <td>1950-11-20</td>
+      <td>07:30:00</td>
+      <td>3</td>
+      <td>MS</td>
+      <td>28</td>
+      <td>14</td>
+      <td>...</td>
+      <td>2.00</td>
+      <td>37</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>101</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>68863</th>
+      <td>620523</td>
+      <td>2021</td>
+      <td>9</td>
+      <td>8</td>
+      <td>2021-09-08</td>
+      <td>15:32:00</td>
+      <td>3</td>
+      <td>PA</td>
+      <td>42</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0.73</td>
+      <td>30</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>109</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>68864</th>
+      <td>620524</td>
+      <td>2021</td>
+      <td>9</td>
+      <td>8</td>
+      <td>2021-09-08</td>
+      <td>15:35:00</td>
+      <td>3</td>
+      <td>PA</td>
+      <td>42</td>
+      <td>0</td>
+      <td>...</td>
+      <td>1.45</td>
+      <td>30</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>109</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>68865</th>
+      <td>620525</td>
+      <td>2021</td>
+      <td>9</td>
+      <td>8</td>
+      <td>2021-09-08</td>
+      <td>19:08:00</td>
+      <td>3</td>
+      <td>FL</td>
+      <td>12</td>
+      <td>0</td>
+      <td>...</td>
+      <td>1.45</td>
+      <td>50</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>129</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>68866</th>
+      <td>620526</td>
+      <td>2021</td>
+      <td>9</td>
+      <td>9</td>
+      <td>2021-09-09</td>
+      <td>02:10:00</td>
+      <td>3</td>
+      <td>CT</td>
+      <td>9</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0.75</td>
+      <td>75</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>13</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>68867</th>
+      <td>620527</td>
+      <td>2021</td>
+      <td>9</td>
+      <td>9</td>
+      <td>2021-09-09</td>
+      <td>17:58:00</td>
+      <td>3</td>
+      <td>CA</td>
+      <td>6</td>
+      <td>0</td>
+      <td>...</td>
+      <td>1.79</td>
+      <td>9</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>37</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>68868 rows × 29 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tornadodb</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;om&#39;, &#39;yr&#39;, &#39;mo&#39;, &#39;dy&#39;, &#39;date&#39;, &#39;time&#39;, &#39;tz&#39;, &#39;st&#39;, &#39;stf&#39;, &#39;stn&#39;, &#39;mag&#39;,
+       &#39;inj&#39;, &#39;fat&#39;, &#39;loss&#39;, &#39;closs&#39;, &#39;slat&#39;, &#39;slon&#39;, &#39;elat&#39;, &#39;elon&#39;, &#39;len&#39;,
+       &#39;wid&#39;, &#39;ns&#39;, &#39;sn&#39;, &#39;sg&#39;, &#39;f1&#39;, &#39;f2&#39;, &#39;f3&#39;, &#39;f4&#39;, &#39;fc&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tornadodb</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">,</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;elon&quot;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;elat&quot;</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="s1">&#39;mag&#39;</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;yr&#39;</span><span class="p">,</span><span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">140</span><span class="p">,</span><span class="o">-</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/matplotlib/collections.py:963: RuntimeWarning: invalid value encountered in sqrt
+  scale = np.sqrt(self._sizes) * dpi / 72.0 * self._factor
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(20.0, 50.0)
+</pre></div>
+</div>
+<img alt="../../_images/7ef5dec9b98d6327357e0498e9562efaf8a070638ea9dd7d8fc239f8b7c355f2.png" src="../../_images/7ef5dec9b98d6327357e0498e9562efaf8a070638ea9dd7d8fc239f8b7c355f2.png" />
+</div>
+</div>
 </section>
 
     <script type="text/x-thebe-config">
