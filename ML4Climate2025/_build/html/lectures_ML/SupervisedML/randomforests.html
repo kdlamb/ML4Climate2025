@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Decision Trees and Random Forests &#8212; Earth Data Science &amp; Machine Learning</title>
+    <title>Decision Trees and Random Forests (Wildfire cause prediction) &#8212; Earth Data Science &amp; Machine Learning</title>
   
   
   
@@ -65,6 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'lectures_ML/SupervisedML/randomforests';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Supervised Machine Learning" href="supervisedml.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -177,6 +178,12 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreprocessing.html">Data Exploration and Data Pre-Processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreparation.html">Tutorial on Data Preprocessing (US Wildfires)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/Assignment1.html">Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supervised Machine Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="supervisedml.html">Supervised Machine Learning</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Decision Trees and Random Forests (Wildfire cause prediction)</a></li>
 </ul>
 
     </div>
@@ -349,7 +356,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -360,11 +369,33 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Decision Trees and Random Forests</h1>
+    <h1>Decision Trees and Random Forests (Wildfire cause prediction)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-in-the-data-set">Load in the data set</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#separate-out-the-fires-with-no-known-cause">Separate out the fires with no known cause</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pre-processing">Data Pre-Processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-validation-and-test-split">Training, validation, and test split</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-logistic-regression-natural-vs-human-causes">Train logistic regression (natural vs. human causes)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roc-curve">ROC curve</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#importance-of-different-features-for-logistic-regression">Importance of different features for logistic regression</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-a-decision-tree-classifier">Train a decision tree classifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-a-random-forest-classifier">Train a random forest classifier</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-importance">Feature importance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiclass-classification-with-the-random-forest">Multiclass classification with the Random Forest</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -374,10 +405,1649 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="decision-trees-and-random-forests">
-<h1>Decision Trees and Random Forests<a class="headerlink" href="#decision-trees-and-random-forests" title="Permalink to this heading">#</a></h1>
-<p>Decision trees are an algorithm that can be used to determine how to classify or predict a value by making sequential desicions about the values of different features associated with a sample.</p>
-<p>Random forests use the ensemble vote of many decision trees to classify or predict a value.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="decision-trees-and-random-forests-wildfire-cause-prediction">
+<h1>Decision Trees and Random Forests (Wildfire cause prediction)<a class="headerlink" href="#decision-trees-and-random-forests-wildfire-cause-prediction" title="Permalink to this heading">#</a></h1>
+<p>In this lesson, we will learn about decision trees and random forests and how they can be used for supervised machine learning tasks such as classification. A decision tree is an algorithm that can be used to determine how to classify or predict a target by making sequential decisions about the values of different features associated with a sample. Random forests use the ensemble vote of many decision trees to classify or predict a value.</p>
+<p>We will use the data set from the paper <a class="reference external" href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2024EF005187">“Inference of Wildfire Causes From Their Physical, Biological, Social and Management Attributes”</a> by Pourmohamad et al., Earth’s Future, 2025. In this paper, they explored whether its possible to determine the cause of a wildfire (in cases where the cause is unknown) based on data from other wildfires where the cause was known.</p>
+<p><strong>References:</strong></p>
+<p>[1]  Pourmohamad, Y., Abatzoglou, J. T., Fleishman, E., Short, K. C., Shuman, J., AghaKouchak, A., et al. (2025). Inference of wildfire causes from their physical, biological, social and management attributes. Earth’s Future, 13, e2024EF005187. <a class="reference external" href="https://doi.org/10.1029/2024EF005187">https://doi.org/10.1029/2024EF005187</a></p>
+<p>[2] Pourmohamad, Y., Abatzoglou, J. T., Belval, E. J., Fleishman, E., Short, K., Reeves, M. C., Nauslar, N., Higuera, P. E., Henderson, E., Ball, S., AghaKouchak, A., Prestemon, J. P., Olszewski, J., and Sadegh, M.: Physical, social, and biological attributes for improved understanding and prediction of wildfires: FPA FOD-Attributes dataset, Earth Syst. Sci. Data, 16, 3045–3060, <a class="reference external" href="https://doi.org/10.5194/essd-16-3045-2024">https://doi.org/10.5194/essd-16-3045-2024</a>, 2024.</p>
+<p>[3] Pourmohamad, Y. (2024). Inference of Wildfire Causes from Their Physical, Biological, Social and Management Attributes (0.1). Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.11510677">https://doi.org/10.5281/zenodo.11510677</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="load-in-the-data-set">
+<h2>Load in the data set<a class="headerlink" href="#load-in-the-data-set" title="Permalink to this heading">#</a></h2>
+<p>The data set can be downloaded from <a class="reference external" href="https://zenodo.org/records/11510677">“https://zenodo.org/records/11510677”</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;../../data/FPA_FOD_west_cleaned.csv&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>DISCOVERY_DOY</th>
+      <th>FIRE_YEAR</th>
+      <th>STATE</th>
+      <th>FIPS_CODE</th>
+      <th>NWCG_GENERAL_CAUSE</th>
+      <th>Annual_etr</th>
+      <th>Annual_precipitation</th>
+      <th>Annual_tempreture</th>
+      <th>pr</th>
+      <th>tmmn</th>
+      <th>...</th>
+      <th>GHM</th>
+      <th>NDVI-1day</th>
+      <th>NPL</th>
+      <th>Popo_1km</th>
+      <th>RPL_THEMES</th>
+      <th>RPL_THEME1</th>
+      <th>RPL_THEME2</th>
+      <th>RPL_THEME3</th>
+      <th>RPL_THEME4</th>
+      <th>Distance2road</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6053.0</td>
+      <td>Misuse of fire by a minor</td>
+      <td>1625</td>
+      <td>257</td>
+      <td>286.0</td>
+      <td>0.0</td>
+      <td>276.500000</td>
+      <td>...</td>
+      <td>0.42</td>
+      <td>0.00</td>
+      <td>1.0</td>
+      <td>1.1494</td>
+      <td>0.055</td>
+      <td>0.027</td>
+      <td>0.245</td>
+      <td>0.039</td>
+      <td>0.203</td>
+      <td>43.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6019.0</td>
+      <td>Arson/incendiarism</td>
+      <td>1819</td>
+      <td>383</td>
+      <td>290.0</td>
+      <td>0.0</td>
+      <td>273.200012</td>
+      <td>...</td>
+      <td>0.35</td>
+      <td>0.50</td>
+      <td>1.0</td>
+      <td>0.1652</td>
+      <td>0.525</td>
+      <td>0.719</td>
+      <td>0.499</td>
+      <td>0.302</td>
+      <td>0.405</td>
+      <td>40.2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6089.0</td>
+      <td>Misuse of fire by a minor</td>
+      <td>2293</td>
+      <td>985</td>
+      <td>290.0</td>
+      <td>0.0</td>
+      <td>275.100006</td>
+      <td>...</td>
+      <td>0.16</td>
+      <td>0.42</td>
+      <td>1.0</td>
+      <td>0.0504</td>
+      <td>0.476</td>
+      <td>0.635</td>
+      <td>0.516</td>
+      <td>0.002</td>
+      <td>0.581</td>
+      <td>43.8</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6089.0</td>
+      <td>Misuse of fire by a minor</td>
+      <td>2293</td>
+      <td>985</td>
+      <td>290.0</td>
+      <td>0.0</td>
+      <td>275.100006</td>
+      <td>...</td>
+      <td>0.16</td>
+      <td>0.42</td>
+      <td>1.0</td>
+      <td>0.0504</td>
+      <td>0.476</td>
+      <td>0.635</td>
+      <td>0.516</td>
+      <td>0.002</td>
+      <td>0.581</td>
+      <td>43.8</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6079.0</td>
+      <td>Debris and open burning</td>
+      <td>2423</td>
+      <td>102</td>
+      <td>289.0</td>
+      <td>0.0</td>
+      <td>271.299988</td>
+      <td>...</td>
+      <td>0.18</td>
+      <td>0.16</td>
+      <td>1.0</td>
+      <td>0.0718</td>
+      <td>0.295</td>
+      <td>0.309</td>
+      <td>0.321</td>
+      <td>0.105</td>
+      <td>0.313</td>
+      <td>41.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 40 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;DISCOVERY_DOY&#39;, &#39;FIRE_YEAR&#39;, &#39;STATE&#39;, &#39;FIPS_CODE&#39;,
+       &#39;NWCG_GENERAL_CAUSE&#39;, &#39;Annual_etr&#39;, &#39;Annual_precipitation&#39;,
+       &#39;Annual_tempreture&#39;, &#39;pr&#39;, &#39;tmmn&#39;, &#39;vs&#39;, &#39;fm100&#39;, &#39;fm1000&#39;, &#39;bi&#39;, &#39;vpd&#39;,
+       &#39;erc&#39;, &#39;Elevation_1km&#39;, &#39;Aspect_1km&#39;, &#39;erc_Percentile&#39;, &#39;Slope_1km&#39;,
+       &#39;TPI_1km&#39;, &#39;EVC&#39;, &#39;Evacuation&#39;, &#39;SDI&#39;, &#39;FRG&#39;, &#39;No_FireStation_5.0km&#39;,
+       &#39;Mang_Name&#39;, &#39;GAP_Sts&#39;, &#39;GACC_PL&#39;, &#39;GDP&#39;, &#39;GHM&#39;, &#39;NDVI-1day&#39;, &#39;NPL&#39;,
+       &#39;Popo_1km&#39;, &#39;RPL_THEMES&#39;, &#39;RPL_THEME1&#39;, &#39;RPL_THEME2&#39;, &#39;RPL_THEME3&#39;,
+       &#39;RPL_THEME4&#39;, &#39;Distance2road&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The data set includes meteorological, topological, social, and fire management variables:</p>
+<ul class="simple">
+<li><p>‘DISCOVERY_DOY’: Day of year on which the fire was discovered or confirmed to exist</p></li>
+<li><p>‘FIRE_YEAR’: Calendar year in which the fire was discovered or confirmed to exist</p></li>
+<li><p>‘STATE’: Two-letter alphabetic code for the state in which the fire burned (or originated), based on fire report</p></li>
+<li><p>‘FIPS_CODE’: Five digit code from the Federal Information Process Standards publication 6-4 for representation of counties and equivalent entities, based on the nominal designation in the fire report.</p></li>
+<li><p>‘Annual_etr’: Annual total reference evaporatranspiration (mm)</p></li>
+<li><p>‘Annual_temperature’: Annual average temperature (K)</p></li>
+<li><p>‘pr’ : Precipitation amount (mm)</p></li>
+<li><p>‘tmmn’: Minimum temperature (K)</p></li>
+<li><p>‘vs’: Wind velocity at 10 m above ground (m/s)</p></li>
+<li><p>‘fm100’: 100-hour dead fuel moisture (%)</p></li>
+<li><p>‘fm1000’: 1000-hour dead fuel moisture (%)</p></li>
+<li><p>‘bi’: Burning index (NFDRS fire danger index)</p></li>
+<li><p>‘vpd’: Mean vapor pressure deficit (kPa)</p></li>
+<li><p>‘erc’: Energy release component (NFDRS fire danger index)</p></li>
+<li><p>‘Elevation_1km’: Average elevation in 1 km radius around the ignition point</p></li>
+<li><p>‘Aspect_1km’: Average aspect in 1 km radius around the ignition point</p></li>
+<li><p>‘erc_Percentile’: Percentile range of energy release component</p></li>
+<li><p>‘Slope_1km’: Average slope in 1 km radius around the ignition point</p></li>
+<li><p>‘TPI_1km’: Average Topographic Position Index in 1 km radius around the ignition point</p></li>
+<li><p>‘EVC’: Existing Vegetation Cover - vertically projected percent cover of the live canopy layer for a specific area (%)</p></li>
+<li><p>‘Evacuation’: Estimate ground transport time in hours from the fire ignition point to a definitive care facility (hospital)</p></li>
+<li><p>‘SDI’: Suppression difficulty index (Rodriguez y Silva et al. 2020): relative difficulty of fire control</p></li>
+<li><p>‘FRG’: Fire regime group - presumed historical fire regime</p></li>
+<li><p>‘No_FireStation_5.0km’: Number of fire stations in a 5 km radius around the fire ignition point</p></li>
+<li><p>‘Mang_Name’: The land manager or administrative agency standardized for the US</p></li>
+<li><p>‘GAP_Sts’: GAP status code classifies management intent to conserve biodiversity</p></li>
+<li><p>‘GACC_PL’: Geographic Area Coordination Center (GACC) Preparedness Level</p></li>
+<li><p>‘GDP’: Annual Gross Domestic Product Per Capita</p></li>
+<li><p>‘GHM’: Cumulative Measure of the human modification of lands within 1 km of the fire ignition point</p></li>
+<li><p>‘NDVI-1day’: Normalized Difference Vegetation Index (NDVI) on the day prior to ignition</p></li>
+<li><p>‘NPL’: National Preparedness Level</p></li>
+<li><p>‘Popo_1km’: Average population density within a 1 km radius around the fire ignition point</p></li>
+<li><p>‘RPL_THEMES’: Social Vulnerability Index (Overall Percentile Ranking)</p></li>
+<li><p>‘RPL_THEME1’: Percentile Ranking for socioeconomic theme summary</p></li>
+<li><p>‘RPL_THEME2’: Percentile Ranking for Household Composition theme summary</p></li>
+<li><p>‘RPL_THEME3’: Percentile Ranking for Minority Status/Language theme</p></li>
+<li><p>‘RPL_THEME4’: Precentile ranking for Housing Type/Transportion theme</p></li>
+<li><p>‘Distance2road’: Distance to the nearest road</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>519689
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 519689 entries, 0 to 519688
+Data columns (total 40 columns):
+ #   Column                Non-Null Count   Dtype  
+---  ------                --------------   -----  
+ 0   DISCOVERY_DOY         519689 non-null  int64  
+ 1   FIRE_YEAR             519689 non-null  int64  
+ 2   STATE                 519689 non-null  object 
+ 3   FIPS_CODE             519689 non-null  float64
+ 4   NWCG_GENERAL_CAUSE    519689 non-null  object 
+ 5   Annual_etr            519689 non-null  int64  
+ 6   Annual_precipitation  519689 non-null  int64  
+ 7   Annual_tempreture     519689 non-null  float64
+ 8   pr                    519689 non-null  float64
+ 9   tmmn                  519689 non-null  float64
+ 10  vs                    519689 non-null  float64
+ 11  fm100                 519689 non-null  float64
+ 12  fm1000                519689 non-null  float64
+ 13  bi                    519689 non-null  float64
+ 14  vpd                   519689 non-null  float64
+ 15  erc                   519689 non-null  float64
+ 16  Elevation_1km         519689 non-null  float64
+ 17  Aspect_1km            519689 non-null  float64
+ 18  erc_Percentile        519689 non-null  float64
+ 19  Slope_1km             519689 non-null  float64
+ 20  TPI_1km               519689 non-null  float64
+ 21  EVC                   519689 non-null  float64
+ 22  Evacuation            519689 non-null  float64
+ 23  SDI                   519689 non-null  float64
+ 24  FRG                   519689 non-null  int64  
+ 25  No_FireStation_5.0km  519689 non-null  float64
+ 26  Mang_Name             519689 non-null  int64  
+ 27  GAP_Sts               519689 non-null  float64
+ 28  GACC_PL               519689 non-null  float64
+ 29  GDP                   519689 non-null  float64
+ 30  GHM                   519689 non-null  float64
+ 31  NDVI-1day             519689 non-null  float64
+ 32  NPL                   519689 non-null  float64
+ 33  Popo_1km              519689 non-null  float64
+ 34  RPL_THEMES            519689 non-null  float64
+ 35  RPL_THEME1            519689 non-null  float64
+ 36  RPL_THEME2            519689 non-null  float64
+ 37  RPL_THEME3            519689 non-null  float64
+ 38  RPL_THEME4            519689 non-null  float64
+ 39  Distance2road         519689 non-null  float64
+dtypes: float64(32), int64(6), object(2)
+memory usage: 158.6+ MB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">firecauses</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;NWCG_GENERAL_CAUSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">firecauses</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NWCG_GENERAL_CAUSE
+Natural                                       168349
+Missing data/not specified/undetermined       150427
+Equipment and vehicle use                      48994
+Debris and open burning                        40516
+Recreation and ceremony                        38665
+Arson/incendiarism                             28090
+Smoking                                        13547
+Misuse of fire by a minor                      11523
+Power generation/transmission/distribution      6469
+Fireworks                                       6373
+Railroad operations and maintenance             3074
+Other causes                                    2068
+Firearms and explosives use                     1594
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Deal with some bad data </span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;GHM&quot;</span><span class="p">]</span><span class="o">&lt;</span><span class="mf">0.0</span><span class="p">,</span><span class="s2">&quot;GHM&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;SDI&quot;</span><span class="p">]</span><span class="o">&lt;</span><span class="mf">0.0</span><span class="p">,</span><span class="s2">&quot;SDI&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;FRG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;FRG&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="mi">9999</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEMES&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEMES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="mf">999.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="mf">999.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="mf">999.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME3&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="mf">999.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME4&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="mf">999.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># extra code – the next 5 lines define the default font sizes</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;font&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;axes&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">titlesize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;legend&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;xtick&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;ytick&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="c1">#save_fig(&quot;attribute_histogram_plots&quot;)  # extra code</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8d11b167d38ddbd0936dfbd31db89124689896c1ade960d05f16473a4c59b9ec.png" src="../../_images/8d11b167d38ddbd0936dfbd31db89124689896c1ade960d05f16473a4c59b9ec.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_cleaned</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="separate-out-the-fires-with-no-known-cause">
+<h2>Separate out the fires with no known cause<a class="headerlink" href="#separate-out-the-fires-with-no-known-cause" title="Permalink to this heading">#</a></h2>
+<p>First, let’s separate all of the fires where <code class="docutils literal notranslate"><span class="pre">NWCG_GENERAL_CAUSE</span></code> has the label <code class="docutils literal notranslate"><span class="pre">Missing</span> <span class="pre">data/not</span> <span class="pre">specified/undetermined</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_sorted</span> <span class="o">=</span> <span class="n">data_cleaned</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data_cleaned</span><span class="p">[</span><span class="s1">&#39;NWCG_GENERAL_CAUSE&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Missing data/not specified/undetermined&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="o">+</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data_cleaned</span><span class="p">[</span><span class="s1">&#39;NWCG_GENERAL_CAUSE&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;Missing data/not specified/undetermined&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_sorted</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>DISCOVERY_DOY</th>
+      <th>FIRE_YEAR</th>
+      <th>STATE</th>
+      <th>FIPS_CODE</th>
+      <th>NWCG_GENERAL_CAUSE</th>
+      <th>Annual_etr</th>
+      <th>Annual_precipitation</th>
+      <th>Annual_tempreture</th>
+      <th>pr</th>
+      <th>tmmn</th>
+      <th>...</th>
+      <th>GHM</th>
+      <th>NDVI-1day</th>
+      <th>NPL</th>
+      <th>Popo_1km</th>
+      <th>RPL_THEMES</th>
+      <th>RPL_THEME1</th>
+      <th>RPL_THEME2</th>
+      <th>RPL_THEME3</th>
+      <th>RPL_THEME4</th>
+      <th>Distance2road</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6065.0</td>
+      <td>Missing data/not specified/undetermined</td>
+      <td>2359</td>
+      <td>100</td>
+      <td>292.0</td>
+      <td>0.0</td>
+      <td>277.799988</td>
+      <td>...</td>
+      <td>0.84</td>
+      <td>0.22</td>
+      <td>1.0</td>
+      <td>5.2191</td>
+      <td>0.261</td>
+      <td>0.167</td>
+      <td>0.424</td>
+      <td>0.427</td>
+      <td>0.256</td>
+      <td>38.5</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6065.0</td>
+      <td>Missing data/not specified/undetermined</td>
+      <td>2452</td>
+      <td>110</td>
+      <td>291.0</td>
+      <td>0.0</td>
+      <td>275.899994</td>
+      <td>...</td>
+      <td>0.61</td>
+      <td>0.17</td>
+      <td>1.0</td>
+      <td>1.3687</td>
+      <td>0.927</td>
+      <td>0.969</td>
+      <td>0.940</td>
+      <td>0.846</td>
+      <td>0.607</td>
+      <td>38.3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>AZ</td>
+      <td>0.0</td>
+      <td>Missing data/not specified/undetermined</td>
+      <td>3146</td>
+      <td>135</td>
+      <td>292.0</td>
+      <td>0.0</td>
+      <td>273.100006</td>
+      <td>...</td>
+      <td>0.04</td>
+      <td>0.11</td>
+      <td>1.0</td>
+      <td>0.0000</td>
+      <td>0.504</td>
+      <td>0.829</td>
+      <td>0.535</td>
+      <td>0.046</td>
+      <td>0.394</td>
+      <td>36.2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6065.0</td>
+      <td>Missing data/not specified/undetermined</td>
+      <td>3546</td>
+      <td>20</td>
+      <td>297.0</td>
+      <td>0.0</td>
+      <td>277.100006</td>
+      <td>...</td>
+      <td>0.92</td>
+      <td>0.04</td>
+      <td>1.0</td>
+      <td>8.1135</td>
+      <td>0.611</td>
+      <td>0.498</td>
+      <td>0.653</td>
+      <td>0.594</td>
+      <td>0.688</td>
+      <td>37.5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6065.0</td>
+      <td>Missing data/not specified/undetermined</td>
+      <td>2486</td>
+      <td>92</td>
+      <td>292.0</td>
+      <td>0.0</td>
+      <td>277.799988</td>
+      <td>...</td>
+      <td>0.88</td>
+      <td>0.18</td>
+      <td>1.0</td>
+      <td>13.7651</td>
+      <td>0.939</td>
+      <td>0.833</td>
+      <td>0.879</td>
+      <td>0.822</td>
+      <td>0.875</td>
+      <td>38.8</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>518654</th>
+      <td>364</td>
+      <td>2003</td>
+      <td>CO</td>
+      <td>0.0</td>
+      <td>Arson/incendiarism</td>
+      <td>2222</td>
+      <td>390</td>
+      <td>284.0</td>
+      <td>0.0</td>
+      <td>263.500000</td>
+      <td>...</td>
+      <td>0.08</td>
+      <td>0.29</td>
+      <td>1.0</td>
+      <td>0.0007</td>
+      <td>0.464</td>
+      <td>0.560</td>
+      <td>0.089</td>
+      <td>0.688</td>
+      <td>0.695</td>
+      <td>16.8</td>
+    </tr>
+    <tr>
+      <th>518655</th>
+      <td>364</td>
+      <td>2003</td>
+      <td>CO</td>
+      <td>8043.0</td>
+      <td>Arson/incendiarism</td>
+      <td>1891</td>
+      <td>636</td>
+      <td>280.0</td>
+      <td>0.0</td>
+      <td>261.700012</td>
+      <td>...</td>
+      <td>0.06</td>
+      <td>0.37</td>
+      <td>1.0</td>
+      <td>0.0003</td>
+      <td>0.464</td>
+      <td>0.560</td>
+      <td>0.089</td>
+      <td>0.688</td>
+      <td>0.695</td>
+      <td>16.8</td>
+    </tr>
+    <tr>
+      <th>518656</th>
+      <td>365</td>
+      <td>2003</td>
+      <td>CA</td>
+      <td>6025.0</td>
+      <td>Recreation and ceremony</td>
+      <td>2846</td>
+      <td>63</td>
+      <td>298.0</td>
+      <td>0.0</td>
+      <td>286.500000</td>
+      <td>...</td>
+      <td>0.19</td>
+      <td>-0.00</td>
+      <td>1.0</td>
+      <td>0.0000</td>
+      <td>0.715</td>
+      <td>0.914</td>
+      <td>0.545</td>
+      <td>0.500</td>
+      <td>0.421</td>
+      <td>8.7</td>
+    </tr>
+    <tr>
+      <th>518657</th>
+      <td>365</td>
+      <td>2003</td>
+      <td>CA</td>
+      <td>0.0</td>
+      <td>Debris and open burning</td>
+      <td>1805</td>
+      <td>994</td>
+      <td>287.0</td>
+      <td>0.0</td>
+      <td>274.100006</td>
+      <td>...</td>
+      <td>0.39</td>
+      <td>0.02</td>
+      <td>1.0</td>
+      <td>0.4738</td>
+      <td>0.216</td>
+      <td>0.509</td>
+      <td>0.207</td>
+      <td>0.008</td>
+      <td>0.151</td>
+      <td>33.6</td>
+    </tr>
+    <tr>
+      <th>518658</th>
+      <td>365</td>
+      <td>2003</td>
+      <td>CA</td>
+      <td>6065.0</td>
+      <td>Equipment and vehicle use</td>
+      <td>2048</td>
+      <td>318</td>
+      <td>292.0</td>
+      <td>0.0</td>
+      <td>280.399994</td>
+      <td>...</td>
+      <td>0.81</td>
+      <td>0.11</td>
+      <td>1.0</td>
+      <td>1.1717</td>
+      <td>0.636</td>
+      <td>0.785</td>
+      <td>0.567</td>
+      <td>0.453</td>
+      <td>0.377</td>
+      <td>6.1</td>
+    </tr>
+  </tbody>
+</table>
+<p>518659 rows × 40 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_unknown</span> <span class="o">=</span> <span class="n">data_sorted</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data_sorted</span><span class="p">[</span><span class="s2">&quot;NWCG_GENERAL_CAUSE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Missing data/not specified/undetermined&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">data_known</span> <span class="o">=</span> <span class="n">data_sorted</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data_sorted</span><span class="p">[</span><span class="s2">&quot;NWCG_GENERAL_CAUSE&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;Missing data/not specified/undetermined&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_known</span><span class="p">[</span><span class="s2">&quot;NWCG_GENERAL_CAUSE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NWCG_GENERAL_CAUSE
+Natural                                       168126
+Equipment and vehicle use                      48895
+Debris and open burning                        40450
+Recreation and ceremony                        38498
+Arson/incendiarism                             28035
+Smoking                                        13510
+Misuse of fire by a minor                      11508
+Power generation/transmission/distribution      6453
+Fireworks                                       6348
+Railroad operations and maintenance             3062
+Other causes                                    2064
+Firearms and explosives use                     1584
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since only the first class is due to natural causes (typically ignition is due to lightning), and all the other categories are related to human activity, we can also label fires as being “natural” or “anthropogenic”. We’ll create a binary variable called “IsNatural” which has a value of 1 (True) if it is fire caused by natural causes or 0 (False) if it is a fire caused by any of the other causes related to human activity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_known</span><span class="p">[</span><span class="s2">&quot;IsNatural&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_known</span><span class="p">[</span><span class="s2">&quot;NWCG_GENERAL_CAUSE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Natural&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_known</span><span class="p">[</span><span class="s2">&quot;IsNatural&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>IsNatural
+0    200407
+1    168126
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-pre-processing">
+<h2>Data Pre-Processing<a class="headerlink" href="#data-pre-processing" title="Permalink to this heading">#</a></h2>
+<p>For decision trees and random forests, we generally don’t have to worry as much about scaling (compared with models like neural networks), since they work based on finding threshold values in the data sets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span><span class="p">,</span> <span class="n">OrdinalEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <span class="n">ColumnTransformer</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">causes</span> <span class="o">=</span> <span class="n">data_known</span><span class="p">[[</span><span class="s1">&#39;NWCG_GENERAL_CAUSE&#39;</span><span class="p">]]</span>
+<span class="n">isnatural</span> <span class="o">=</span> <span class="n">data_known</span><span class="p">[[</span><span class="s2">&quot;IsNatural&quot;</span><span class="p">]]</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">data_known</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;NWCG_GENERAL_CAUSE&quot;</span><span class="p">,</span><span class="s2">&quot;IsNatural&quot;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">features_unknown</span> <span class="o">=</span> <span class="n">data_unknown</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;NWCG_GENERAL_CAUSE&quot;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll create two labels for our data set. The first is a binary label, for whether the fire was caused by natural or anthropogenic causes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_binary</span> <span class="o">=</span> <span class="n">isnatural</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classnames_binary</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Anthropogenic&quot;</span><span class="p">,</span><span class="s2">&quot;Natural&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The second set of labels will be multi-class, and include all of the possible causes for the fires included in the <code class="docutils literal notranslate"><span class="pre">NWCG_GENERAL_CAUSE</span></code> column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ordenc</span> <span class="o">=</span> <span class="n">OrdinalEncoder</span><span class="p">()</span>
+<span class="n">y_multiclass</span> <span class="o">=</span> <span class="n">ordenc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">causes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classnames_multi</span> <span class="o">=</span> <span class="n">ordenc</span><span class="o">.</span><span class="n">categories_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classnames_multi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Arson/incendiarism&#39; &#39;Debris and open burning&#39;
+ &#39;Equipment and vehicle use&#39; &#39;Firearms and explosives use&#39; &#39;Fireworks&#39;
+ &#39;Misuse of fire by a minor&#39; &#39;Natural&#39; &#39;Other causes&#39;
+ &#39;Power generation/transmission/distribution&#39;
+ &#39;Railroad operations and maintenance&#39; &#39;Recreation and ceremony&#39; &#39;Smoking&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we will create the pipeline to transform the variables in the <code class="docutils literal notranslate"><span class="pre">features</span></code> dataframe as input to the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">categorical_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;STATE&quot;</span><span class="p">]</span>
+<span class="n">numerical_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;DISCOVERY_DOY&#39;</span><span class="p">,</span> <span class="s1">&#39;FIRE_YEAR&#39;</span><span class="p">,</span> <span class="s1">&#39;FIPS_CODE&#39;</span><span class="p">,</span> <span class="s1">&#39;Annual_etr&#39;</span><span class="p">,</span> <span class="s1">&#39;Annual_precipitation&#39;</span><span class="p">,</span><span class="s1">&#39;Annual_tempreture&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;pr&#39;</span><span class="p">,</span> <span class="s1">&#39;tmmn&#39;</span><span class="p">,</span> <span class="s1">&#39;vs&#39;</span><span class="p">,</span> <span class="s1">&#39;fm100&#39;</span><span class="p">,</span> <span class="s1">&#39;fm1000&#39;</span><span class="p">,</span> <span class="s1">&#39;bi&#39;</span><span class="p">,</span> <span class="s1">&#39;vpd&#39;</span><span class="p">,</span> <span class="s1">&#39;erc&#39;</span><span class="p">,</span> <span class="s1">&#39;Elevation_1km&#39;</span><span class="p">,</span> <span class="s1">&#39;Aspect_1km&#39;</span><span class="p">,</span> <span class="s1">&#39;erc_Percentile&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Slope_1km&#39;</span><span class="p">,</span><span class="s1">&#39;TPI_1km&#39;</span><span class="p">,</span> <span class="s1">&#39;EVC&#39;</span><span class="p">,</span> <span class="s1">&#39;Evacuation&#39;</span><span class="p">,</span> <span class="s1">&#39;SDI&#39;</span><span class="p">,</span> <span class="s1">&#39;FRG&#39;</span><span class="p">,</span> <span class="s1">&#39;No_FireStation_5.0km&#39;</span><span class="p">,</span><span class="s1">&#39;Mang_Name&#39;</span><span class="p">,</span> <span class="s1">&#39;GAP_Sts&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;GACC_PL&#39;</span><span class="p">,</span> <span class="s1">&#39;GDP&#39;</span><span class="p">,</span> <span class="s1">&#39;GHM&#39;</span><span class="p">,</span> <span class="s1">&#39;NDVI-1day&#39;</span><span class="p">,</span> <span class="s1">&#39;NPL&#39;</span><span class="p">,</span><span class="s1">&#39;Popo_1km&#39;</span><span class="p">,</span> <span class="s1">&#39;RPL_THEMES&#39;</span><span class="p">,</span> <span class="s1">&#39;RPL_THEME1&#39;</span><span class="p">,</span> <span class="s1">&#39;RPL_THEME2&#39;</span><span class="p">,</span> <span class="s1">&#39;RPL_THEME3&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;RPL_THEME4&#39;</span><span class="p">,</span> <span class="s1">&#39;Distance2road&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cat_pipeline</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">OrdinalEncoder</span><span class="p">(),</span><span class="n">StandardScaler</span><span class="p">())</span>
+<span class="n">num_pipeline</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preprocessor</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">,</span><span class="n">num_pipeline</span><span class="p">,</span><span class="n">numerical_cols</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span><span class="n">cat_pipeline</span><span class="p">,</span><span class="n">categorical_cols</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_known</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll use the same pipeline to transform the features associated with the unknown fires. In this case we will use <code class="docutils literal notranslate"><span class="pre">transform</span></code> rather than <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code>. The difference is that the scalings and transformations will be based on the data in <code class="docutils literal notranslate"><span class="pre">features</span></code> (rather than <code class="docutils literal notranslate"><span class="pre">features_unknown</span></code>) so we will end up performing exactly the same scalings and transformations on both data sets. This is important because the models that we will train later will depend on these scalings and transformations being consistent across both data sets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_unknown</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">features_unknown</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">X_known</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">X_unknown</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(368533, 39) (150126, 39)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">featurenames</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">featurenames</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;n__DISCOVERY_DOY&#39; &#39;n__FIRE_YEAR&#39; &#39;n__FIPS_CODE&#39; &#39;n__Annual_etr&#39;
+ &#39;n__Annual_precipitation&#39; &#39;n__Annual_tempreture&#39; &#39;n__pr&#39; &#39;n__tmmn&#39;
+ &#39;n__vs&#39; &#39;n__fm100&#39; &#39;n__fm1000&#39; &#39;n__bi&#39; &#39;n__vpd&#39; &#39;n__erc&#39;
+ &#39;n__Elevation_1km&#39; &#39;n__Aspect_1km&#39; &#39;n__erc_Percentile&#39; &#39;n__Slope_1km&#39;
+ &#39;n__TPI_1km&#39; &#39;n__EVC&#39; &#39;n__Evacuation&#39; &#39;n__SDI&#39; &#39;n__FRG&#39;
+ &#39;n__No_FireStation_5.0km&#39; &#39;n__Mang_Name&#39; &#39;n__GAP_Sts&#39; &#39;n__GACC_PL&#39;
+ &#39;n__GDP&#39; &#39;n__GHM&#39; &#39;n__NDVI-1day&#39; &#39;n__NPL&#39; &#39;n__Popo_1km&#39; &#39;n__RPL_THEMES&#39;
+ &#39;n__RPL_THEME1&#39; &#39;n__RPL_THEME2&#39; &#39;n__RPL_THEME3&#39; &#39;n__RPL_THEME4&#39;
+ &#39;n__Distance2road&#39; &#39;c__STATE&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training-validation-and-test-split">
+<h2>Training, validation, and test split<a class="headerlink" href="#training-validation-and-test-split" title="Permalink to this heading">#</a></h2>
+<p>Then we will split the data where the cause of the fire is known into training, validation, and test data sets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll create an index z as input to the <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code> function. This way, we can select either the binary or multiclass labels for our training, validation, and test data sets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z_known</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">X_known</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_val_test</span><span class="p">,</span> <span class="n">z_train</span><span class="p">,</span> <span class="n">z_val_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_known</span><span class="p">,</span><span class="n">z_known</span><span class="p">,</span><span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+<span class="n">X_val</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">z_val</span><span class="p">,</span> <span class="n">z_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_val_test</span><span class="p">,</span> <span class="n">z_val_test</span> <span class="p">,</span><span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z_train</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(294826,)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_multiclass_train</span> <span class="o">=</span> <span class="n">y_multiclass</span><span class="p">[</span><span class="n">z_train</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">y_multiclass_test</span> <span class="o">=</span> <span class="n">y_multiclass</span><span class="p">[</span><span class="n">z_test</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">y_multiclass_val</span> <span class="o">=</span> <span class="n">y_multiclass</span><span class="p">[</span><span class="n">z_val</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="n">y_binary_train</span> <span class="o">=</span> <span class="n">y_binary</span><span class="p">[</span><span class="n">z_train</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">y_binary_test</span> <span class="o">=</span> <span class="n">y_binary</span><span class="p">[</span><span class="n">z_test</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">y_binary_val</span> <span class="o">=</span> <span class="n">y_binary</span><span class="p">[</span><span class="n">z_val</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">X_val</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y_binary_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">y_binary_val</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">y_binary_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(294826, 39) (36853, 39) (36854, 39)
+(294826,) (36853,) (36854,)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="train-logistic-regression-natural-vs-human-causes">
+<h2>Train logistic regression (natural vs. human causes)<a class="headerlink" href="#train-logistic-regression-natural-vs-human-causes" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="n">log_reg</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s2">&quot;lbfgs&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">log_reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_binary_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-1 {color: black;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LogisticRegression(random_state=42)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">LogisticRegression</label><div class="sk-toggleable__content"><pre>LogisticRegression(random_state=42)</pre></div></div></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">log_reg</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_binary_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8811231031184495
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">log_reg</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_val</span><span class="p">,</span><span class="n">y_binary_val</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.882479038341519
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_train_predicted</span> <span class="o">=</span> <span class="n">log_reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">y_val_predicted</span> <span class="o">=</span> <span class="n">log_reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">ConfusionMatrixDisplay</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_binary_val</span><span class="p">,</span> <span class="n">y_val_predicted</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[17695,  2302],
+       [ 2029, 14827]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_binary_train</span><span class="p">,</span> <span class="n">y_train_predicted</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[142077,  18472],
+       [ 16576, 117701]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_predictions</span><span class="p">(</span><span class="n">y_binary_train</span><span class="p">,</span> <span class="n">y_train_predicted</span><span class="p">,</span><span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span><span class="n">display_labels</span><span class="o">=</span><span class="n">classnames_binary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x33cc62d00&gt;
+</pre></div>
+</div>
+<img alt="../../_images/2049ad8408294998aaaa97d379d306c91035a30790c2b031eb45437add842868.png" src="../../_images/2049ad8408294998aaaa97d379d306c91035a30790c2b031eb45437add842868.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_predictions</span><span class="p">(</span><span class="n">y_binary_val</span><span class="p">,</span> <span class="n">y_val_predicted</span><span class="p">,</span><span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span><span class="n">display_labels</span><span class="o">=</span><span class="n">classnames_binary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x33cd55790&gt;
+</pre></div>
+</div>
+<img alt="../../_images/be8bbc71a55392f1ab047d5fa36e05899189ebcbf18887853275dcee6d363de1.png" src="../../_images/be8bbc71a55392f1ab047d5fa36e05899189ebcbf18887853275dcee6d363de1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">precision_score</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">,</span> <span class="n">f1_score</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">precision_score</span><span class="p">(</span><span class="n">y_binary_val</span><span class="p">,</span> <span class="n">y_val_predicted</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8656080331601378
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">recall_score</span><span class="p">(</span><span class="n">y_binary_val</span><span class="p">,</span> <span class="n">y_val_predicted</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8796274323682961
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_binary_val</span><span class="p">,</span> <span class="n">y_val_predicted</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8725614241577166
+</pre></div>
+</div>
+</div>
+</div>
+<section id="roc-curve">
+<h3>ROC curve<a class="headerlink" href="#roc-curve" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">RocCurveDisplay</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">svc_disp</span> <span class="o">=</span> <span class="n">RocCurveDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">log_reg</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_binary_val</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/fc40758e1a969a3918194e7c88e932067cde9802e50f92d1ca5e50dd1388c2f2.png" src="../../_images/fc40758e1a969a3918194e7c88e932067cde9802e50f92d1ca5e50dd1388c2f2.png" />
+</div>
+</div>
+</section>
+<section id="importance-of-different-features-for-logistic-regression">
+<h3>Importance of different features for logistic regression<a class="headerlink" href="#importance-of-different-features-for-logistic-regression" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coefficients</span> <span class="o">=</span> <span class="n">log_reg</span><span class="o">.</span><span class="n">coef_</span>
+<span class="n">coefficients</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1, 39)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">featurenames</span><span class="p">,</span><span class="n">coefficients</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Coefficient values&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Feature&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/bc68593bcae2e59f3af5b2365a406af787da8873273d23c8bedffd777221d25f.png" src="../../_images/bc68593bcae2e59f3af5b2365a406af787da8873273d23c8bedffd777221d25f.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="train-a-decision-tree-classifier">
+<h2>Train a decision tree classifier<a class="headerlink" href="#train-a-decision-tree-classifier" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># https://github.com/YavarPourmohamad/Unknown_fire_cause_classification/blob/main/XGboost_West.ipynb</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree_clf</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">tree_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_binary_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-2 {color: black;}#sk-container-id-2 pre{padding: 0;}#sk-container-id-2 div.sk-toggleable {background-color: white;}#sk-container-id-2 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-2 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-2 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-2 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-2 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-2 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-2 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-2 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-2 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-2 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-2 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-2 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-2 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-2 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-2 div.sk-item {position: relative;z-index: 1;}#sk-container-id-2 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-2 div.sk-item::before, #sk-container-id-2 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-2 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-2 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-2 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-2 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-2 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-2 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-2 div.sk-label-container {text-align: center;}#sk-container-id-2 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-2 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>DecisionTreeClassifier(max_depth=2, random_state=42)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label sk-toggleable__label-arrow">DecisionTreeClassifier</label><div class="sk-toggleable__content"><pre>DecisionTreeClassifier(max_depth=2, random_state=42)</pre></div></div></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>graphviz
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: graphviz in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (0.20.3)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">graphviz</span> <span class="kn">import</span> <span class="n">Source</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">export_graphviz</span>
+
+<span class="n">export_graphviz</span><span class="p">(</span>
+        <span class="n">tree_clf</span><span class="p">,</span>
+        <span class="n">out_file</span><span class="o">=</span><span class="s2">&quot;decision_tree.dot&quot;</span><span class="p">,</span>
+        <span class="n">feature_names</span><span class="o">=</span><span class="n">featurenames</span><span class="p">,</span>
+        <span class="n">class_names</span><span class="o">=</span><span class="n">classnames_binary</span><span class="p">,</span>
+        <span class="n">rounded</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">filled</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+<span class="c1"># Read the dot file </span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;decision_tree.dot&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">dot_graph</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="c1"># Adjust dpi for scaling</span>
+<span class="n">dot_graph</span> <span class="o">=</span> <span class="s1">&#39;digraph Tree {</span><span class="se">\n</span><span class="s1">dpi=50;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">dot_graph</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">Source</span><span class="p">(</span><span class="n">dot_graph</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b24f02963fc6dc6415e7d424da021729c696b277a81ec3e9fa6139e84d7d775d.svg" src="../../_images/b24f02963fc6dc6415e7d424da021729c696b277a81ec3e9fa6139e84d7d775d.svg" /></div>
+</div>
+<p>Let’s train decision trees with greater max_depth and see how they perform on the validation data set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">depths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">]</span>
+<span class="n">trained_decisiontrees</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">depths</span><span class="p">:</span>
+    <span class="n">tree_clf</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+    <span class="n">trained_decisiontrees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tree_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_binary_train</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_val_predicted</span> <span class="o">=</span> <span class="n">trained_decisiontrees</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_val_predicted</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 1, ..., 1, 1, 0])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">trained_decisiontrees</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">X_val</span><span class="p">,</span><span class="n">y_binary_val</span><span class="p">,</span><span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span><span class="n">display_labels</span><span class="o">=</span><span class="n">classnames_binary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x157323fa0&gt;
+</pre></div>
+</div>
+<img alt="../../_images/265bbe3d785a5c74c32ce3c1b6801a50f4a7191b22a11f75cccb3e6cdf73da18.png" src="../../_images/265bbe3d785a5c74c32ce3c1b6801a50f4a7191b22a11f75cccb3e6cdf73da18.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">trained_decisiontrees</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">X_val</span><span class="p">,</span><span class="n">y_binary_val</span><span class="p">,</span><span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span><span class="n">display_labels</span><span class="o">=</span><span class="n">classnames_binary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x1757b0df0&gt;
+</pre></div>
+</div>
+<img alt="../../_images/09f87d33b5701aff7e99ffc2d8d799d3516be71a8a23ef5a0407f3b866cb6ae5.png" src="../../_images/09f87d33b5701aff7e99ffc2d8d799d3516be71a8a23ef5a0407f3b866cb6ae5.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">trained_decisiontrees</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">X_val</span><span class="p">,</span><span class="n">y_binary_val</span><span class="p">,</span><span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span><span class="n">display_labels</span><span class="o">=</span><span class="n">classnames_binary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x33cdeb5e0&gt;
+</pre></div>
+</div>
+<img alt="../../_images/e166bcc0ce25b29b979501069ec367388a6d9c40a04d6ca580df21790f819e6c.png" src="../../_images/e166bcc0ce25b29b979501069ec367388a6d9c40a04d6ca580df21790f819e6c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">trained_decisiontrees</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="n">X_val</span><span class="p">,</span><span class="n">y_binary_val</span><span class="p">,</span><span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span><span class="n">display_labels</span><span class="o">=</span><span class="n">classnames_binary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x16befc670&gt;
+</pre></div>
+</div>
+<img alt="../../_images/3d9473c50b69294d8c88339dbbb6fa5ff85afe32bd1211e5c807b8145d6e71f2.png" src="../../_images/3d9473c50b69294d8c88339dbbb6fa5ff85afe32bd1211e5c807b8145d6e71f2.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">svc_disp</span> <span class="o">=</span> <span class="n">RocCurveDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">log_reg</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_binary_val</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">svc_disp</span> <span class="o">=</span> <span class="n">RocCurveDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">trained_decisiontrees</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_binary_val</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/72ea42a81ac5c6b86dce0353c20aa58a2f35135ec0d65ba84522926394fa1cd5.png" src="../../_images/72ea42a81ac5c6b86dce0353c20aa58a2f35135ec0d65ba84522926394fa1cd5.png" />
+</div>
+</div>
+</section>
+<section id="train-a-random-forest-classifier">
+<h2>Train a random forest classifier<a class="headerlink" href="#train-a-random-forest-classifier" title="Permalink to this heading">#</a></h2>
+<p>A random forest is an ensemble of decision trees. Each decision tree is grown on a different sub-sample of the data set, and their ensemble vote is typically better than that of a single decision tree. They are quite powerful methods that are still used widely in environmental science and climate research, and are particularly good on tabular data sets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rnd_clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rnd_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_binary_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">70</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">rnd_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_binary_train</span><span class="p">)</span>
+
+<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/sklearn/base.py:1152,</span> in <span class="ni">_fit_context.&lt;locals&gt;.decorator.&lt;locals&gt;.wrapper</span><span class="nt">(estimator, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1145</span>     <span class="n">estimator</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1147</span> <span class="k">with</span> <span class="n">config_context</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1148</span>     <span class="n">skip_parameter_validation</span><span class="o">=</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1149</span>         <span class="n">prefer_skip_nested_validation</span> <span class="ow">or</span> <span class="n">global_skip_validation</span>
+<span class="g g-Whitespace">   </span><span class="mi">1150</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1151</span> <span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">1152</span>     <span class="k">return</span> <span class="n">fit_method</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/sklearn/ensemble/_forest.py:456,</span> in <span class="ni">BaseForest.fit</span><span class="nt">(self, X, y, sample_weight)</span>
+<span class="g g-Whitespace">    </span><span class="mi">445</span> <span class="n">trees</span> <span class="o">=</span> <span class="p">[</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_make_estimator</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
+<span class="nn">    447     for i</span> in <span class="ni">range</span><span class="nt">(n_more_estimators)</span>
+<span class="g g-Whitespace">    </span><span class="mi">448</span> <span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">450</span> <span class="c1"># Parallel loop: we prefer the threading backend as the Cython code</span>
+<span class="g g-Whitespace">    </span><span class="mi">451</span> <span class="c1"># for fitting the trees is internally releasing the Python GIL</span>
+<span class="g g-Whitespace">    </span><span class="mi">452</span> <span class="c1"># making threading more efficient than multiprocessing in</span>
+<span class="g g-Whitespace">    </span><span class="mi">453</span> <span class="c1"># that case. However, for joblib 0.12+ we respect any</span>
+<span class="g g-Whitespace">    </span><span class="mi">454</span> <span class="c1"># parallel_backend contexts set at a higher level,</span>
+<span class="g g-Whitespace">    </span><span class="mi">455</span> <span class="c1"># since correctness does not rely on using threads.</span>
+<span class="ne">--&gt; </span><span class="mi">456</span> <span class="n">trees</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">457</span>     <span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">458</span>     <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">459</span>     <span class="n">prefer</span><span class="o">=</span><span class="s2">&quot;threads&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">460</span> <span class="p">)(</span>
+<span class="g g-Whitespace">    </span><span class="mi">461</span>     <span class="n">delayed</span><span class="p">(</span><span class="n">_parallel_build_trees</span><span class="p">)(</span>
+<span class="g g-Whitespace">    </span><span class="mi">462</span>         <span class="n">t</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">463</span>         <span class="bp">self</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">464</span>         <span class="n">X</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">465</span>         <span class="n">y</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">466</span>         <span class="n">sample_weight</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">467</span>         <span class="n">i</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">468</span>         <span class="nb">len</span><span class="p">(</span><span class="n">trees</span><span class="p">),</span>
+<span class="g g-Whitespace">    </span><span class="mi">469</span>         <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">470</span>         <span class="n">class_weight</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">class_weight</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">471</span>         <span class="n">n_samples_bootstrap</span><span class="o">=</span><span class="n">n_samples_bootstrap</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">472</span>     <span class="p">)</span>
+<span class="nn">    473     for i, t</span> in <span class="ni">enumerate</span><span class="nt">(trees)</span>
+<span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">476</span> <span class="c1"># Collect newly grown trees</span>
+<span class="g g-Whitespace">    </span><span class="mi">477</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">trees</span><span class="p">)</span>
+
+<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/sklearn/utils/parallel.py:65,</span> in <span class="ni">Parallel.__call__</span><span class="nt">(self, iterable)</span>
+<span class="g g-Whitespace">     </span><span class="mi">60</span> <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">61</span> <span class="n">iterable_with_config</span> <span class="o">=</span> <span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">62</span>     <span class="p">(</span><span class="n">_with_config</span><span class="p">(</span><span class="n">delayed_func</span><span class="p">,</span> <span class="n">config</span><span class="p">),</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">63</span>     <span class="k">for</span> <span class="n">delayed_func</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="ow">in</span> <span class="n">iterable</span>
+<span class="g g-Whitespace">     </span><span class="mi">64</span> <span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">65</span> <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">iterable_with_config</span><span class="p">)</span>
+
+<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/joblib/parallel.py:1918,</span> in <span class="ni">Parallel.__call__</span><span class="nt">(self, iterable)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1916</span>     <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sequential_output</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1917</span>     <span class="nb">next</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1918</span>     <span class="k">return</span> <span class="n">output</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_generator</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1920</span> <span class="c1"># Let&#39;s create an ID that uniquely identifies the current call. If the</span>
+<span class="g g-Whitespace">   </span><span class="mi">1921</span> <span class="c1"># call is interrupted early and that the same instance is immediately</span>
+<span class="g g-Whitespace">   </span><span class="mi">1922</span> <span class="c1"># re-used, this id will be used to prevent workers that were</span>
+<span class="g g-Whitespace">   </span><span class="mi">1923</span> <span class="c1"># concurrently finalizing a task from the previous call to run the</span>
+<span class="g g-Whitespace">   </span><span class="mi">1924</span> <span class="c1"># callback.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1925</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+
+<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/joblib/parallel.py:1847,</span> in <span class="ni">Parallel._get_sequential_output</span><span class="nt">(self, iterable)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1845</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dispatched_batches</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="g g-Whitespace">   </span><span class="mi">1846</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dispatched_tasks</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="ne">-&gt; </span><span class="mi">1847</span> <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1848</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_completed_tasks</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="g g-Whitespace">   </span><span class="mi">1849</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_progress</span><span class="p">()</span>
+
+<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/sklearn/utils/parallel.py:127,</span> in <span class="ni">_FuncWrapper.__call__</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">125</span>     <span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="g g-Whitespace">    </span><span class="mi">126</span> <span class="k">with</span> <span class="n">config_context</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">127</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/sklearn/ensemble/_forest.py:188,</span> in <span class="ni">_parallel_build_trees</span><span class="nt">(tree, bootstrap, X, y, sample_weight, tree_idx, n_trees, verbose, class_weight, n_samples_bootstrap)</span>
+<span class="g g-Whitespace">    </span><span class="mi">185</span>     <span class="k">elif</span> <span class="n">class_weight</span> <span class="o">==</span> <span class="s2">&quot;balanced_subsample&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">186</span>         <span class="n">curr_sample_weight</span> <span class="o">*=</span> <span class="n">compute_sample_weight</span><span class="p">(</span><span class="s2">&quot;balanced&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="n">indices</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">188</span>     <span class="n">tree</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">curr_sample_weight</span><span class="p">,</span> <span class="n">check_input</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">189</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">190</span>     <span class="n">tree</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">,</span> <span class="n">check_input</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/sklearn/base.py:1152,</span> in <span class="ni">_fit_context.&lt;locals&gt;.decorator.&lt;locals&gt;.wrapper</span><span class="nt">(estimator, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1145</span>     <span class="n">estimator</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1147</span> <span class="k">with</span> <span class="n">config_context</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1148</span>     <span class="n">skip_parameter_validation</span><span class="o">=</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1149</span>         <span class="n">prefer_skip_nested_validation</span> <span class="ow">or</span> <span class="n">global_skip_validation</span>
+<span class="g g-Whitespace">   </span><span class="mi">1150</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1151</span> <span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">1152</span>     <span class="k">return</span> <span class="n">fit_method</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/sklearn/tree/_classes.py:959,</span> in <span class="ni">DecisionTreeClassifier.fit</span><span class="nt">(self, X, y, sample_weight, check_input)</span>
+<span class="g g-Whitespace">    </span><span class="mi">928</span> <span class="nd">@_fit_context</span><span class="p">(</span><span class="n">prefer_skip_nested_validation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">929</span> <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check_input</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">930</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Build a decision tree classifier from the training set (X, y).</span>
+<span class="g g-Whitespace">    </span><span class="mi">931</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">932</span><span class="sd">     Parameters</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">    </span><span class="mi">956</span><span class="sd">         Fitted estimator.</span>
+<span class="g g-Whitespace">    </span><span class="mi">957</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">959</span>     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_fit</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">960</span>         <span class="n">X</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">961</span>         <span class="n">y</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">962</span>         <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">963</span>         <span class="n">check_input</span><span class="o">=</span><span class="n">check_input</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">964</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">965</span>     <span class="k">return</span> <span class="bp">self</span>
+
+<span class="nn">File /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages/sklearn/tree/_classes.py:443,</span> in <span class="ni">BaseDecisionTree._fit</span><span class="nt">(self, X, y, sample_weight, check_input, missing_values_in_feature_mask)</span>
+<span class="g g-Whitespace">    </span><span class="mi">432</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">433</span>     <span class="n">builder</span> <span class="o">=</span> <span class="n">BestFirstTreeBuilder</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">434</span>         <span class="n">splitter</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">435</span>         <span class="n">min_samples_split</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">440</span>         <span class="bp">self</span><span class="o">.</span><span class="n">min_impurity_decrease</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">441</span>     <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">443</span> <span class="n">builder</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tree_</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="p">,</span> <span class="n">missing_values_in_feature_mask</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">445</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_outputs_</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">is_classifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span>     <span class="bp">self</span><span class="o">.</span><span class="n">n_classes_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">rnd_clf</span><span class="p">,</span><span class="n">X_val</span><span class="p">,</span><span class="n">y_binary_val</span><span class="p">,</span><span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span><span class="n">display_labels</span><span class="o">=</span><span class="n">classnames_binary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x36993e6a0&gt;
+</pre></div>
+</div>
+<img alt="../../_images/8ffe8e0e86c3a36d439e0cee571afba0fc5d5bf2286960dd8da2452c5ec7ce4f.png" src="../../_images/8ffe8e0e86c3a36d439e0cee571afba0fc5d5bf2286960dd8da2452c5ec7ce4f.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">svc_disp</span> <span class="o">=</span> <span class="n">RocCurveDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">log_reg</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_binary_val</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">svc_disp</span> <span class="o">=</span> <span class="n">RocCurveDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">trained_decisiontrees</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_binary_val</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">svc_disp</span> <span class="o">=</span> <span class="n">RocCurveDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">rnd_clf</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_binary_val</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ea3724dd09236b26cd5329a820e6ab262611d74ed59ad1b2d6d4ff4a3bb6f5cd.png" src="../../_images/ea3724dd09236b26cd5329a820e6ab262611d74ed59ad1b2d6d4ff4a3bb6f5cd.png" />
+</div>
+</div>
+<section id="feature-importance">
+<h3>Feature importance<a class="headerlink" href="#feature-importance" title="Permalink to this heading">#</a></h3>
+<p>With random forests, we can also get some ideas of which features are the most important for our classifier.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rnd_clf</span><span class="o">.</span><span class="n">feature_importances_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.03678424, 0.010523  , 0.00857334, 0.01493381, 0.01567114,
+       0.02743097, 0.07660563, 0.04684962, 0.01184543, 0.01285308,
+       0.01466824, 0.0617133 , 0.02268836, 0.01251963, 0.09073005,
+       0.01565229, 0.00856963, 0.01815727, 0.01130637, 0.02685617,
+       0.0824383 , 0.02938211, 0.00523526, 0.02220977, 0.0093963 ,
+       0.02086468, 0.00383213, 0.01152713, 0.11698223, 0.01991252,
+       0.02078227, 0.03123305, 0.01249902, 0.01197704, 0.01121416,
+       0.01153355, 0.01094183, 0.0116142 , 0.01149288])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">featurenames</span><span class="p">,</span><span class="n">rnd_clf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Feature Importance&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Feature&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/eca729aafa2dada23d33e3d6d7ae231d0e9d600ab7d1ffbcb0e2be1b935718c2.png" src="../../_images/eca729aafa2dada23d33e3d6d7ae231d0e9d600ab7d1ffbcb0e2be1b935718c2.png" />
+</div>
+</div>
+</section>
+<section id="multiclass-classification-with-the-random-forest">
+<h3>Multiclass classification with the Random Forest<a class="headerlink" href="#multiclass-classification-with-the-random-forest" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rnd_multiclass_clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rnd_multiclass_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_multiclass_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-5 {color: black;}#sk-container-id-5 pre{padding: 0;}#sk-container-id-5 div.sk-toggleable {background-color: white;}#sk-container-id-5 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-5 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-5 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-5 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-5 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-5 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-5 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-5 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-5 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-5 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-5 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-5 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-5 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-5 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-5 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-5 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-5 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-5 div.sk-item {position: relative;z-index: 1;}#sk-container-id-5 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-5 div.sk-item::before, #sk-container-id-5 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-5 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-5 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-5 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-5 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-5 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-5 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-5 div.sk-label-container {text-align: center;}#sk-container-id-5 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-5 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-5" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>RandomForestClassifier(random_state=42)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-5" type="checkbox" checked><label for="sk-estimator-id-5" class="sk-toggleable__label sk-toggleable__label-arrow">RandomForestClassifier</label><div class="sk-toggleable__content"><pre>RandomForestClassifier(random_state=42)</pre></div></div></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">rnd_multiclass_clf</span><span class="p">,</span><span class="n">X_val</span><span class="p">,</span><span class="n">y_multiclass_val</span><span class="p">,</span><span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span>
+                                      <span class="n">display_labels</span><span class="o">=</span><span class="n">classnames_multi</span><span class="p">,</span> <span class="n">xticks_rotation</span><span class="o">=</span><span class="s2">&quot;vertical&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x397c527c0&gt;
+</pre></div>
+</div>
+<img alt="../../_images/8b74352ac38c35533afc637bdd5a75686eab5a8cadb025d34d92958c71b0e6e5.png" src="../../_images/8b74352ac38c35533afc637bdd5a75686eab5a8cadb025d34d92958c71b0e6e5.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">featurenames</span><span class="p">,</span><span class="n">rnd_multiclass_clf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Feature Importance&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Feature&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f260d6935b7c4c3ad1f85af3efe4a1eea29a22c9c8a9af9b693810f7d92b3637.png" src="../../_images/f260d6935b7c4c3ad1f85af3efe4a1eea29a22c9c8a9af9b693810f7d92b3637.png" />
+</div>
+</div>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -410,12 +2080,49 @@ document.write(`
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="supervisedml.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Supervised Machine Learning</p>
+      </div>
+    </a>
 </div>
                 </footer>
               
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-in-the-data-set">Load in the data set</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#separate-out-the-fires-with-no-known-cause">Separate out the fires with no known cause</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pre-processing">Data Pre-Processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-validation-and-test-split">Training, validation, and test split</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-logistic-regression-natural-vs-human-causes">Train logistic regression (natural vs. human causes)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roc-curve">ROC curve</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#importance-of-different-features-for-logistic-regression">Importance of different features for logistic regression</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-a-decision-tree-classifier">Train a decision tree classifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-a-random-forest-classifier">Train a random forest classifier</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-importance">Feature importance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiclass-classification-with-the-random-forest">Multiclass classification with the Random Forest</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

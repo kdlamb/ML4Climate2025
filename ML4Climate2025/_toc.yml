@@ -14,12 +14,14 @@ parts:
     - file: lectures_ML/DataPreprocessing/datapreprocessing
     - file: lectures_ML/DataPreprocessing/datapreparation
     - file: assignments/Assignment1
-#  - caption: Supervised Machine Learning
-#    chapters:
+  - caption: Supervised Machine Learning
+    chapters:
+    - file: lectures_ML/SupervisedML/supervisedml
+    - file: lectures_ML/SupervisedML/randomforests
 #    - file: lectures_ML/SupervisedML/logisticregression
 #    - file: lectures_ML/SupervisedML/linearregression
 #    - file: lectures_ML/SupervisedML/svm
-#    - file: lectures_ML/SupervisedML/randomforests
+
 #  - caption: Unsupervised Machine Learning
 #    chapters:
 #      - file: lectures_ML/UnsupervisedML/unsupervisedML
