@@ -18,6 +18,7 @@ parts:
     chapters:
     - file: lectures_ML/SupervisedML/supervisedml
     - file: lectures_ML/SupervisedML/randomforests
+    - file: assignments/Assignment2
 #    - file: lectures_ML/SupervisedML/logisticregression
 #    - file: lectures_ML/SupervisedML/linearregression
 #    - file: lectures_ML/SupervisedML/svm

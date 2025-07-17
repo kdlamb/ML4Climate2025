@@ -1,0 +1,720 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Assignment 2: Predicting Health Impacts from Air Quality Factors &#8212; Earth Data Science &amp; Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'assignments/Assignment2';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Decision Trees and Random Forests (Wildfire cause prediction)" href="../lectures_ML/SupervisedML/randomforests.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_class.png" class="logo__image only-light" alt="Earth Data Science & Machine Learning - Home"/>
+    <script>document.write(`<img src="../_static/logo_class.png" class="logo__image only-dark" alt="Earth Data Science & Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to the Earth Data Science and Machine Learning Course Series
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/Introduction/What-is-ML.html">What is machine learning?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/Introduction/ML-for-climate-env.html">Machine Learning for Climate and Environmental Sustainability</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/Introduction/computing-environment.html">Computing Environment for Class</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Preprocessing and Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/DataPreprocessing/datapreprocessing.html">Data Exploration and Data Pre-Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/DataPreprocessing/datapreparation.html">Tutorial on Data Preprocessing (US Wildfires)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Assignment1.html">Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Supervised Machine Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/SupervisedML/supervisedml.html">Supervised Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/SupervisedML/randomforests.html">Decision Trees and Random Forests (Wildfire cause prediction)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Assignment 2: Predicting Health Impacts from Air Quality Factors</a></li>
+
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/kdlamb/ML4Climate2025" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/kdlamb/ML4Climate2025/issues/new?title=Issue%20on%20page%20%2Fassignments/Assignment2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/assignments/Assignment2.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Assignment 2: Predicting Health Impacts from Air Quality Factors</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Assignment 2: Predicting Health Impacts from Air Quality Factors</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-data-from-kaggle">Download the data from Kaggle</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-data-exploration">Part 1: Data exploration</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-preprocessing">Part 2: Preprocessing</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-training-validation-and-test-split">Part 3: Training, validation, and test split</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-train-a-random-forest-classifier">Part 4: Train a Random Forest Classifier</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-train-a-random-forest-regressor">Part 5: Train a Random Forest Regressor</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="assignment-2-predicting-health-impacts-from-air-quality-factors">
+<h1>Assignment 2: Predicting Health Impacts from Air Quality Factors<a class="headerlink" href="#assignment-2-predicting-health-impacts-from-air-quality-factors" title="Permalink to this heading">#</a></h1>
+<p>In this assignment, we will use a (synthetic) data set looking at how health impacts are related to air quality factors. This data set is available at <a class="reference external" href="https://www.kaggle.com/datasets/rabieelkharoua/air-quality-and-health-impact-dataset">https://www.kaggle.com/datasets/rabieelkharoua/air-quality-and-health-impact-dataset</a>. The data includes public health outcomes and how they are related to air quality and meteorological factors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">os</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="download-the-data-from-kaggle">
+<h1>Download the data from Kaggle<a class="headerlink" href="#download-the-data-from-kaggle" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># To facilitate downloading data from Kaggle, we can install this python package</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>kagglehub
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: kagglehub in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (0.2.9)
+Requirement already satisfied: packaging in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from kagglehub) (24.1)
+Requirement already satisfied: requests in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from kagglehub) (2.32.3)
+Requirement already satisfied: tqdm in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from kagglehub) (4.66.5)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from requests-&gt;kagglehub) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from requests-&gt;kagglehub) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from requests-&gt;kagglehub) (2.2.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from requests-&gt;kagglehub) (2024.8.30)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">kagglehub</span>
+
+<span class="c1"># Download latest version</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">kagglehub</span><span class="o">.</span><span class="n">dataset_download</span><span class="p">(</span><span class="s2">&quot;rabieelkharoua/air-quality-and-health-impact-dataset&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Path to dataset files:&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning: Looks like you&#39;re using an outdated `kagglehub` version, please consider updating (latest version: 0.3.12)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Path to dataset files: /Users/karalamb/.cache/kagglehub/datasets/rabieelkharoua/air-quality-and-health-impact-dataset/versions/1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;air_quality_health_impact_data.csv&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-1-data-exploration">
+<h1>Part 1: Data exploration<a class="headerlink" href="#part-1-data-exploration" title="Permalink to this heading">#</a></h1>
+<ol class="arabic simple">
+<li><p>Load in the csv file as a dataframe using <code class="docutils literal notranslate"><span class="pre">pandas</span></code>.</p></li>
+</ol>
+<ol class="arabic simple" start="2">
+<li><p>Check whether there are any NaN’s in the dataframe</p></li>
+</ol>
+<ol class="arabic simple" start="3">
+<li><p>Make a histogram of the different numerical variables in the dataframe</p></li>
+</ol>
+<ol class="arabic simple" start="4">
+<li><p>There are two possible targets in the dataframe. One is a categorical variable <code class="docutils literal notranslate"><span class="pre">HealthImpactClass</span></code>, and the other is a numerical variable <code class="docutils literal notranslate"><span class="pre">HealthImpactScore</span></code>. Create numpy arrays, one named <code class="docutils literal notranslate"><span class="pre">y_classification</span></code>, containing the <code class="docutils literal notranslate"><span class="pre">HealthImpactClass</span></code>, and one named <code class="docutils literal notranslate"><span class="pre">y_regression</span></code>, containing the <code class="docutils literal notranslate"><span class="pre">HealthImpactScore</span></code>.</p></li>
+</ol>
+<ol class="arabic simple" start="5">
+<li><p>Check how balanced the 5 classes are in <code class="docutils literal notranslate"><span class="pre">HealthImpactClass</span></code>.</p></li>
+</ol>
+<ol class="arabic simple" start="6">
+<li><p>Create a numpy array called <code class="docutils literal notranslate"><span class="pre">features</span></code> that includes the following 9 variables:</p>
+<ul class="simple">
+<li><p>AQI</p></li>
+<li><p>PM10</p></li>
+<li><p>PM2_5</p></li>
+<li><p>NO2</p></li>
+<li><p>SO2</p></li>
+<li><p>O3</p></li>
+<li><p>Temperature</p></li>
+<li><p>Humidity</p></li>
+<li><p>WindSpeed</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="part-2-preprocessing">
+<h1>Part 2: Preprocessing<a class="headerlink" href="#part-2-preprocessing" title="Permalink to this heading">#</a></h1>
+<ol class="arabic simple" start="7">
+<li><p>Create two python lists, one including the class names, and the other including the feature names. The classification of health impact is derived from the health impact score, using the following thresholds:</p></li>
+</ol>
+<ul class="simple">
+<li><p>0: ‘Very High’ (HealthImpactScore &gt;= 80)</p></li>
+<li><p>1: ‘High’ (60 &lt;= HealthImpactScore &lt; 80)</p></li>
+<li><p>2: ‘Moderate’ (40 &lt;= HealthImpactScore &lt; 60)</p></li>
+<li><p>3: ‘Low’ (20 &lt;= HealthImpactScore &lt; 40)</p></li>
+<li><p>4: ‘Very Low’ (HealthImpactScore &lt; 20)</p></li>
+</ul>
+<ol class="arabic simple" start="8">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> method to scale the numerical variables in the <code class="docutils literal notranslate"><span class="pre">feature</span></code> array, and save this as a numpy array <code class="docutils literal notranslate"><span class="pre">X</span></code></p></li>
+</ol>
+</section>
+<section id="part-3-training-validation-and-test-split">
+<h1>Part 3: Training, validation, and test split<a class="headerlink" href="#part-3-training-validation-and-test-split" title="Permalink to this heading">#</a></h1>
+<ol class="arabic simple" start="9">
+<li><p>Split the data into training, validation, and test data sets, with 80% of the data used for training, and 10% each for validation and testing. Create separate regression and classification targets, using <code class="docutils literal notranslate"><span class="pre">y_classification</span></code> and <code class="docutils literal notranslate"><span class="pre">y_regression</span></code>.</p></li>
+</ol>
+</section>
+<section id="part-4-train-a-random-forest-classifier">
+<h1>Part 4: Train a Random Forest Classifier<a class="headerlink" href="#part-4-train-a-random-forest-classifier" title="Permalink to this heading">#</a></h1>
+<ol class="arabic simple" start="10">
+<li><p>Train a <code class="docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code> with 120 estimators and with a maximum depth of 10. Set the class_weight to “balanced”, since the classes are imbalanced. You can use the default values for other hyperparmameters.</p></li>
+</ol>
+<ol class="arabic simple" start="11">
+<li><p>Create a heatmap plot for the confusion matrix showing the performance of the trained classifier on the validation data set. Label the heatmap with the <code class="docutils literal notranslate"><span class="pre">classnames</span></code> on the x and y axis.</p></li>
+</ol>
+<p>Because the classes are imbalanced, the confusion matrix shows that the classifier does not perform that well on the classes that are not well-represented in the data. One way to improve this is to use over-sampling to augment the data set. Using the <code class="docutils literal notranslate"><span class="pre">imbalanced-learn</span></code> library, we can use the <code class="docutils literal notranslate"><span class="pre">SMOTE</span></code> algorithm <a class="reference external" href="https://arxiv.org/pdf/1106.1813">(https://arxiv.org/pdf/1106.1813)</a> to oversample the data set, using the lines of code below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>imbalanced-learn
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: imbalanced-learn in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (0.12.4)
+Requirement already satisfied: numpy&gt;=1.17.3 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from imbalanced-learn) (1.24.3)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from imbalanced-learn) (1.10.1)
+Requirement already satisfied: scikit-learn&gt;=1.0.2 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from imbalanced-learn) (1.3.2)
+Requirement already satisfied: joblib&gt;=1.1.1 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from imbalanced-learn) (1.4.2)
+Requirement already satisfied: threadpoolctl&gt;=2.0.0 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from imbalanced-learn) (3.5.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_resampled</span><span class="p">,</span> <span class="n">y_resampled</span> <span class="o">=</span> <span class="n">SMOTE</span><span class="p">()</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_classification_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">X_resampled</span><span class="p">,</span> <span class="n">y_resampled</span> <span class="o">=</span> <span class="n">SMOTE</span><span class="p">()</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_classification_train</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;X_train&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple" start="12">
+<li><p>Train a new random forest classifier using <code class="docutils literal notranslate"><span class="pre">X_resampled</span></code> and <code class="docutils literal notranslate"><span class="pre">y_resampled</span></code>. Use the same hyperparameters as your original random forest.</p></li>
+</ol>
+<ol class="arabic simple" start="13">
+<li><p>Create a new heatmap plot for the confusion matrix showing the performance of the classifier that was trained on the oversampled data set, evaluated on the validation data set. Label the heatmap with the <code class="docutils literal notranslate"><span class="pre">classnames</span></code> list on the x and y axis.</p></li>
+</ol>
+</section>
+<section id="part-5-train-a-random-forest-regressor">
+<h1>Part 5: Train a Random Forest Regressor<a class="headerlink" href="#part-5-train-a-random-forest-regressor" title="Permalink to this heading">#</a></h1>
+<ol class="arabic simple" start="14">
+<li><p>Train a <code class="docutils literal notranslate"><span class="pre">RandomForestRegressor</span></code> on the training data set, using the regression target. Set the number of estimators to 120 and the maximum tree depth to 10. You can use the other default hyperparameters.</p></li>
+</ol>
+<ol class="arabic simple" start="15">
+<li><p>Using your trained <code class="docutils literal notranslate"><span class="pre">RandomForestRegressor</span></code>, predict the target values for the validation data set and calculate the coefficient of determination between the true targets and the values predicted by the <code class="docutils literal notranslate"><span class="pre">RandomForestRegressor</span></code>.</p></li>
+</ol>
+<ol class="arabic simple" start="16">
+<li><p>Make a barplot of the feature importance in your trained random forest. Label the x-axis with the feature names.</p></li>
+</ol>
+<ol class="arabic simple" start="17">
+<li><p>What are the 4 most important features in terms of determining the health impact score? Print them out.</p></li>
+</ol>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./assignments"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../lectures_ML/SupervisedML/randomforests.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Decision Trees and Random Forests (Wildfire cause prediction)</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Assignment 2: Predicting Health Impacts from Air Quality Factors</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-data-from-kaggle">Download the data from Kaggle</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-data-exploration">Part 1: Data exploration</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-preprocessing">Part 2: Preprocessing</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-training-validation-and-test-split">Part 3: Training, validation, and test split</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-train-a-random-forest-classifier">Part 4: Train a Random Forest Classifier</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-train-a-random-forest-regressor">Part 5: Train a Random Forest Regressor</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Kara Lamb & Dhruv Balwada
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
