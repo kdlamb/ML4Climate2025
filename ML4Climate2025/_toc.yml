@@ -14,18 +14,18 @@ parts:
     - file: lectures_ML/DataPreprocessing/datapreprocessing
     - file: lectures_ML/DataPreprocessing/datapreparation
     - file: assignments/Assignment1
-  - caption: Supervised Machine Learning
+  - caption: Introduction to Supervised Machine Learning
     chapters:
     - file: lectures_ML/SupervisedML/supervisedml
     - file: lectures_ML/SupervisedML/randomforests
     - file: assignments/Assignment2
-#    - file: lectures_ML/SupervisedML/logisticregression
-#    - file: lectures_ML/SupervisedML/linearregression
-#    - file: lectures_ML/SupervisedML/svm
+  - caption: Unsupervised Machine Learning
+    chapters:
+      - file: lectures_ML/UnsupervisedML/unsupervisedML
+      - file: lectures_ML/UnsupervisedML/PCA
+#      - file: lectures_ML/UnsupervisedML/Clustering
+#      - file: assignments/Assignment3
 
-#  - caption: Unsupervised Machine Learning
-#    chapters:
-#      - file: lectures_ML/UnsupervisedML/unsupervisedML
 #  - caption: Introduction to Deep Learning
 #    chapters:
 #    - file: lectures_ML/DeepLearning/ANN

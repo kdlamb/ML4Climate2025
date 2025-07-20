@@ -65,6 +65,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'lectures_ML/UnsupervisedML/unsupervisedML';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Dimensionality Reduction" href="PCA.html" />
+    <link rel="prev" title="Assignment 2: Predicting Health Impacts from Air Quality Factors" href="../../assignments/Assignment2.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -177,6 +179,24 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreprocessing.html">Data Exploration and Data Pre-Processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreparation.html">Tutorial on Data Preprocessing (US Wildfires)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/Assignment1.html">Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction to Supervised Machine Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../SupervisedML/supervisedml.html">Supervised Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SupervisedML/randomforests.html">Decision Trees and Random Forests (Wildfire cause prediction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/Assignment2.html">Assignment 2: Predicting Health Impacts from Air Quality Factors</a></li>
+
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Unsupervised Machine Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Unsupervised Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PCA.html">Dimensionality Reduction</a></li>
 </ul>
 
     </div>
@@ -349,7 +369,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -365,6 +387,16 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensionality-reduction">Dimensionality Reduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensionality-reduction-in-climate-and-environmental-science">Dimensionality Reduction in Climate and Environmental Science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering-algorithms">Clustering Algorithms</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -376,7 +408,36 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="unsupervised-machine-learning">
 <h1>Unsupervised Machine Learning<a class="headerlink" href="#unsupervised-machine-learning" title="Permalink to this heading">#</a></h1>
-<p>Unsupervised ML refers to learning from unlabeled data sets. That is, we try to learn relationships between points in our data based on the features themselves.</p>
+<p>Unsupervised ML refers to learning from unlabeled data sets. That is, we try to learn relationships between points in our data based on the features themselves. In this section, we will:</p>
+<ul class="simple">
+<li><p>Understand the necessity of reducing dimensionality for large datasets.</p></li>
+<li><p>Learn about different approaches for dimensionality reduction</p></li>
+<li><p>Discuss Principal Component Analysis (PCA)</p></li>
+<li><p>Learn about different approaches for clustering</p></li>
+<li><p>Learn about K-Means Clustering, DBSCAN, and Gaussian Mixture Models</p></li>
+<li><p>Discuss Applications of Unsupervised Machine Learning to Environmental Science and Climate Science</p></li>
+</ul>
+<section id="dimensionality-reduction">
+<h2>Dimensionality Reduction<a class="headerlink" href="#dimensionality-reduction" title="Permalink to this heading">#</a></h2>
+<p>Dimensionality reduction refers to techniques that reduce the number of features in a dataset, while retaining essential information. It can be used for a number of downstream tasks, such as data visualization and analysis, feature engineering, and improved model perfomance.</p>
+<p>High-dimensional data sets are often very sparse, with training instances very far away from one another. The curse-of-dimensionality is an idea that adding more variables, or dimensions, to a data set can lead to increased sparsity, greater computational complexity, and decreased efficiency in applying machine learning methods to these data sets. However, high dimensional data sets often have a much smaller set of possible states, meaning in practice the degrees of a freedom of a data set are actually quite limited.</p>
+<p>Dimensionality reduction methods help us to discover, and exploit, these lower dimensional relationships.</p>
+<p>Some of the main methods for dimensionality reduction are:</p>
+<ul class="simple">
+<li><p><strong>Projection methods</strong>: methods that linearly transform data to lower dimensions (e.g. Principal Component Analysis, PCA)</p></li>
+<li><p><strong>Manifold learning methods</strong>: methods that capture the underlying data structure for non-linear relationships (e.g. t-Distributed Stochastic Neighbor Embedding, Uniform Manifold Approximation and Projection, etc.)</p></li>
+<li><p><strong>Deep Learning methods</strong>: methods that non-linearly transform data to lower dimensions (e.g. auto-encoders, variational auto-encoders)</p></li>
+</ul>
+</section>
+<section id="dimensionality-reduction-in-climate-and-environmental-science">
+<h2>Dimensionality Reduction in Climate and Environmental Science<a class="headerlink" href="#dimensionality-reduction-in-climate-and-environmental-science" title="Permalink to this heading">#</a></h2>
+<p>Dimensionality reduction can address several important challenges for climate and environmental science. Because climate data sets are often high dimensional, an important challenge is how to find interpretable information and patterns in these data sets. The climate consists of many complex, interacting processes that happen on a variety of temporal and spatial scales. For example, spatio-temporal patterns such as the ENSO or the Madden-Julian Oscillation can help us to better understand and predict seasonal weather patterns. Dimensionality reduction can also help with feature engineering and reducing computational expense.</p>
+</section>
+<section id="clustering-algorithms">
+<h2>Clustering Algorithms<a class="headerlink" href="#clustering-algorithms" title="Permalink to this heading">#</a></h2>
+<p>Clustering algorithms discover underlying patterns and relationships between data, and can be used for unsupervised classification. In contrast to supervised learning, which requires pre-labeled data sets, clustering algorithms attempt to group data into clusters based on similarity, without pre-defined labels. These methods can be used for data analysis, dimensionality reduction, and anomaly detection (i.e. finding unusual or anomalous samples in the data set).</p>
+<p>There are many different types of clustering algorithms. Some common ones are K-Means clustering, DBSCAN, and Gaussian Mixture Models.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -409,12 +470,46 @@ document.write(`
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="../../assignments/Assignment2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Assignment 2: Predicting Health Impacts from Air Quality Factors</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="PCA.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Dimensionality Reduction</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensionality-reduction">Dimensionality Reduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensionality-reduction-in-climate-and-environmental-science">Dimensionality Reduction in Climate and Environmental Science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering-algorithms">Clustering Algorithms</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
