@@ -1,0 +1,1368 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Clustering Algorithms &#8212; Earth Data Science &amp; Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lectures_ML/UnsupervisedML/Clustering';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo_class.png" class="logo__image only-light" alt="Earth Data Science & Machine Learning - Home"/>
+    <script>document.write(`<img src="../../_static/logo_class.png" class="logo__image only-dark" alt="Earth Data Science & Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Welcome to the Earth Data Science and Machine Learning Course Series
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Introduction/What-is-ML.html">What is machine learning?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Introduction/ML-for-climate-env.html">Machine Learning for Climate and Environmental Sustainability</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../Introduction/computing-environment.html">Computing Environment for Class</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Preprocessing and Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreprocessing.html">Data Exploration and Data Pre-Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreparation.html">Tutorial on Data Preprocessing (US Wildfires)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/Assignment1.html">Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction to Supervised Machine Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../SupervisedML/supervisedml.html">Supervised Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SupervisedML/randomforests.html">Decision Trees and Random Forests (Wildfire cause prediction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/Assignment2.html">Assignment 2: Predicting Health Impacts from Air Quality Factors</a></li>
+
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Unsupervised Machine Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="unsupervisedML.html">Unsupervised Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PCA.html">Dimensionality Reduction</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/kdlamb/ML4Climate2025" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/kdlamb/ML4Climate2025/issues/new?title=Issue%20on%20page%20%2Flectures_ML/UnsupervisedML/Clustering.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/lectures_ML/UnsupervisedML/Clustering.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Clustering Algorithms</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Clustering Algorithms</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-data">Load the data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#separate-out-the-fires-with-no-known-causes">Separate out the fires with no known causes</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess-the-data-sets">Preprocess the data sets</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#training-validation-and-test-split">Training, validation, and test split</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-k-means-clustering-to-the-data">Apply K-Means Clustering to the data</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="clustering-algorithms">
+<h1>Clustering Algorithms<a class="headerlink" href="#clustering-algorithms" title="Permalink to this heading">#</a></h1>
+<p>In this tutorial, we will explore some common clustering methods, including K-Means clustering, DBSCAN, and Gaussian Mixture Models.</p>
+<p>We’ll apply these clustering algorithms to a data set of aerosol observations from a laboratory study. Aerosols are any types of small particulate matter that is suspended in the atmosphere. They play an important in the climate because they directly scatter and absorb sunlight. Aerosols also play an important role in cloud formation, since ice or liquid droplets that form in the atmosphere typically require some type of solid aerosol particle to act as an ice nuclei or cloud condensation nuclei. Finally, aerosols are important for air quality; small particulate matter &lt;2.5 um (PM2.5) has significant impacts on human health.</p>
+<p>The aerosol observations that we will look at here comes from a specialized type of instrument called the Single Particle Soot Photometer (SP2), which can be used to measure aerosols that strongly absorb sunlight, such as black carbon and iron oxide aerosols from combustion sources. It is used in airborne and ground-based field studies to measure the atmospheric mass loadings of absorbing aerosols.</p>
+<p>The data set includes 7 different classes of aerosols that can be detected by the SP2.</p>
+<p>These data sets come from the study:</p>
+<p>[1] K.D. Lamb. “Classification of iron oxide aerosols with a single particle soot photometer using supervised machine learning.” <em>Atmospheric Measurement Techniques</em>, 12, 3885‑3906, 2019.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="load-the-data">
+<h1>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/Users/karalamb/Columbia/Projects/SP2&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The data is already split in training, validation, and test data sets. For this analysis, we will just look at the training data set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="s2">&quot;Lab_X_train.npy&quot;</span><span class="p">))</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="s2">&quot;Lab_y_train.npy&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(140082, 400, 4)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The first dimension in X_train is the sample number, and each observed aerosol has a 400 point time series from 4 different detectors. We can visualize an example of the signal associated with a single aerosol particle here:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plo</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">plt</span><span class="o">.</span><span class="n">plo</span>
+
+<span class="ne">AttributeError</span>: module &#39;matplotlib.pyplot&#39; has no attribute &#39;plo&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_train</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0. 1. 2. 3. 4. 5. 6.]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The data set includes 7 different classes of aerosols.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/Users/karalamb/Columbia/Projects/ML4Climate2025/ML4Climate2025/lectures_ML/SupervisedML&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="s2">&quot;FPA_FOD_west_cleaned.csv&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>DISCOVERY_DOY</th>
+      <th>FIRE_YEAR</th>
+      <th>STATE</th>
+      <th>FIPS_CODE</th>
+      <th>NWCG_GENERAL_CAUSE</th>
+      <th>Annual_etr</th>
+      <th>Annual_precipitation</th>
+      <th>Annual_tempreture</th>
+      <th>pr</th>
+      <th>tmmn</th>
+      <th>...</th>
+      <th>GHM</th>
+      <th>NDVI-1day</th>
+      <th>NPL</th>
+      <th>Popo_1km</th>
+      <th>RPL_THEMES</th>
+      <th>RPL_THEME1</th>
+      <th>RPL_THEME2</th>
+      <th>RPL_THEME3</th>
+      <th>RPL_THEME4</th>
+      <th>Distance2road</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6053.0</td>
+      <td>Misuse of fire by a minor</td>
+      <td>1625</td>
+      <td>257</td>
+      <td>286.0</td>
+      <td>0.0</td>
+      <td>276.500000</td>
+      <td>...</td>
+      <td>0.42</td>
+      <td>0.00</td>
+      <td>1.0</td>
+      <td>1.1494</td>
+      <td>0.055</td>
+      <td>0.027</td>
+      <td>0.245</td>
+      <td>0.039</td>
+      <td>0.203</td>
+      <td>43.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6019.0</td>
+      <td>Arson/incendiarism</td>
+      <td>1819</td>
+      <td>383</td>
+      <td>290.0</td>
+      <td>0.0</td>
+      <td>273.200012</td>
+      <td>...</td>
+      <td>0.35</td>
+      <td>0.50</td>
+      <td>1.0</td>
+      <td>0.1652</td>
+      <td>0.525</td>
+      <td>0.719</td>
+      <td>0.499</td>
+      <td>0.302</td>
+      <td>0.405</td>
+      <td>40.2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6089.0</td>
+      <td>Misuse of fire by a minor</td>
+      <td>2293</td>
+      <td>985</td>
+      <td>290.0</td>
+      <td>0.0</td>
+      <td>275.100006</td>
+      <td>...</td>
+      <td>0.16</td>
+      <td>0.42</td>
+      <td>1.0</td>
+      <td>0.0504</td>
+      <td>0.476</td>
+      <td>0.635</td>
+      <td>0.516</td>
+      <td>0.002</td>
+      <td>0.581</td>
+      <td>43.8</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6089.0</td>
+      <td>Misuse of fire by a minor</td>
+      <td>2293</td>
+      <td>985</td>
+      <td>290.0</td>
+      <td>0.0</td>
+      <td>275.100006</td>
+      <td>...</td>
+      <td>0.16</td>
+      <td>0.42</td>
+      <td>1.0</td>
+      <td>0.0504</td>
+      <td>0.476</td>
+      <td>0.635</td>
+      <td>0.516</td>
+      <td>0.002</td>
+      <td>0.581</td>
+      <td>43.8</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6079.0</td>
+      <td>Debris and open burning</td>
+      <td>2423</td>
+      <td>102</td>
+      <td>289.0</td>
+      <td>0.0</td>
+      <td>271.299988</td>
+      <td>...</td>
+      <td>0.18</td>
+      <td>0.16</td>
+      <td>1.0</td>
+      <td>0.0718</td>
+      <td>0.295</td>
+      <td>0.309</td>
+      <td>0.321</td>
+      <td>0.105</td>
+      <td>0.313</td>
+      <td>41.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 40 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;DISCOVERY_DOY&#39;, &#39;FIRE_YEAR&#39;, &#39;STATE&#39;, &#39;FIPS_CODE&#39;,
+       &#39;NWCG_GENERAL_CAUSE&#39;, &#39;Annual_etr&#39;, &#39;Annual_precipitation&#39;,
+       &#39;Annual_tempreture&#39;, &#39;pr&#39;, &#39;tmmn&#39;, &#39;vs&#39;, &#39;fm100&#39;, &#39;fm1000&#39;, &#39;bi&#39;, &#39;vpd&#39;,
+       &#39;erc&#39;, &#39;Elevation_1km&#39;, &#39;Aspect_1km&#39;, &#39;erc_Percentile&#39;, &#39;Slope_1km&#39;,
+       &#39;TPI_1km&#39;, &#39;EVC&#39;, &#39;Evacuation&#39;, &#39;SDI&#39;, &#39;FRG&#39;, &#39;No_FireStation_5.0km&#39;,
+       &#39;Mang_Name&#39;, &#39;GAP_Sts&#39;, &#39;GACC_PL&#39;, &#39;GDP&#39;, &#39;GHM&#39;, &#39;NDVI-1day&#39;, &#39;NPL&#39;,
+       &#39;Popo_1km&#39;, &#39;RPL_THEMES&#39;, &#39;RPL_THEME1&#39;, &#39;RPL_THEME2&#39;, &#39;RPL_THEME3&#39;,
+       &#39;RPL_THEME4&#39;, &#39;Distance2road&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">firecauses</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;NWCG_GENERAL_CAUSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">firecauses</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NWCG_GENERAL_CAUSE
+Natural                                       168349
+Missing data/not specified/undetermined       150427
+Equipment and vehicle use                      48994
+Debris and open burning                        40516
+Recreation and ceremony                        38665
+Arson/incendiarism                             28090
+Smoking                                        13547
+Misuse of fire by a minor                      11523
+Power generation/transmission/distribution      6469
+Fireworks                                       6373
+Railroad operations and maintenance             3074
+Other causes                                    2068
+Firearms and explosives use                     1594
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Deal with some bad data </span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;GHM&quot;</span><span class="p">]</span><span class="o">&lt;</span><span class="mf">0.0</span><span class="p">,</span><span class="s2">&quot;GHM&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;SDI&quot;</span><span class="p">]</span><span class="o">&lt;</span><span class="mf">0.0</span><span class="p">,</span><span class="s2">&quot;SDI&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;FRG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;FRG&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="mi">9999</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEMES&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEMES&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="mf">999.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="mf">999.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="mf">999.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME3&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="mf">999.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;RPL_THEME4&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="mf">999.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># extra code – the next 5 lines define the default font sizes</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;font&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;axes&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">titlesize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;legend&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;xtick&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;ytick&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="c1">#save_fig(&quot;attribute_histogram_plots&quot;)  # extra code</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8d11b167d38ddbd0936dfbd31db89124689896c1ade960d05f16473a4c59b9ec.png" src="../../_images/8d11b167d38ddbd0936dfbd31db89124689896c1ade960d05f16473a4c59b9ec.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_cleaned</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="separate-out-the-fires-with-no-known-causes">
+<h1>Separate out the fires with no known causes<a class="headerlink" href="#separate-out-the-fires-with-no-known-causes" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_sorted</span> <span class="o">=</span> <span class="n">data_cleaned</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data_cleaned</span><span class="p">[</span><span class="s1">&#39;NWCG_GENERAL_CAUSE&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Missing data/not specified/undetermined&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="o">+</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data_cleaned</span><span class="p">[</span><span class="s1">&#39;NWCG_GENERAL_CAUSE&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;Missing data/not specified/undetermined&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_sorted</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>DISCOVERY_DOY</th>
+      <th>FIRE_YEAR</th>
+      <th>STATE</th>
+      <th>FIPS_CODE</th>
+      <th>NWCG_GENERAL_CAUSE</th>
+      <th>Annual_etr</th>
+      <th>Annual_precipitation</th>
+      <th>Annual_tempreture</th>
+      <th>pr</th>
+      <th>tmmn</th>
+      <th>...</th>
+      <th>GHM</th>
+      <th>NDVI-1day</th>
+      <th>NPL</th>
+      <th>Popo_1km</th>
+      <th>RPL_THEMES</th>
+      <th>RPL_THEME1</th>
+      <th>RPL_THEME2</th>
+      <th>RPL_THEME3</th>
+      <th>RPL_THEME4</th>
+      <th>Distance2road</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6065.0</td>
+      <td>Missing data/not specified/undetermined</td>
+      <td>2359</td>
+      <td>100</td>
+      <td>292.0</td>
+      <td>0.0</td>
+      <td>277.799988</td>
+      <td>...</td>
+      <td>0.84</td>
+      <td>0.22</td>
+      <td>1.0</td>
+      <td>5.2191</td>
+      <td>0.261</td>
+      <td>0.167</td>
+      <td>0.424</td>
+      <td>0.427</td>
+      <td>0.256</td>
+      <td>38.5</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6065.0</td>
+      <td>Missing data/not specified/undetermined</td>
+      <td>2452</td>
+      <td>110</td>
+      <td>291.0</td>
+      <td>0.0</td>
+      <td>275.899994</td>
+      <td>...</td>
+      <td>0.61</td>
+      <td>0.17</td>
+      <td>1.0</td>
+      <td>1.3687</td>
+      <td>0.927</td>
+      <td>0.969</td>
+      <td>0.940</td>
+      <td>0.846</td>
+      <td>0.607</td>
+      <td>38.3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>AZ</td>
+      <td>0.0</td>
+      <td>Missing data/not specified/undetermined</td>
+      <td>3146</td>
+      <td>135</td>
+      <td>292.0</td>
+      <td>0.0</td>
+      <td>273.100006</td>
+      <td>...</td>
+      <td>0.04</td>
+      <td>0.11</td>
+      <td>1.0</td>
+      <td>0.0000</td>
+      <td>0.504</td>
+      <td>0.829</td>
+      <td>0.535</td>
+      <td>0.046</td>
+      <td>0.394</td>
+      <td>36.2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6065.0</td>
+      <td>Missing data/not specified/undetermined</td>
+      <td>3546</td>
+      <td>20</td>
+      <td>297.0</td>
+      <td>0.0</td>
+      <td>277.100006</td>
+      <td>...</td>
+      <td>0.92</td>
+      <td>0.04</td>
+      <td>1.0</td>
+      <td>8.1135</td>
+      <td>0.611</td>
+      <td>0.498</td>
+      <td>0.653</td>
+      <td>0.594</td>
+      <td>0.688</td>
+      <td>37.5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>2007</td>
+      <td>CA</td>
+      <td>6065.0</td>
+      <td>Missing data/not specified/undetermined</td>
+      <td>2486</td>
+      <td>92</td>
+      <td>292.0</td>
+      <td>0.0</td>
+      <td>277.799988</td>
+      <td>...</td>
+      <td>0.88</td>
+      <td>0.18</td>
+      <td>1.0</td>
+      <td>13.7651</td>
+      <td>0.939</td>
+      <td>0.833</td>
+      <td>0.879</td>
+      <td>0.822</td>
+      <td>0.875</td>
+      <td>38.8</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>518654</th>
+      <td>364</td>
+      <td>2003</td>
+      <td>CO</td>
+      <td>0.0</td>
+      <td>Arson/incendiarism</td>
+      <td>2222</td>
+      <td>390</td>
+      <td>284.0</td>
+      <td>0.0</td>
+      <td>263.500000</td>
+      <td>...</td>
+      <td>0.08</td>
+      <td>0.29</td>
+      <td>1.0</td>
+      <td>0.0007</td>
+      <td>0.464</td>
+      <td>0.560</td>
+      <td>0.089</td>
+      <td>0.688</td>
+      <td>0.695</td>
+      <td>16.8</td>
+    </tr>
+    <tr>
+      <th>518655</th>
+      <td>364</td>
+      <td>2003</td>
+      <td>CO</td>
+      <td>8043.0</td>
+      <td>Arson/incendiarism</td>
+      <td>1891</td>
+      <td>636</td>
+      <td>280.0</td>
+      <td>0.0</td>
+      <td>261.700012</td>
+      <td>...</td>
+      <td>0.06</td>
+      <td>0.37</td>
+      <td>1.0</td>
+      <td>0.0003</td>
+      <td>0.464</td>
+      <td>0.560</td>
+      <td>0.089</td>
+      <td>0.688</td>
+      <td>0.695</td>
+      <td>16.8</td>
+    </tr>
+    <tr>
+      <th>518656</th>
+      <td>365</td>
+      <td>2003</td>
+      <td>CA</td>
+      <td>6025.0</td>
+      <td>Recreation and ceremony</td>
+      <td>2846</td>
+      <td>63</td>
+      <td>298.0</td>
+      <td>0.0</td>
+      <td>286.500000</td>
+      <td>...</td>
+      <td>0.19</td>
+      <td>-0.00</td>
+      <td>1.0</td>
+      <td>0.0000</td>
+      <td>0.715</td>
+      <td>0.914</td>
+      <td>0.545</td>
+      <td>0.500</td>
+      <td>0.421</td>
+      <td>8.7</td>
+    </tr>
+    <tr>
+      <th>518657</th>
+      <td>365</td>
+      <td>2003</td>
+      <td>CA</td>
+      <td>0.0</td>
+      <td>Debris and open burning</td>
+      <td>1805</td>
+      <td>994</td>
+      <td>287.0</td>
+      <td>0.0</td>
+      <td>274.100006</td>
+      <td>...</td>
+      <td>0.39</td>
+      <td>0.02</td>
+      <td>1.0</td>
+      <td>0.4738</td>
+      <td>0.216</td>
+      <td>0.509</td>
+      <td>0.207</td>
+      <td>0.008</td>
+      <td>0.151</td>
+      <td>33.6</td>
+    </tr>
+    <tr>
+      <th>518658</th>
+      <td>365</td>
+      <td>2003</td>
+      <td>CA</td>
+      <td>6065.0</td>
+      <td>Equipment and vehicle use</td>
+      <td>2048</td>
+      <td>318</td>
+      <td>292.0</td>
+      <td>0.0</td>
+      <td>280.399994</td>
+      <td>...</td>
+      <td>0.81</td>
+      <td>0.11</td>
+      <td>1.0</td>
+      <td>1.1717</td>
+      <td>0.636</td>
+      <td>0.785</td>
+      <td>0.567</td>
+      <td>0.453</td>
+      <td>0.377</td>
+      <td>6.1</td>
+    </tr>
+  </tbody>
+</table>
+<p>518659 rows × 40 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_unknown</span> <span class="o">=</span> <span class="n">data_sorted</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data_sorted</span><span class="p">[</span><span class="s2">&quot;NWCG_GENERAL_CAUSE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Missing data/not specified/undetermined&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">data_known</span> <span class="o">=</span> <span class="n">data_sorted</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data_sorted</span><span class="p">[</span><span class="s2">&quot;NWCG_GENERAL_CAUSE&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;Missing data/not specified/undetermined&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_known</span><span class="p">[</span><span class="s2">&quot;IsNatural&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_known</span><span class="p">[</span><span class="s2">&quot;NWCG_GENERAL_CAUSE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Natural&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="preprocess-the-data-sets">
+<h1>Preprocess the data sets<a class="headerlink" href="#preprocess-the-data-sets" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span><span class="p">,</span> <span class="n">OrdinalEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <span class="n">ColumnTransformer</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">causes</span> <span class="o">=</span> <span class="n">data_known</span><span class="p">[[</span><span class="s1">&#39;NWCG_GENERAL_CAUSE&#39;</span><span class="p">]]</span>
+<span class="n">isnatural</span> <span class="o">=</span> <span class="n">data_known</span><span class="p">[[</span><span class="s2">&quot;IsNatural&quot;</span><span class="p">]]</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">data_known</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;NWCG_GENERAL_CAUSE&quot;</span><span class="p">,</span><span class="s2">&quot;IsNatural&quot;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">features_unknown</span> <span class="o">=</span> <span class="n">data_unknown</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;NWCG_GENERAL_CAUSE&quot;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_binary</span> <span class="o">=</span> <span class="n">isnatural</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classnames_binary</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Anthropogenic&quot;</span><span class="p">,</span><span class="s2">&quot;Natural&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ordenc</span> <span class="o">=</span> <span class="n">OrdinalEncoder</span><span class="p">()</span>
+<span class="n">y_multiclass</span> <span class="o">=</span> <span class="n">ordenc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">causes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classnames_multi</span> <span class="o">=</span> <span class="n">ordenc</span><span class="o">.</span><span class="n">categories_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classnames_multi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Arson/incendiarism&#39; &#39;Debris and open burning&#39;
+ &#39;Equipment and vehicle use&#39; &#39;Firearms and explosives use&#39; &#39;Fireworks&#39;
+ &#39;Misuse of fire by a minor&#39; &#39;Natural&#39; &#39;Other causes&#39;
+ &#39;Power generation/transmission/distribution&#39;
+ &#39;Railroad operations and maintenance&#39; &#39;Recreation and ceremony&#39; &#39;Smoking&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">categorical_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;STATE&quot;</span><span class="p">]</span>
+<span class="n">numerical_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;DISCOVERY_DOY&#39;</span><span class="p">,</span> <span class="s1">&#39;FIRE_YEAR&#39;</span><span class="p">,</span> <span class="s1">&#39;FIPS_CODE&#39;</span><span class="p">,</span> <span class="s1">&#39;Annual_etr&#39;</span><span class="p">,</span> <span class="s1">&#39;Annual_precipitation&#39;</span><span class="p">,</span><span class="s1">&#39;Annual_tempreture&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;pr&#39;</span><span class="p">,</span> <span class="s1">&#39;tmmn&#39;</span><span class="p">,</span> <span class="s1">&#39;vs&#39;</span><span class="p">,</span> <span class="s1">&#39;fm100&#39;</span><span class="p">,</span> <span class="s1">&#39;fm1000&#39;</span><span class="p">,</span> <span class="s1">&#39;bi&#39;</span><span class="p">,</span> <span class="s1">&#39;vpd&#39;</span><span class="p">,</span> <span class="s1">&#39;erc&#39;</span><span class="p">,</span> <span class="s1">&#39;Elevation_1km&#39;</span><span class="p">,</span> <span class="s1">&#39;Aspect_1km&#39;</span><span class="p">,</span> <span class="s1">&#39;erc_Percentile&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Slope_1km&#39;</span><span class="p">,</span><span class="s1">&#39;TPI_1km&#39;</span><span class="p">,</span> <span class="s1">&#39;EVC&#39;</span><span class="p">,</span> <span class="s1">&#39;Evacuation&#39;</span><span class="p">,</span> <span class="s1">&#39;SDI&#39;</span><span class="p">,</span> <span class="s1">&#39;FRG&#39;</span><span class="p">,</span> <span class="s1">&#39;No_FireStation_5.0km&#39;</span><span class="p">,</span><span class="s1">&#39;Mang_Name&#39;</span><span class="p">,</span> <span class="s1">&#39;GAP_Sts&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;GACC_PL&#39;</span><span class="p">,</span> <span class="s1">&#39;GDP&#39;</span><span class="p">,</span> <span class="s1">&#39;GHM&#39;</span><span class="p">,</span> <span class="s1">&#39;NDVI-1day&#39;</span><span class="p">,</span> <span class="s1">&#39;NPL&#39;</span><span class="p">,</span><span class="s1">&#39;Popo_1km&#39;</span><span class="p">,</span> <span class="s1">&#39;RPL_THEMES&#39;</span><span class="p">,</span> <span class="s1">&#39;RPL_THEME1&#39;</span><span class="p">,</span> <span class="s1">&#39;RPL_THEME2&#39;</span><span class="p">,</span> <span class="s1">&#39;RPL_THEME3&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;RPL_THEME4&#39;</span><span class="p">,</span> <span class="s1">&#39;Distance2road&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cat_pipeline</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">OrdinalEncoder</span><span class="p">(),</span><span class="n">StandardScaler</span><span class="p">())</span>
+<span class="n">num_pipeline</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preprocessor</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">,</span><span class="n">num_pipeline</span><span class="p">,</span><span class="n">numerical_cols</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span><span class="n">cat_pipeline</span><span class="p">,</span><span class="n">categorical_cols</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_known</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_unknown</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">features_unknown</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training-validation-and-test-split">
+<h1>Training, validation, and test split<a class="headerlink" href="#training-validation-and-test-split" title="Permalink to this heading">#</a></h1>
+<p>As before, we will split our data into training, validation, and test data sets. This step is not strictly necessary for unsupervised learning, but still good practice.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z_known</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">X_known</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_val_test</span><span class="p">,</span> <span class="n">z_train</span><span class="p">,</span> <span class="n">z_val_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_known</span><span class="p">,</span><span class="n">z_known</span><span class="p">,</span><span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+<span class="n">X_val</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">z_val</span><span class="p">,</span> <span class="n">z_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_val_test</span><span class="p">,</span> <span class="n">z_val_test</span> <span class="p">,</span><span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_multiclass_train</span> <span class="o">=</span> <span class="n">y_multiclass</span><span class="p">[</span><span class="n">z_train</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">y_multiclass_test</span> <span class="o">=</span> <span class="n">y_multiclass</span><span class="p">[</span><span class="n">z_test</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">y_multiclass_val</span> <span class="o">=</span> <span class="n">y_multiclass</span><span class="p">[</span><span class="n">z_val</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="n">y_binary_train</span> <span class="o">=</span> <span class="n">y_binary</span><span class="p">[</span><span class="n">z_train</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">y_binary_test</span> <span class="o">=</span> <span class="n">y_binary</span><span class="p">[</span><span class="n">z_test</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">y_binary_val</span> <span class="o">=</span> <span class="n">y_binary</span><span class="p">[</span><span class="n">z_val</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="apply-k-means-clustering-to-the-data">
+<h1>Apply K-Means Clustering to the data<a class="headerlink" href="#apply-k-means-clustering-to-the-data" title="Permalink to this heading">#</a></h1>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./lectures_ML/UnsupervisedML"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Clustering Algorithms</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-data">Load the data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#separate-out-the-fires-with-no-known-causes">Separate out the fires with no known causes</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess-the-data-sets">Preprocess the data sets</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#training-validation-and-test-split">Training, validation, and test split</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-k-means-clustering-to-the-data">Apply K-Means Clustering to the data</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Kara Lamb & Dhruv Balwada
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
