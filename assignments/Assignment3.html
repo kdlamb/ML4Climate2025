@@ -1,0 +1,614 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Assignment 3: Using Unsupervised Machine Learning to Discover Climate Zones &#8212; Earth Data Science &amp; Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'assignments/Assignment3';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Dimensionality Reduction" href="../lectures_ML/UnsupervisedML/PCA.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_class.png" class="logo__image only-light" alt="Earth Data Science & Machine Learning - Home"/>
+    <script>document.write(`<img src="../_static/logo_class.png" class="logo__image only-dark" alt="Earth Data Science & Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to the Earth Data Science and Machine Learning Course Series
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/Introduction/What-is-ML.html">What is machine learning?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/Introduction/ML-for-climate-env.html">Machine Learning for Climate and Environmental Sustainability</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/Introduction/computing-environment.html">Computing Environment for Class</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Preprocessing and Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/DataPreprocessing/datapreprocessing.html">Data Exploration and Data Pre-Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/DataPreprocessing/datapreparation.html">Tutorial on Data Preprocessing (US Wildfires)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Assignment1.html">Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction to Supervised Machine Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/SupervisedML/supervisedml.html">Supervised Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/SupervisedML/randomforests.html">Decision Trees and Random Forests (Wildfire cause prediction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Assignment2.html">Assignment 2: Predicting Health Impacts from Air Quality Factors</a></li>
+
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Unsupervised Machine Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/UnsupervisedML/unsupervisedML.html">Unsupervised Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lectures_ML/UnsupervisedML/PCA.html">Dimensionality Reduction</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Assignment 3: Using Unsupervised Machine Learning to Discover Climate Zones</a></li>
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/kdlamb/ML4Climate2025" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/kdlamb/ML4Climate2025/issues/new?title=Issue%20on%20page%20%2Fassignments/Assignment3.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/assignments/Assignment3.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Assignment 3: Using Unsupervised Machine Learning to Discover Climate Zones</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Assignment 3: Using Unsupervised Machine Learning to Discover Climate Zones</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-data-sets">Download the data sets</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-load-and-prepare-the-climatological-data">Part 1: Load and prepare the climatological data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-pre-process-the-data">Part 2: Pre-process the data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-use-k-means-clustering-to-label-climate-zones">Part 3: Use K-Means Clustering to Label Climate Zones</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-use-a-gaussian-mixture-model-to-label-climate-zones">Part 4: Use a Gaussian Mixture Model to Label Climate Zones</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="assignment-3-using-unsupervised-machine-learning-to-discover-climate-zones">
+<h1>Assignment 3: Using Unsupervised Machine Learning to Discover Climate Zones<a class="headerlink" href="#assignment-3-using-unsupervised-machine-learning-to-discover-climate-zones" title="Permalink to this heading">#</a></h1>
+<p>In this tutorial, we will explore some common clustering methods, including K-Means clustering and Gaussian Mixture Models.</p>
+<p>We’ll apply these clustering algorithms to the problem of classifying climate zones over the continental United States. The Köppen-Geiger Climate Zones are a climate classification system based on precipitation and temperature (<a class="reference external" href="https://www.noaa.gov/jetstream/global/climate-zones/jetstream-max-addition-k-ppen-geiger-climate-subdivisions">https://www.noaa.gov/jetstream/global/climate-zones/jetstream-max-addition-k-ppen-geiger-climate-subdivisions</a>). We’ll use unsupervised machine learning to discover similar climate zones using the climatological averages for temperature and precipitation.</p>
+</section>
+<section id="download-the-data-sets">
+<h1>Download the data sets<a class="headerlink" href="#download-the-data-sets" title="Permalink to this heading">#</a></h1>
+<p>We’ll use climatological data over the continental US, specifically average monthly precipitation and temperature records for the years 1901 to 2000 from NOAA that can be found <a class="reference external" href="https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals">here</a>. To download the NetCDF files, you can run the following lines of code in a jupyter cell (the exclamation point before wget tells the notebook to execute this command in the shell). Alternatively, you can run the same <code class="docutils literal notranslate"><span class="pre">wget</span></code> commands directly in a Unix terminal without the exclamation mark.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>!wget &quot;https://www.ncei.noaa.gov/data/oceans/archive/arc0196/0248762/1.1/data/0-data/tavg-1901_2000-monthly-normals-v1.0.nc&quot;
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>!wget &quot;https://www.ncei.noaa.gov/data/oceans/archive/arc0196/0248762/1.1/data/0-data/prcp-1901_2000-monthly-normals-v1.0.nc&quot;
+</pre></div>
+</div>
+</section>
+<section id="part-1-load-and-prepare-the-climatological-data">
+<h1>Part 1: Load and prepare the climatological data<a class="headerlink" href="#part-1-load-and-prepare-the-climatological-data" title="Permalink to this heading">#</a></h1>
+<ol class="arabic simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">xarray</span></code> to open the NetCDF files for the climatological temperature and precipitation datasets for the continental US.</p></li>
+</ol>
+<ol class="arabic simple" start="2">
+<li><p>Make a plot of the monthly average precipitation in January over the Continental US.</p></li>
+</ol>
+<ol class="arabic simple" start="3">
+<li><p>Make a plot of the monthly average temperature in August over the Continent US.</p></li>
+</ol>
+<p>To identify climatological zones across the continental US, we will use the 12 monthly average temperature values and the 12 monthly average precipitation values as input features for clustering algorithms. Each latitude and longitude point will be treated as a single sample with 24 features (12 for temperature and 12 for precipitation).</p>
+<ol class="arabic simple" start="4">
+<li><p>First, extract the values for “mlytavg_norm” from the temperature and precipitation NetCDF files and store them in NumPy arrays named <code class="docutils literal notranslate"><span class="pre">avgtemp</span></code> and <code class="docutils literal notranslate"><span class="pre">avgprec</span></code>, respectively.</p></li>
+</ol>
+<ol class="arabic simple" start="5">
+<li><p>Put the latitude and longitude values into numpy arrays, and use the <code class="docutils literal notranslate"><span class="pre">np.meshgrid</span></code> function to create a 2D array that gives the latitude and longitude value at each point on the map:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lat_grid</span><span class="p">,</span> <span class="n">lon_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;ij&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We’ll use these arrays later to create labels for the latitude and longitude points associated with each sample.</p>
+<ol class="arabic simple" start="6">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">np.isnan</span></code> function to create a mask that gives a value of 1 where there is data and a value of 0 where there is no data in the 2D array of the precipitation and temperature maps over the continental US. This mask should have the same dimensions as latitude by longitude. Hint: <code class="docutils literal notranslate"><span class="pre">np.isnan</span></code> returns 1 (True) if the value is <code class="docutils literal notranslate"><span class="pre">NaN</span></code>.</p></li>
+</ol>
+<ol class="arabic simple" start="7">
+<li><p>Use the mask to index the numpy arrays of <code class="docutils literal notranslate"><span class="pre">avgtemp</span></code>, <code class="docutils literal notranslate"><span class="pre">avgprec</span></code>, <code class="docutils literal notranslate"><span class="pre">lat_grid</span></code>, and <code class="docutils literal notranslate"><span class="pre">lon_grid</span></code> to create arrays called <code class="docutils literal notranslate"><span class="pre">avgtemp_masked</span></code>, <code class="docutils literal notranslate"><span class="pre">avgprec_masked</span></code>, <code class="docutils literal notranslate"><span class="pre">lat_masked</span></code>, and <code class="docutils literal notranslate"><span class="pre">lon_masked</span></code>. These arrays now should no longer have any NaN’s.</p></li>
+</ol>
+<ol class="arabic simple" start="8">
+<li><p><code class="docutils literal notranslate"><span class="pre">sci-kit</span> <span class="pre">learn</span></code> functions assume that the sample number (<span class="math notranslate nohighlight">\(n_{sample}\)</span>) is the first dimension in an array, and the features associated with a sample are in the second dimension in an array. Transpose the <code class="docutils literal notranslate"><span class="pre">avgprec_masked</span></code> and <code class="docutils literal notranslate"><span class="pre">avgtemp_masked</span></code> to get the correct ordering of dimensions. Check the shape of the arrays are now <span class="math notranslate nohighlight">\(n_{sample}\)</span> x 12.</p></li>
+</ol>
+</section>
+<section id="part-2-pre-process-the-data">
+<h1>Part 2: Pre-process the data<a class="headerlink" href="#part-2-pre-process-the-data" title="Permalink to this heading">#</a></h1>
+<ol class="arabic simple" start="9">
+<li><p>Scale the precipitation and temperature arrays between -1 and 1. We want to do this so that all 12 months are scaled relative to the same minimum and maximum values for precipitation or temperature, respectively. You can use the <code class="docutils literal notranslate"><span class="pre">MinMaxScaler</span></code> from <code class="docutils literal notranslate"><span class="pre">sci-kit</span> <span class="pre">learn</span></code> (you will have to reshape the arrays to do this) or alternatively write your own function to do this scaling.</p></li>
+</ol>
+<ol class="arabic simple" start="10">
+<li><p>Create a feature array <code class="docutils literal notranslate"><span class="pre">X</span></code> that is <span class="math notranslate nohighlight">\(n_{samples}\)</span> by <span class="math notranslate nohighlight">\(n_{features}\)</span>, where <span class="math notranslate nohighlight">\(n_{features}\)</span>=24 (i.e. it combines the two arrays that contain the scaled temperature and precipitation monthly averages associated with each sample).</p></li>
+</ol>
+</section>
+<section id="part-3-use-k-means-clustering-to-label-climate-zones">
+<h1>Part 3: Use K-Means Clustering to Label Climate Zones<a class="headerlink" href="#part-3-use-k-means-clustering-to-label-climate-zones" title="Permalink to this heading">#</a></h1>
+<ol class="arabic simple" start="11">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">KMeans</span></code> method from <code class="docutils literal notranslate"><span class="pre">sklearn.cluster</span></code> to fit 8 clusters to the <code class="docutils literal notranslate"><span class="pre">X</span></code> feature matrix.</p></li>
+</ol>
+<ol class="arabic simple" start="12">
+<li><p>Make a scatter plot of <code class="docutils literal notranslate"><span class="pre">lat_masked</span></code> vs. <code class="docutils literal notranslate"><span class="pre">lon_masked</span></code> and color each point by its kmeans label. Set the size of the points in the scatter points to 0.1 and use a colormap that is discrete (rather than continuous).</p></li>
+</ol>
+<p>You can compare the climate zones discovered by the K-Means clustering approach with the map <a class="reference external" href="https://www.cec.org/mapmonday/climate-zones-in-north-america/">here</a>.</p>
+<ol class="arabic simple" start="13">
+<li><p>Repeat parts 11. and 12. but choose a different number of clusters to fit Kmeans.</p></li>
+</ol>
+</section>
+<section id="part-4-use-a-gaussian-mixture-model-to-label-climate-zones">
+<h1>Part 4: Use a Gaussian Mixture Model to Label Climate Zones<a class="headerlink" href="#part-4-use-a-gaussian-mixture-model-to-label-climate-zones" title="Permalink to this heading">#</a></h1>
+<ol class="arabic simple" start="14">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">GaussianMixture</span></code> method from <code class="docutils literal notranslate"><span class="pre">sklearn.mixture</span></code> to fit 8 components to the <code class="docutils literal notranslate"><span class="pre">X</span></code> feature matrix.</p></li>
+</ol>
+<ol class="arabic simple" start="15">
+<li><p>Make a scatter plot of <code class="docutils literal notranslate"><span class="pre">lat_masked</span></code> vs. <code class="docutils literal notranslate"><span class="pre">lon_masked</span></code> and color by the components learned by the Gaussian Mixture Model. Set the size of the scatter points to 0.1 and use a colormap that is discrete (rather than continuous).</p></li>
+</ol>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./assignments"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../lectures_ML/UnsupervisedML/PCA.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Dimensionality Reduction</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Assignment 3: Using Unsupervised Machine Learning to Discover Climate Zones</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-data-sets">Download the data sets</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-load-and-prepare-the-climatological-data">Part 1: Load and prepare the climatological data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-pre-process-the-data">Part 2: Pre-process the data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-use-k-means-clustering-to-label-climate-zones">Part 3: Use K-Means Clustering to Label Climate Zones</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-use-a-gaussian-mixture-model-to-label-climate-zones">Part 4: Use a Gaussian Mixture Model to Label Climate Zones</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Kara Lamb & Dhruv Balwada
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
