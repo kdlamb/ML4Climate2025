@@ -28,7 +28,7 @@ parts:
   - caption: Introduction to Deep Learning
     chapters:
     - file: lectures_ML/DeepLearning/ANN
-#    - file: lectures_ML/DeepLearning/CNN
+    - file: lectures_ML/DeepLearning/ANN_CNN
 #    - file: lectures_ML/DeepLearning/RNN
 #    - file: lectures_ML/DeepLearning/generativemodels
 #  - caption: Advanced Topics
