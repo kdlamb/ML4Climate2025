@@ -23,12 +23,11 @@ parts:
     chapters:
       - file: lectures_ML/UnsupervisedML/unsupervisedML
       - file: lectures_ML/UnsupervisedML/PCA
-#      - file: lectures_ML/UnsupervisedML/Clustering
-#      - file: assignments/Assignment3
+      - file: assignments/Assignment3
 
-#  - caption: Introduction to Deep Learning
-#    chapters:
-#    - file: lectures_ML/DeepLearning/ANN
+  - caption: Introduction to Deep Learning
+    chapters:
+    - file: lectures_ML/DeepLearning/ANN
 #    - file: lectures_ML/DeepLearning/CNN
 #    - file: lectures_ML/DeepLearning/RNN
 #    - file: lectures_ML/DeepLearning/generativemodels
