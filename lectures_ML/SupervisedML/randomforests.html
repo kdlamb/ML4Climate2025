@@ -209,7 +209,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction to Deep Learning</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../DeepLearning/ANN.html">Artificial Neural Networks (ANN)</a></li>
-
+<li class="toctree-l1"><a class="reference internal" href="../DeepLearning/ANN_CNN.html">Tutorial on Global Temperature Trends with Deep Learning</a></li>
 </ul>
 
     </div>
@@ -459,1205 +459,1075 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2025-07-29 10:17:07--  https://zenodo.org/records/11510677/files/FPA_FOD_west_cleaned.csv
-Resolving zenodo.org (zenodo.org)... 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2025-07-31 00:06:17--  https://zenodo.org/records/11510677/files/FPA_FOD_west_cleaned.csv
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>188.185.45.92, 188.185.43.25, 188.185.48.194
-Connecting to zenodo.org (zenodo.org)|188.185.45.92|:443... connected.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving zenodo.org (zenodo.org)... 188.185.43.25, 188.185.45.92, 188.185.48.194
+Connecting to zenodo.org (zenodo.org)|188.185.43.25|:443... connected.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HTTP request sent, awaiting response... 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>200 OK
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Length: 139402360 (133M) [text/plain]
-Saving to: ‘FPA_FOD_west_cleaned.csv.2’
+Length: 139402360 (133M) [text/plain]
+Saving to: ‘FPA_FOD_west_cleaned.csv.3’
 
 
           FPA_FOD_w   0%[                    ]       0  --.-KB/s               
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we   0%[                    ]  96.56K   311KB/s               
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we   0%[                    ]  47.44K   229KB/s               
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes   0%[                    ] 242.66K   466KB/s               
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west   0%[                    ] 493.43K   658KB/s               
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_   0%[                    ] 685.05K   661KB/s               
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c   0%[                    ] 988.42K   750KB/s               
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl   0%[                    ]   1.17M   766KB/s               
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle   1%[                    ]   1.39M   804KB/s               
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea   1%[                    ]   1.70M   833KB/s               
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean   1%[                    ]   1.90M   850KB/s               
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane   1%[                    ]   2.15M   885KB/s               
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned   1%[                    ]   2.27M   862KB/s               
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.   2%[                    ]   2.67M   908KB/s    eta 2m 27s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c   2%[                    ]   2.90M   920KB/s    eta 2m 27s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs   2%[                    ]   3.09M   922KB/s    eta 2m 27s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv   2%[                    ]   3.30M   925KB/s    eta 2m 27s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.   2%[                    ]   3.60M   938KB/s    eta 2m 27s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.2   2%[                    ]   3.90M   988KB/s    eta 2m 19s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.2    3%[                    ]   4.29M  1.02MB/s    eta 2m 19s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.2     3%[                    ]   4.47M  1.01MB/s    eta 2m 19s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.2      3%[                    ]   4.83M  1.05MB/s    eta 2m 19s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.2       3%[                    ]   5.11M  1.06MB/s    eta 2m 11s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.2        4%[                    ]   5.52M  1.09MB/s    eta 2m 11s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.2         4%[                    ]   5.69M  1.08MB/s    eta 2m 11s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.2          4%[                    ]   6.00M  1.08MB/s    eta 2m 11s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.2           4%[                    ]   6.22M  1.08MB/s    eta 2m 8s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.2            4%[                    ]   6.42M  1.07MB/s    eta 2m 8s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.2             5%[&gt;                   ]   6.69M  1.07MB/s    eta 2m 8s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.2              5%[&gt;                   ]   7.03M  1.07MB/s    eta 2m 8s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.2               5%[&gt;                   ]   7.41M  1.11MB/s    eta 2m 4s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.2                5%[&gt;                   ]   7.76M  1.13MB/s    eta 2m 4s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.2                 6%[&gt;                   ]   7.98M  1.10MB/s    eta 2m 4s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.2                  6%[&gt;                   ]   8.29M  1.11MB/s    eta 2m 4s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.2                   6%[&gt;                   ]   8.51M  1.08MB/s    eta 2m 2s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.2                    6%[&gt;                   ]   8.87M  1.12MB/s    eta 2m 2s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2                     6%[&gt;                   ]   9.11M  1.09MB/s    eta 2m 2s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                      7%[&gt;                   ]   9.39M  1.06MB/s    eta 2m 2s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F   7%[&gt;                   ]   9.59M  1.06MB/s    eta 2m 1s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP   7%[&gt;                   ]   9.92M  1.07MB/s    eta 2m 1s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA   7%[&gt;                   ]  10.09M  1.06MB/s    eta 2m 1s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_   7%[&gt;                   ]  10.40M  1.07MB/s    eta 2m 1s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F   7%[&gt;                   ]  10.59M  1.05MB/s    eta 2m 1s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO   8%[&gt;                   ]  10.90M  1.04MB/s    eta 2m 1s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD   8%[&gt;                   ]  11.09M  1012KB/s    eta 2m 1s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_   8%[&gt;                   ]  11.38M  1005KB/s    eta 2m 1s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w   8%[&gt;                   ]  11.62M  1003KB/s    eta 2m 0s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we   8%[&gt;                   ]  11.90M   991KB/s    eta 2m 0s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes   9%[&gt;                   ]  12.16M   998KB/s    eta 2m 0s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west   9%[&gt;                   ]  12.47M  1003KB/s    eta 2m 0s  
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_   9%[&gt;                   ]  12.66M   993KB/s    eta 1m 59s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c   9%[&gt;                   ]  12.97M   995KB/s    eta 1m 59s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl   9%[&gt;                   ]  13.21M   993KB/s    eta 1m 59s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  10%[=&gt;                  ]  13.57M  1023KB/s    eta 1m 59s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  10%[=&gt;                  ]  13.75M  1006KB/s    eta 1m 58s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  10%[=&gt;                  ]  14.11M  1.02MB/s    eta 1m 58s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  10%[=&gt;                  ]  14.31M  1.01MB/s    eta 1m 58s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  11%[=&gt;                  ]  14.63M  1.01MB/s    eta 1m 58s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  11%[=&gt;                  ]  14.83M  1.01MB/s    eta 1m 57s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  11%[=&gt;                  ]  15.22M  1.04MB/s    eta 1m 57s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  11%[=&gt;                  ]  15.44M  1.04MB/s    eta 1m 57s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  11%[=&gt;                  ]  15.84M  1.06MB/s    eta 1m 57s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  12%[=&gt;                  ]  16.04M  1.05MB/s    eta 1m 55s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.2  12%[=&gt;                  ]  16.37M  1.06MB/s    eta 1m 55s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.2   12%[=&gt;                  ]  16.54M  1.05MB/s    eta 1m 55s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.2    12%[=&gt;                  ]  16.89M  1.06MB/s    eta 1m 55s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.2     12%[=&gt;                  ]  17.12M  1.08MB/s    eta 1m 53s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.2      13%[=&gt;                  ]  17.40M  1.04MB/s    eta 1m 53s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.2       13%[=&gt;                  ]  17.67M  1.05MB/s    eta 1m 53s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.2        13%[=&gt;                  ]  17.96M  1.05MB/s    eta 1m 53s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.2         13%[=&gt;                  ]  18.20M  1.06MB/s    eta 1m 52s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.2          13%[=&gt;                  ]  18.54M  1.06MB/s    eta 1m 52s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.2           14%[=&gt;                  ]  18.82M  1.07MB/s    eta 1m 52s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.2            14%[=&gt;                  ]  19.26M  1.09MB/s    eta 1m 52s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.2             14%[=&gt;                  ]  19.62M  1.10MB/s    eta 1m 49s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.2              15%[==&gt;                 ]  19.96M  1.11MB/s    eta 1m 49s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.2               15%[==&gt;                 ]  20.40M  1.16MB/s    eta 1m 49s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.2                15%[==&gt;                 ]  20.69M  1.17MB/s    eta 1m 49s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.2                 15%[==&gt;                 ]  21.16M  1.24MB/s    eta 1m 46s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.2                  16%[==&gt;                 ]  21.46M  1.23MB/s    eta 1m 46s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.2                   16%[==&gt;                 ]  21.82M  1.26MB/s    eta 1m 46s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2                    16%[==&gt;                 ]  22.24M  1.28MB/s    eta 1m 46s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     17%[==&gt;                 ]  22.61M  1.32MB/s    eta 1m 43s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F  17%[==&gt;                 ]  22.92M  1.32MB/s    eta 1m 43s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP  17%[==&gt;                 ]  23.22M  1.33MB/s    eta 1m 43s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA  17%[==&gt;                 ]  23.50M  1.32MB/s    eta 1m 43s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_  17%[==&gt;                 ]  23.83M  1.31MB/s    eta 1m 41s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F  18%[==&gt;                 ]  24.14M  1.30MB/s    eta 1m 41s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  18%[==&gt;                 ]  24.51M  1.29MB/s    eta 1m 41s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  18%[==&gt;                 ]  24.81M  1.27MB/s    eta 1m 41s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  18%[==&gt;                 ]  25.09M  1.27MB/s    eta 1m 40s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  19%[==&gt;                 ]  25.42M  1.27MB/s    eta 1m 40s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  19%[==&gt;                 ]  25.70M  1.17MB/s    eta 1m 40s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  19%[==&gt;                 ]  25.88M  1.11MB/s    eta 1m 40s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  19%[==&gt;                 ]  26.04M  1.02MB/s    eta 1m 40s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  19%[==&gt;                 ]  26.31M   988KB/s    eta 1m 40s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  19%[==&gt;                 ]  26.46M   927KB/s    eta 1m 42s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  20%[===&gt;                ]  26.70M   886KB/s    eta 1m 42s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  20%[===&gt;                ]  26.90M   832KB/s    eta 1m 42s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  20%[===&gt;                ]  27.10M   781KB/s    eta 1m 43s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  20%[===&gt;                ]  27.30M   708KB/s    eta 1m 43s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  20%[===&gt;                ]  27.48M   630KB/s    eta 1m 43s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  20%[===&gt;                ]  27.71M   621KB/s    eta 1m 43s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  20%[===&gt;                ]  27.82M   580KB/s    eta 1m 44s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  21%[===&gt;                ]  27.97M   586KB/s    eta 1m 44s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  21%[===&gt;                ]  28.15M   588KB/s    eta 1m 44s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  21%[===&gt;                ]  28.35M   567KB/s    eta 1m 45s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  21%[===&gt;                ]  28.57M   586KB/s    eta 1m 45s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.2  21%[===&gt;                ]  28.72M   562KB/s    eta 1m 45s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.2   21%[===&gt;                ]  28.91M   558KB/s    eta 1m 47s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.2    21%[===&gt;                ]  29.08M   546KB/s    eta 1m 47s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.2     22%[===&gt;                ]  29.38M   588KB/s    eta 1m 47s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.2      22%[===&gt;                ]  29.64M   621KB/s    eta 1m 47s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.2       22%[===&gt;                ]  29.88M   644KB/s    eta 1m 46s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.2        22%[===&gt;                ]  30.17M   682KB/s    eta 1m 46s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.2         22%[===&gt;                ]  30.53M   744KB/s    eta 1m 46s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.2          23%[===&gt;                ]  30.92M   825KB/s    eta 1m 46s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.2           23%[===&gt;                ]  31.22M   864KB/s    eta 1m 44s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.2            23%[===&gt;                ]  31.58M   930KB/s    eta 1m 44s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.2             23%[===&gt;                ]  31.89M   952KB/s    eta 1m 44s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.2              24%[===&gt;                ]  32.12M   993KB/s    eta 1m 44s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.2               24%[===&gt;                ]  32.45M  1.01MB/s    eta 1m 42s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.2                24%[===&gt;                ]  32.81M  1.08MB/s    eta 1m 42s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.2                 24%[===&gt;                ]  33.15M  1.13MB/s    eta 1m 42s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.2                  25%[====&gt;               ]  33.53M  1.17MB/s    eta 1m 42s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.2                   25%[====&gt;               ]  33.84M  1.18MB/s    eta 1m 40s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2                    25%[====&gt;               ]  34.20M  1.22MB/s    eta 1m 40s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     25%[====&gt;               ]  34.54M  1.24MB/s    eta 1m 40s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F  26%[====&gt;               ]  34.82M  1.22MB/s    eta 1m 40s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP  26%[====&gt;               ]  35.18M  1.24MB/s    eta 98s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA  26%[====&gt;               ]  35.57M  1.24MB/s    eta 98s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_  27%[====&gt;               ]  35.97M  1.26MB/s    eta 98s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F  27%[====&gt;               ]  36.32M  1.26MB/s    eta 98s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  27%[====&gt;               ]  36.69M  1.28MB/s    eta 95s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  27%[====&gt;               ]  36.97M  1.29MB/s    eta 95s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  28%[====&gt;               ]  37.33M  1.28MB/s    eta 95s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  28%[====&gt;               ]  37.72M  1.30MB/s    eta 95s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  28%[====&gt;               ]  38.05M  1.30MB/s    eta 93s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  28%[====&gt;               ]  38.35M  1.29MB/s    eta 93s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  29%[====&gt;               ]  38.67M  1.29MB/s    eta 93s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  29%[====&gt;               ]  39.02M  1.27MB/s    eta 93s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  29%[====&gt;               ]  39.28M  1.26MB/s    eta 91s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  29%[====&gt;               ]  39.66M  1.28MB/s    eta 91s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  30%[=====&gt;              ]  40.03M  1.28MB/s    eta 91s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  30%[=====&gt;              ]  40.40M  1.26MB/s    eta 91s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  30%[=====&gt;              ]  40.76M  1.27MB/s    eta 89s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  30%[=====&gt;              ]  41.09M  1.26MB/s    eta 89s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  31%[=====&gt;              ]  41.48M  1.26MB/s    eta 89s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  31%[=====&gt;              ]  41.82M  1.29MB/s    eta 89s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  31%[=====&gt;              ]  42.29M  1.32MB/s    eta 87s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  32%[=====&gt;              ]  42.65M  1.31MB/s    eta 87s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  32%[=====&gt;              ]  43.01M  1.32MB/s    eta 87s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  32%[=====&gt;              ]  43.40M  1.35MB/s    eta 87s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.2  32%[=====&gt;              ]  43.79M  1.35MB/s    eta 85s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.2   33%[=====&gt;              ]  44.26M  1.40MB/s    eta 85s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.2    33%[=====&gt;              ]  44.55M  1.39MB/s    eta 85s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.2     33%[=====&gt;              ]  44.93M  1.40MB/s    eta 85s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.2      34%[=====&gt;              ]  45.25M  1.38MB/s    eta 83s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.2       34%[=====&gt;              ]  45.57M  1.37MB/s    eta 83s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.2        34%[=====&gt;              ]  45.88M  1.36MB/s    eta 83s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.2         34%[=====&gt;              ]  46.17M  1.35MB/s    eta 83s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.2          35%[======&gt;             ]  46.53M  1.34MB/s    eta 81s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.2           35%[======&gt;             ]  47.06M  1.36MB/s    eta 81s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.2            35%[======&gt;             ]  47.45M  1.38MB/s    eta 81s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.2             35%[======&gt;             ]  47.83M  1.38MB/s    eta 81s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.2              36%[======&gt;             ]  48.09M  1.34MB/s    eta 79s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.2               36%[======&gt;             ]  48.48M  1.35MB/s    eta 79s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.2                36%[======&gt;             ]  48.81M  1.31MB/s    eta 79s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.2                 36%[======&gt;             ]  49.17M  1.31MB/s    eta 79s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.2                  37%[======&gt;             ]  49.50M  1.31MB/s    eta 77s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.2                   37%[======&gt;             ]  49.76M  1.28MB/s    eta 77s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2                    37%[======&gt;             ]  50.10M  1.28MB/s    eta 77s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     37%[======&gt;             ]  50.46M  1.30MB/s    eta 77s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F  38%[======&gt;             ]  50.87M  1.33MB/s    eta 76s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP  38%[======&gt;             ]  51.16M  1.32MB/s    eta 76s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA  38%[======&gt;             ]  51.54M  1.31MB/s    eta 76s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_  38%[======&gt;             ]  51.82M  1.26MB/s    eta 76s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F  39%[======&gt;             ]  52.27M  1.26MB/s    eta 74s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  39%[======&gt;             ]  52.75M  1.32MB/s    eta 74s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  39%[======&gt;             ]  53.08M  1.32MB/s    eta 74s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  40%[=======&gt;            ]  53.46M  1.32MB/s    eta 74s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  40%[=======&gt;            ]  53.77M  1.31MB/s    eta 72s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  40%[=======&gt;            ]  54.05M  1.30MB/s    eta 72s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  40%[=======&gt;            ]  54.35M  1.29MB/s    eta 72s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  41%[=======&gt;            ]  54.66M  1.30MB/s    eta 72s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  41%[=======&gt;            ]  54.97M  1.30MB/s    eta 71s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  41%[=======&gt;            ]  55.36M  1.29MB/s    eta 71s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  41%[=======&gt;            ]  55.83M  1.32MB/s    eta 71s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  42%[=======&gt;            ]  56.19M  1.34MB/s    eta 71s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  42%[=======&gt;            ]  56.70M  1.36MB/s    eta 69s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  43%[=======&gt;            ]  57.17M  1.41MB/s    eta 69s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  43%[=======&gt;            ]  57.48M  1.39MB/s    eta 69s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  43%[=======&gt;            ]  57.89M  1.38MB/s    eta 69s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  43%[=======&gt;            ]  58.18M  1.38MB/s    eta 67s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  44%[=======&gt;            ]  58.54M  1.37MB/s    eta 67s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  44%[=======&gt;            ]  58.84M  1.38MB/s    eta 67s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  44%[=======&gt;            ]  59.24M  1.40MB/s    eta 67s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  44%[=======&gt;            ]  59.55M  1.42MB/s    eta 66s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.2  45%[========&gt;           ]  59.88M  1.41MB/s    eta 66s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.2   45%[========&gt;           ]  60.22M  1.42MB/s    eta 66s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.2    45%[========&gt;           ]  60.57M  1.41MB/s    eta 66s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.2     45%[========&gt;           ]  60.85M  1.35MB/s    eta 65s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.2      46%[========&gt;           ]  61.18M  1.35MB/s    eta 65s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.2       46%[========&gt;           ]  61.47M  1.28MB/s    eta 65s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.2        46%[========&gt;           ]  62.02M  1.31MB/s    eta 65s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.2         46%[========&gt;           ]  62.44M  1.32MB/s    eta 63s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.2          47%[========&gt;           ]  62.75M  1.30MB/s    eta 63s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.2           47%[========&gt;           ]  63.05M  1.28MB/s    eta 63s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.2            47%[========&gt;           ]  63.38M  1.28MB/s    eta 63s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.2             47%[========&gt;           ]  63.73M  1.29MB/s    eta 61s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.2              48%[========&gt;           ]  64.05M  1.26MB/s    eta 61s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.2               48%[========&gt;           ]  64.40M  1.29MB/s    eta 61s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.2                48%[========&gt;           ]  64.83M  1.31MB/s    eta 61s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.2                 48%[========&gt;           ]  65.14M  1.30MB/s    eta 60s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.2                  49%[========&gt;           ]  65.43M  1.29MB/s    eta 60s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.2                   49%[========&gt;           ]  66.03M  1.38MB/s    eta 60s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2                    49%[========&gt;           ]  66.34M  1.37MB/s    eta 60s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     50%[=========&gt;          ]  66.71M  1.35MB/s    eta 58s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F  50%[=========&gt;          ]  67.06M  1.31MB/s    eta 58s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP  50%[=========&gt;          ]  67.32M  1.30MB/s    eta 58s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA  50%[=========&gt;          ]  67.70M  1.32MB/s    eta 58s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_  51%[=========&gt;          ]  68.10M  1.35MB/s    eta 57s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F  51%[=========&gt;          ]  68.47M  1.36MB/s    eta 57s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  51%[=========&gt;          ]  68.91M  1.38MB/s    eta 57s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  52%[=========&gt;          ]  69.32M  1.40MB/s    eta 57s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  52%[=========&gt;          ]  69.63M  1.38MB/s    eta 55s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  52%[=========&gt;          ]  70.16M  1.41MB/s    eta 55s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  53%[=========&gt;          ]  70.50M  1.43MB/s    eta 55s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  53%[=========&gt;          ]  70.80M  1.41MB/s    eta 55s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  53%[=========&gt;          ]  71.08M  1.35MB/s    eta 54s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  53%[=========&gt;          ]  71.47M  1.37MB/s    eta 54s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  53%[=========&gt;          ]  71.75M  1.34MB/s    eta 54s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  54%[=========&gt;          ]  72.19M  1.37MB/s    eta 54s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  54%[=========&gt;          ]  72.54M  1.39MB/s    eta 53s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  54%[=========&gt;          ]  72.92M  1.39MB/s    eta 53s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  55%[==========&gt;         ]  73.40M  1.41MB/s    eta 53s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  55%[==========&gt;         ]  73.76M  1.40MB/s    eta 53s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  55%[==========&gt;         ]  74.20M  1.39MB/s    eta 51s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  56%[==========&gt;         ]  74.51M  1.38MB/s    eta 51s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  56%[==========&gt;         ]  74.93M  1.37MB/s    eta 51s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  56%[==========&gt;         ]  75.24M  1.34MB/s    eta 51s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  56%[==========&gt;         ]  75.59M  1.36MB/s    eta 50s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  57%[==========&gt;         ]  76.01M  1.38MB/s    eta 50s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.2  57%[==========&gt;         ]  76.33M  1.38MB/s    eta 50s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.2   57%[==========&gt;         ]  76.63M  1.37MB/s    eta 50s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.2    58%[==========&gt;         ]  77.16M  1.42MB/s    eta 48s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.2     58%[==========&gt;         ]  77.52M  1.41MB/s    eta 48s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.2      58%[==========&gt;         ]  77.91M  1.42MB/s    eta 48s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.2       58%[==========&gt;         ]  78.28M  1.42MB/s    eta 48s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.2        59%[==========&gt;         ]  78.64M  1.39MB/s    eta 47s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.2         59%[==========&gt;         ]  79.02M  1.38MB/s    eta 47s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.2          59%[==========&gt;         ]  79.42M  1.39MB/s    eta 47s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.2           60%[===========&gt;        ]  79.83M  1.40MB/s    eta 47s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.2            60%[===========&gt;        ]  80.30M  1.43MB/s    eta 45s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.2             60%[===========&gt;        ]  80.59M  1.42MB/s    eta 45s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.2              60%[===========&gt;        ]  80.92M  1.41MB/s    eta 45s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.2               61%[===========&gt;        ]  81.25M  1.39MB/s    eta 45s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.2                61%[===========&gt;        ]  81.76M  1.46MB/s    eta 44s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.2                 61%[===========&gt;        ]  82.17M  1.45MB/s    eta 44s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.2                  62%[===========&gt;        ]  82.49M  1.42MB/s    eta 44s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.2                   62%[===========&gt;        ]  82.81M  1.40MB/s    eta 44s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2                    62%[===========&gt;        ]  83.10M  1.38MB/s    eta 42s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     62%[===========&gt;        ]  83.41M  1.34MB/s    eta 42s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F  63%[===========&gt;        ]  83.94M  1.42MB/s    eta 42s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP  63%[===========&gt;        ]  84.41M  1.42MB/s    eta 42s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA  63%[===========&gt;        ]  84.82M  1.41MB/s    eta 41s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_  64%[===========&gt;        ]  85.25M  1.41MB/s    eta 41s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F  64%[===========&gt;        ]  85.72M  1.46MB/s    eta 41s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  64%[===========&gt;        ]  86.13M  1.46MB/s    eta 41s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  65%[============&gt;       ]  86.50M  1.49MB/s    eta 39s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  65%[============&gt;       ]  86.88M  1.45MB/s    eta 39s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  65%[============&gt;       ]  87.25M  1.45MB/s    eta 39s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  65%[============&gt;       ]  87.59M  1.44MB/s    eta 39s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  66%[============&gt;       ]  88.11M  1.50MB/s    eta 38s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  66%[============&gt;       ]  88.59M  1.54MB/s    eta 38s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  66%[============&gt;       ]  88.98M  1.57MB/s    eta 38s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  67%[============&gt;       ]  89.31M  1.55MB/s    eta 38s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  67%[============&gt;       ]  89.70M  1.50MB/s    eta 36s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  67%[============&gt;       ]  90.14M  1.52MB/s    eta 36s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  68%[============&gt;       ]  90.46M  1.47MB/s    eta 36s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  68%[============&gt;       ]  90.79M  1.46MB/s    eta 36s    
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  68%[============&gt;       ]  91.13M  1.42MB/s    eta 35s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes   0%[                    ] 221.95K   512KB/s               
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  68%[============&gt;       ]  91.46M  1.41MB/s    eta 35s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west   0%[                    ] 514.75K   734KB/s               
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  69%[============&gt;       ]  91.88M  1.42MB/s    eta 35s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_   0%[                    ] 770.25K   793KB/s               
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  69%[============&gt;       ]  92.21M  1.41MB/s    eta 35s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c   0%[                    ]   1.09M   902KB/s               
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  69%[============&gt;       ]  92.60M  1.42MB/s    eta 34s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl   1%[                    ]   1.39M   943KB/s               
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  69%[============&gt;       ]  92.87M  1.37MB/s    eta 34s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle   1%[                    ]   1.73M   996KB/s               
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  70%[=============&gt;      ]  93.21M  1.33MB/s    eta 34s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea   1%[                    ]   2.06M  1.01MB/s               
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.2  70%[=============&gt;      ]  93.61M  1.34MB/s    eta 34s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean   1%[                    ]   2.44M  1.05MB/s               
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.2   70%[=============&gt;      ]  93.93M  1.31MB/s    eta 32s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane   2%[                    ]   2.73M  1.06MB/s               
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.2    71%[=============&gt;      ]  94.46M  1.37MB/s    eta 32s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned   2%[                    ]   3.11M  1.08MB/s               
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.2     71%[=============&gt;      ]  94.83M  1.36MB/s    eta 32s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.   2%[                    ]   3.40M  1.09MB/s    eta 1m 59s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.2      71%[=============&gt;      ]  95.17M  1.33MB/s    eta 32s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c   2%[                    ]   3.70M  1.09MB/s    eta 1m 59s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.2       71%[=============&gt;      ]  95.59M  1.36MB/s    eta 31s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs   2%[                    ]   3.98M  1.08MB/s    eta 1m 59s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.2        72%[=============&gt;      ]  95.92M  1.35MB/s    eta 31s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv   3%[                    ]   4.32M  1.17MB/s    eta 1m 59s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.2         72%[=============&gt;      ]  96.28M  1.37MB/s    eta 31s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.   3%[                    ]   4.60M  1.17MB/s    eta 1m 57s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.2          72%[=============&gt;      ]  96.78M  1.39MB/s    eta 31s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.3   3%[                    ]   4.93M  1.18MB/s    eta 1m 57s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.2           73%[=============&gt;      ]  97.15M  1.40MB/s    eta 30s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.3    3%[                    ]   5.31M  1.21MB/s    eta 1m 57s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.2            73%[=============&gt;      ]  97.47M  1.38MB/s    eta 30s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.3     4%[                    ]   5.62M  1.20MB/s    eta 1m 57s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.2             73%[=============&gt;      ]  97.82M  1.39MB/s    eta 30s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.3      4%[                    ]   5.88M  1.18MB/s    eta 1m 54s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.2              73%[=============&gt;      ]  98.17M  1.40MB/s    eta 30s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.3       4%[                    ]   6.21M  1.19MB/s    eta 1m 54s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.2               74%[=============&gt;      ]  98.51M  1.39MB/s    eta 28s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.3        4%[                    ]   6.51M  1.18MB/s    eta 1m 54s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.2                74%[=============&gt;      ]  98.85M  1.38MB/s    eta 28s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.3         5%[&gt;                   ]   6.83M  1.17MB/s    eta 1m 54s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.2                 74%[=============&gt;      ]  99.13M  1.34MB/s    eta 28s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.3          5%[&gt;                   ]   7.13M  1.17MB/s    eta 1m 52s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.2                  74%[=============&gt;      ]  99.60M  1.36MB/s    eta 28s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.3           5%[&gt;                   ]   7.44M  1.15MB/s    eta 1m 52s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.2                   75%[==============&gt;     ]  99.99M  1.37MB/s    eta 27s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.3            5%[&gt;                   ]   7.74M  1.15MB/s    eta 1m 52s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2                    75%[==============&gt;     ] 100.33M  1.37MB/s    eta 27s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.3             6%[&gt;                   ]   8.02M  1.16MB/s    eta 1m 52s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     75%[==============&gt;     ] 100.69M  1.35MB/s    eta 27s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.3              6%[&gt;                   ]   8.22M  1.15MB/s    eta 1m 52s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F  75%[==============&gt;     ] 101.02M  1.35MB/s    eta 27s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.3               6%[&gt;                   ]   8.52M  1.14MB/s    eta 1m 51s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP  76%[==============&gt;     ] 101.44M  1.35MB/s    eta 26s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.3                6%[&gt;                   ]   8.95M  1.18MB/s    eta 1m 51s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA  76%[==============&gt;     ] 101.88M  1.34MB/s    eta 26s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.3                 7%[&gt;                   ]   9.31M  1.19MB/s    eta 1m 51s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_  77%[==============&gt;     ] 102.44M  1.41MB/s    eta 26s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.3                  7%[&gt;                   ]   9.80M  1.22MB/s    eta 1m 51s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F  77%[==============&gt;     ] 102.83M  1.42MB/s    eta 26s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.3                   7%[&gt;                   ]  10.17M  1.24MB/s    eta 1m 45s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  77%[==============&gt;     ] 103.19M  1.42MB/s    eta 24s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.3                    7%[&gt;                   ]  10.51M  1.27MB/s    eta 1m 45s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  77%[==============&gt;     ] 103.56M  1.43MB/s    eta 24s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3                     8%[&gt;                   ]  10.97M  1.30MB/s    eta 1m 45s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  78%[==============&gt;     ] 103.91M  1.43MB/s    eta 24s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                      8%[&gt;                   ]  11.34M  1.31MB/s    eta 1m 45s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  78%[==============&gt;     ] 104.20M  1.42MB/s    eta 24s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F   8%[&gt;                   ]  11.71M  1.33MB/s    eta 1m 41s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  78%[==============&gt;     ] 104.50M  1.40MB/s    eta 23s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP   9%[&gt;                   ]  12.04M  1.34MB/s    eta 1m 41s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  78%[==============&gt;     ] 104.95M  1.40MB/s    eta 23s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA   9%[&gt;                   ]  12.45M  1.36MB/s    eta 1m 41s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  79%[==============&gt;     ] 105.29M  1.39MB/s    eta 23s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_   9%[&gt;                   ]  12.88M  1.40MB/s    eta 1m 41s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  79%[==============&gt;     ] 105.75M  1.43MB/s    eta 23s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F   9%[&gt;                   ]  13.29M  1.42MB/s    eta 98s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  79%[==============&gt;     ] 106.14M  1.44MB/s    eta 22s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  10%[=&gt;                  ]  13.82M  1.51MB/s    eta 98s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  80%[===============&gt;    ] 106.53M  1.46MB/s    eta 22s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  10%[=&gt;                  ]  14.23M  1.52MB/s    eta 98s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  80%[===============&gt;    ] 106.88M  1.42MB/s    eta 22s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  11%[=&gt;                  ]  14.65M  1.51MB/s    eta 98s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  80%[===============&gt;    ] 107.32M  1.43MB/s    eta 22s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  11%[=&gt;                  ]  15.00M  1.51MB/s    eta 94s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  81%[===============&gt;    ] 107.82M  1.41MB/s    eta 21s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  11%[=&gt;                  ]  15.30M  1.47MB/s    eta 94s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  81%[===============&gt;    ] 108.18M  1.42MB/s    eta 21s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  11%[=&gt;                  ]  15.77M  1.49MB/s    eta 94s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  81%[===============&gt;    ] 108.60M  1.43MB/s    eta 21s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  12%[=&gt;                  ]  16.30M  1.55MB/s    eta 94s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  81%[===============&gt;    ] 109.01M  1.43MB/s    eta 21s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  12%[=&gt;                  ]  16.64M  1.50MB/s    eta 91s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  82%[===============&gt;    ] 109.46M  1.48MB/s    eta 19s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  12%[=&gt;                  ]  17.06M  1.51MB/s    eta 91s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  82%[===============&gt;    ] 109.77M  1.47MB/s    eta 19s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  13%[=&gt;                  ]  17.44M  1.52MB/s    eta 91s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  82%[===============&gt;    ] 110.10M  1.47MB/s    eta 19s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  13%[=&gt;                  ]  17.97M  1.57MB/s    eta 91s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  83%[===============&gt;    ] 110.64M  1.51MB/s    eta 19s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  13%[=&gt;                  ]  18.26M  1.52MB/s    eta 89s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.2  83%[===============&gt;    ] 110.97M  1.51MB/s    eta 18s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  13%[=&gt;                  ]  18.61M  1.52MB/s    eta 89s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.2   83%[===============&gt;    ] 111.33M  1.48MB/s    eta 18s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  14%[=&gt;                  ]  18.97M  1.48MB/s    eta 89s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.2    84%[===============&gt;    ] 111.83M  1.50MB/s    eta 18s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  14%[=&gt;                  ]  19.54M  1.50MB/s    eta 89s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.2     84%[===============&gt;    ] 112.12M  1.48MB/s    eta 18s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  15%[==&gt;                 ]  19.95M  1.52MB/s    eta 86s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.2      84%[===============&gt;    ] 112.50M  1.48MB/s    eta 17s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  15%[==&gt;                 ]  20.37M  1.52MB/s    eta 86s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.2       84%[===============&gt;    ] 112.81M  1.45MB/s    eta 17s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  15%[==&gt;                 ]  20.76M  1.54MB/s    eta 86s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.2        85%[================&gt;   ] 113.12M  1.39MB/s    eta 17s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  15%[==&gt;                 ]  21.06M  1.52MB/s    eta 86s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.2         85%[================&gt;   ] 113.42M  1.37MB/s    eta 17s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  16%[==&gt;                 ]  21.42M  1.48MB/s    eta 85s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.2          85%[================&gt;   ] 113.71M  1.34MB/s    eta 16s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.3  16%[==&gt;                 ]  21.76M  1.45MB/s    eta 85s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.2           85%[================&gt;   ] 114.03M  1.33MB/s    eta 16s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.3   16%[==&gt;                 ]  22.18M  1.47MB/s    eta 85s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.2            86%[================&gt;   ] 114.59M  1.37MB/s    eta 16s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.3    16%[==&gt;                 ]  22.55M  1.46MB/s    eta 85s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.2             86%[================&gt;   ] 114.92M  1.37MB/s    eta 16s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.3     17%[==&gt;                 ]  22.97M  1.44MB/s    eta 83s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.2              86%[================&gt;   ] 115.38M  1.37MB/s    eta 14s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.3      17%[==&gt;                 ]  23.36M  1.45MB/s    eta 83s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.2               87%[================&gt;   ] 115.90M  1.39MB/s    eta 14s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.3       17%[==&gt;                 ]  23.80M  1.47MB/s    eta 83s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.2                87%[================&gt;   ] 116.44M  1.46MB/s    eta 14s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.3        18%[==&gt;                 ]  24.22M  1.49MB/s    eta 83s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.2                 87%[================&gt;   ] 116.79M  1.45MB/s    eta 14s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.3         18%[==&gt;                 ]  24.61M  1.46MB/s    eta 81s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.2                  88%[================&gt;   ] 117.08M  1.41MB/s    eta 13s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.3          18%[==&gt;                 ]  25.03M  1.44MB/s    eta 81s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.2                   88%[================&gt;   ] 117.44M  1.41MB/s    eta 13s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.3           19%[==&gt;                 ]  25.41M  1.44MB/s    eta 81s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2                    88%[================&gt;   ] 117.80M  1.41MB/s    eta 13s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.3            19%[==&gt;                 ]  25.70M  1.41MB/s    eta 81s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     88%[================&gt;   ] 118.24M  1.44MB/s    eta 13s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.3             19%[==&gt;                 ]  26.22M  1.45MB/s    eta 79s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F  89%[================&gt;   ] 118.72M  1.50MB/s    eta 11s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.3              20%[===&gt;                ]  26.72M  1.50MB/s    eta 79s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP  89%[================&gt;   ] 119.19M  1.53MB/s    eta 11s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.3               20%[===&gt;                ]  27.09M  1.50MB/s    eta 79s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA  89%[================&gt;   ] 119.49M  1.54MB/s    eta 11s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.3                20%[===&gt;                ]  27.40M  1.47MB/s    eta 79s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_  90%[=================&gt;  ] 119.89M  1.54MB/s    eta 11s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.3                 20%[===&gt;                ]  27.82M  1.49MB/s    eta 78s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F  90%[=================&gt;  ] 120.37M  1.54MB/s    eta 10s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.3                  21%[===&gt;                ]  28.17M  1.47MB/s    eta 78s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  90%[=================&gt;  ] 120.72M  1.54MB/s    eta 10s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.3                   21%[===&gt;                ]  28.48M  1.46MB/s    eta 78s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  91%[=================&gt;  ] 121.00M  1.46MB/s    eta 10s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3                    21%[===&gt;                ]  28.95M  1.47MB/s    eta 78s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  91%[=================&gt;  ] 121.37M  1.43MB/s    eta 10s    
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     22%[===&gt;                ]  29.32M  1.47MB/s    eta 77s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  91%[=================&gt;  ] 121.68M  1.40MB/s    eta 9s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F  22%[===&gt;                ]  29.71M  1.44MB/s    eta 77s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  91%[=================&gt;  ] 122.04M  1.40MB/s    eta 9s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP  22%[===&gt;                ]  30.07M  1.44MB/s    eta 77s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  92%[=================&gt;  ] 122.53M  1.44MB/s    eta 9s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA  22%[===&gt;                ]  30.35M  1.41MB/s    eta 77s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  92%[=================&gt;  ] 122.93M  1.46MB/s    eta 9s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_  23%[===&gt;                ]  30.69M  1.41MB/s    eta 76s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  92%[=================&gt;  ] 123.27M  1.44MB/s    eta 8s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F  23%[===&gt;                ]  31.08M  1.39MB/s    eta 76s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  93%[=================&gt;  ] 123.70M  1.45MB/s    eta 8s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  23%[===&gt;                ]  31.63M  1.41MB/s    eta 76s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  93%[=================&gt;  ] 124.09M  1.41MB/s    eta 8s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  24%[===&gt;                ]  32.02M  1.40MB/s    eta 76s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  93%[=================&gt;  ] 124.62M  1.46MB/s    eta 8s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  24%[===&gt;                ]  32.39M  1.41MB/s    eta 74s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  94%[=================&gt;  ] 124.97M  1.44MB/s    eta 6s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  24%[===&gt;                ]  32.81M  1.42MB/s    eta 74s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  94%[=================&gt;  ] 125.35M  1.43MB/s    eta 6s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  24%[===&gt;                ]  33.14M  1.42MB/s    eta 74s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  94%[=================&gt;  ] 125.74M  1.43MB/s    eta 6s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  25%[====&gt;               ]  33.59M  1.45MB/s    eta 74s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  94%[=================&gt;  ] 126.10M  1.44MB/s    eta 6s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  25%[====&gt;               ]  33.92M  1.43MB/s    eta 73s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  95%[==================&gt; ] 126.61M  1.48MB/s    eta 5s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  25%[====&gt;               ]  34.22M  1.40MB/s    eta 73s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  95%[==================&gt; ] 126.96M  1.48MB/s    eta 5s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  26%[====&gt;               ]  34.69M  1.42MB/s    eta 73s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  95%[==================&gt; ] 127.25M  1.47MB/s    eta 5s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  26%[====&gt;               ]  35.12M  1.42MB/s    eta 73s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  95%[==================&gt; ] 127.61M  1.47MB/s    eta 5s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  26%[====&gt;               ]  35.51M  1.43MB/s    eta 71s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  96%[==================&gt; ] 127.98M  1.45MB/s    eta 4s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  27%[====&gt;               ]  35.90M  1.47MB/s    eta 71s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.2  96%[==================&gt; ] 128.39M  1.45MB/s    eta 4s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  27%[====&gt;               ]  36.23M  1.45MB/s    eta 71s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.2   96%[==================&gt; ] 128.75M  1.44MB/s    eta 4s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  27%[====&gt;               ]  36.62M  1.43MB/s    eta 71s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.2    97%[==================&gt; ] 129.23M  1.47MB/s    eta 4s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  27%[====&gt;               ]  36.98M  1.41MB/s    eta 70s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.2     97%[==================&gt; ] 129.59M  1.43MB/s    eta 3s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  28%[====&gt;               ]  37.37M  1.42MB/s    eta 70s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.2      97%[==================&gt; ] 129.98M  1.42MB/s    eta 3s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  28%[====&gt;               ]  37.82M  1.43MB/s    eta 70s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.2       98%[==================&gt; ] 130.34M  1.43MB/s    eta 3s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  28%[====&gt;               ]  38.23M  1.44MB/s    eta 70s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.2        98%[==================&gt; ] 130.78M  1.43MB/s    eta 3s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  29%[====&gt;               ]  38.60M  1.44MB/s    eta 69s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.2         98%[==================&gt; ] 131.10M  1.42MB/s    eta 1s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  29%[====&gt;               ]  38.91M  1.41MB/s    eta 69s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.2          98%[==================&gt; ] 131.54M  1.43MB/s    eta 1s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.3  29%[====&gt;               ]  39.35M  1.45MB/s    eta 69s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.2           99%[==================&gt; ] 131.85M  1.39MB/s    eta 1s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.3   29%[====&gt;               ]  39.80M  1.46MB/s    eta 69s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.2            99%[==================&gt; ] 132.12M  1.37MB/s    eta 1s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.3    30%[=====&gt;              ]  40.19M  1.46MB/s    eta 67s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.2             99%[==================&gt; ] 132.46M  1.38MB/s    eta 0s     
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.3     30%[=====&gt;              ]  40.60M  1.46MB/s    eta 67s    
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.2              99%[==================&gt; ] 132.88M  1.39MB/s    eta 0s     
-FPA_FOD_west_cleane 100%[===================&gt;] 132.94M  1.41MB/s    in 1m 46s  
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.3      30%[=====&gt;              ]  41.02M  1.45MB/s    eta 67s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.3       31%[=====&gt;              ]  41.47M  1.49MB/s    eta 67s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.3        31%[=====&gt;              ]  41.86M  1.51MB/s    eta 66s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.3         31%[=====&gt;              ]  42.34M  1.52MB/s    eta 66s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.3          32%[=====&gt;              ]  42.69M  1.50MB/s    eta 66s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.3           32%[=====&gt;              ]  43.04M  1.49MB/s    eta 66s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.3            32%[=====&gt;              ]  43.53M  1.52MB/s    eta 65s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.3             33%[=====&gt;              ]  43.89M  1.50MB/s    eta 65s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.3              33%[=====&gt;              ]  44.40M  1.54MB/s    eta 65s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.3               33%[=====&gt;              ]  44.95M  1.58MB/s    eta 65s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.3                34%[=====&gt;              ]  45.21M  1.55MB/s    eta 63s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.3                 34%[=====&gt;              ]  45.62M  1.53MB/s    eta 63s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.3                  34%[=====&gt;              ]  46.10M  1.55MB/s    eta 63s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.3                   34%[=====&gt;              ]  46.41M  1.53MB/s    eta 63s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3                    35%[======&gt;             ]  46.93M  1.57MB/s    eta 62s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     35%[======&gt;             ]  47.41M  1.56MB/s    eta 62s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F  35%[======&gt;             ]  47.80M  1.56MB/s    eta 62s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP  36%[======&gt;             ]  48.19M  1.56MB/s    eta 62s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA  36%[======&gt;             ]  48.60M  1.57MB/s    eta 60s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_  36%[======&gt;             ]  49.00M  1.56MB/s    eta 60s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F  37%[======&gt;             ]  49.36M  1.53MB/s    eta 60s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  37%[======&gt;             ]  49.74M  1.53MB/s    eta 60s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  37%[======&gt;             ]  50.05M  1.47MB/s    eta 59s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  37%[======&gt;             ]  50.36M  1.45MB/s    eta 59s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  38%[======&gt;             ]  50.78M  1.46MB/s    eta 59s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  38%[======&gt;             ]  51.19M  1.44MB/s    eta 59s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  38%[======&gt;             ]  51.64M  1.48MB/s    eta 58s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  39%[======&gt;             ]  52.01M  1.46MB/s    eta 58s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  39%[======&gt;             ]  52.53M  1.47MB/s    eta 58s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  39%[======&gt;             ]  52.90M  1.45MB/s    eta 58s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  40%[=======&gt;            ]  53.23M  1.44MB/s    eta 57s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  40%[=======&gt;            ]  53.54M  1.41MB/s    eta 57s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  40%[=======&gt;            ]  53.91M  1.41MB/s    eta 57s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  40%[=======&gt;            ]  54.37M  1.43MB/s    eta 57s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  41%[=======&gt;            ]  54.76M  1.43MB/s    eta 56s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  41%[=======&gt;            ]  55.12M  1.44MB/s    eta 56s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  41%[=======&gt;            ]  55.54M  1.46MB/s    eta 56s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  42%[=======&gt;            ]  56.02M  1.51MB/s    eta 56s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  42%[=======&gt;            ]  56.42M  1.49MB/s    eta 54s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  42%[=======&gt;            ]  56.78M  1.48MB/s    eta 54s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  43%[=======&gt;            ]  57.17M  1.47MB/s    eta 54s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.3  43%[=======&gt;            ]  57.56M  1.45MB/s    eta 54s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.3   43%[=======&gt;            ]  57.94M  1.44MB/s    eta 53s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.3    43%[=======&gt;            ]  58.31M  1.44MB/s    eta 53s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.3     44%[=======&gt;            ]  58.69M  1.46MB/s    eta 53s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.3      44%[=======&gt;            ]  59.08M  1.46MB/s    eta 53s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.3       44%[=======&gt;            ]  59.45M  1.46MB/s    eta 52s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.3        45%[========&gt;           ]  59.86M  1.46MB/s    eta 52s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.3         45%[========&gt;           ]  60.23M  1.45MB/s    eta 52s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.3          45%[========&gt;           ]  60.60M  1.44MB/s    eta 52s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.3           45%[========&gt;           ]  61.01M  1.44MB/s    eta 51s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.3            46%[========&gt;           ]  61.35M  1.40MB/s    eta 51s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.3             46%[========&gt;           ]  61.65M  1.39MB/s    eta 51s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.3              46%[========&gt;           ]  62.02M  1.39MB/s    eta 51s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.3               47%[========&gt;           ]  62.52M  1.41MB/s    eta 50s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.3                47%[========&gt;           ]  62.85M  1.41MB/s    eta 50s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.3                 47%[========&gt;           ]  63.21M  1.39MB/s    eta 50s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.3                  47%[========&gt;           ]  63.60M  1.41MB/s    eta 50s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.3                   48%[========&gt;           ]  63.99M  1.41MB/s    eta 49s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3                    48%[========&gt;           ]  64.36M  1.40MB/s    eta 49s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     48%[========&gt;           ]  64.69M  1.37MB/s    eta 49s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F  48%[========&gt;           ]  65.05M  1.37MB/s    eta 49s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP  49%[========&gt;           ]  65.44M  1.39MB/s    eta 48s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA  49%[========&gt;           ]  65.81M  1.38MB/s    eta 48s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_  49%[========&gt;           ]  66.23M  1.38MB/s    eta 48s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F  50%[=========&gt;          ]  66.69M  1.43MB/s    eta 48s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  50%[=========&gt;          ]  67.09M  1.43MB/s    eta 47s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  50%[=========&gt;          ]  67.45M  1.41MB/s    eta 47s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  51%[=========&gt;          ]  67.93M  1.43MB/s    eta 47s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  51%[=========&gt;          ]  68.32M  1.45MB/s    eta 47s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  51%[=========&gt;          ]  68.71M  1.46MB/s    eta 46s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  51%[=========&gt;          ]  69.03M  1.44MB/s    eta 46s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  52%[=========&gt;          ]  69.46M  1.45MB/s    eta 46s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  52%[=========&gt;          ]  69.96M  1.50MB/s    eta 46s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  52%[=========&gt;          ]  70.34M  1.50MB/s    eta 44s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  53%[=========&gt;          ]  70.69M  1.49MB/s    eta 44s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  53%[=========&gt;          ]  71.08M  1.49MB/s    eta 44s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  53%[=========&gt;          ]  71.49M  1.49MB/s    eta 44s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  54%[=========&gt;          ]  71.90M  1.49MB/s    eta 43s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  54%[=========&gt;          ]  72.18M  1.45MB/s    eta 43s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  54%[=========&gt;          ]  72.55M  1.45MB/s    eta 43s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  54%[=========&gt;          ]  72.96M  1.46MB/s    eta 43s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  55%[==========&gt;         ]  73.31M  1.42MB/s    eta 42s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  55%[==========&gt;         ]  73.75M  1.42MB/s    eta 42s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  55%[==========&gt;         ]  74.09M  1.43MB/s    eta 42s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  56%[==========&gt;         ]  74.48M  1.43MB/s    eta 42s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.3  56%[==========&gt;         ]  74.87M  1.43MB/s    eta 41s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.3   56%[==========&gt;         ]  75.28M  1.41MB/s    eta 41s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.3    56%[==========&gt;         ]  75.62M  1.39MB/s    eta 41s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.3     57%[==========&gt;         ]  76.12M  1.43MB/s    eta 41s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.3      57%[==========&gt;         ]  76.51M  1.42MB/s    eta 40s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.3       57%[==========&gt;         ]  76.82M  1.40MB/s    eta 40s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.3        58%[==========&gt;         ]  77.12M  1.38MB/s    eta 40s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.3         58%[==========&gt;         ]  77.46M  1.41MB/s    eta 40s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.3          58%[==========&gt;         ]  77.90M  1.40MB/s    eta 39s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.3           58%[==========&gt;         ]  78.24M  1.41MB/s    eta 39s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.3            59%[==========&gt;         ]  78.74M  1.44MB/s    eta 39s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.3             59%[==========&gt;         ]  79.10M  1.43MB/s    eta 39s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.3              59%[==========&gt;         ]  79.43M  1.40MB/s    eta 38s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.3               60%[===========&gt;        ]  79.86M  1.41MB/s    eta 38s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.3                60%[===========&gt;        ]  80.18M  1.39MB/s    eta 38s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.3                 60%[===========&gt;        ]  80.55M  1.40MB/s    eta 38s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.3                  60%[===========&gt;        ]  80.97M  1.41MB/s    eta 37s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.3                   61%[===========&gt;        ]  81.27M  1.36MB/s    eta 37s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3                    61%[===========&gt;        ]  81.64M  1.37MB/s    eta 37s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     61%[===========&gt;        ]  81.99M  1.38MB/s    eta 37s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F  61%[===========&gt;        ]  82.36M  1.37MB/s    eta 36s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP  62%[===========&gt;        ]  82.70M  1.37MB/s    eta 36s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA  62%[===========&gt;        ]  83.29M  1.44MB/s    eta 36s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_  62%[===========&gt;        ]  83.65M  1.41MB/s    eta 36s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F  63%[===========&gt;        ]  84.09M  1.42MB/s    eta 35s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  63%[===========&gt;        ]  84.48M  1.43MB/s    eta 35s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  63%[===========&gt;        ]  84.82M  1.43MB/s    eta 35s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  64%[===========&gt;        ]  85.15M  1.42MB/s    eta 35s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  64%[===========&gt;        ]  85.48M  1.41MB/s    eta 34s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  64%[===========&gt;        ]  85.84M  1.38MB/s    eta 34s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  65%[============&gt;       ]  86.45M  1.46MB/s    eta 34s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  65%[============&gt;       ]  86.85M  1.49MB/s    eta 34s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  65%[============&gt;       ]  87.30M  1.50MB/s    eta 32s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  65%[============&gt;       ]  87.60M  1.48MB/s    eta 32s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  66%[============&gt;       ]  87.86M  1.46MB/s    eta 32s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  66%[============&gt;       ]  88.16M  1.40MB/s    eta 32s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  66%[============&gt;       ]  88.54M  1.38MB/s    eta 31s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  66%[============&gt;       ]  88.86M  1.37MB/s    eta 31s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  67%[============&gt;       ]  89.24M  1.35MB/s    eta 31s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  67%[============&gt;       ]  89.72M  1.39MB/s    eta 31s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  67%[============&gt;       ]  90.12M  1.40MB/s    eta 30s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  68%[============&gt;       ]  90.69M  1.47MB/s    eta 30s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  68%[============&gt;       ]  91.06M  1.47MB/s    eta 30s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  68%[============&gt;       ]  91.44M  1.44MB/s    eta 30s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  69%[============&gt;       ]  91.81M  1.42MB/s    eta 29s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.3  69%[============&gt;       ]  92.31M  1.42MB/s    eta 29s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.3   69%[============&gt;       ]  92.79M  1.46MB/s    eta 29s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.3    70%[=============&gt;      ]  93.09M  1.47MB/s    eta 29s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.3     70%[=============&gt;      ]  93.51M  1.50MB/s    eta 28s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.3      70%[=============&gt;      ]  93.96M  1.53MB/s    eta 28s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.3       70%[=============&gt;      ]  94.38M  1.54MB/s    eta 28s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.3        71%[=============&gt;      ]  94.88M  1.60MB/s    eta 28s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.3         71%[=============&gt;      ]  95.21M  1.57MB/s    eta 27s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.3          71%[=============&gt;      ]  95.57M  1.54MB/s    eta 27s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.3           72%[=============&gt;      ]  95.90M  1.51MB/s    eta 27s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.3            72%[=============&gt;      ]  96.27M  1.48MB/s    eta 27s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.3             72%[=============&gt;      ]  96.63M  1.47MB/s    eta 26s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.3              72%[=============&gt;      ]  97.00M  1.46MB/s    eta 26s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.3               73%[=============&gt;      ]  97.50M  1.49MB/s    eta 26s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.3                73%[=============&gt;      ]  97.81M  1.43MB/s    eta 26s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.3                 73%[=============&gt;      ]  98.19M  1.44MB/s    eta 25s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.3                  74%[=============&gt;      ]  98.53M  1.43MB/s    eta 25s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.3                   74%[=============&gt;      ]  98.91M  1.43MB/s    eta 25s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3                    74%[=============&gt;      ]  99.31M  1.41MB/s    eta 25s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     75%[==============&gt;     ]  99.81M  1.43MB/s    eta 23s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F  75%[==============&gt;     ] 100.31M  1.45MB/s    eta 23s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP  75%[==============&gt;     ] 100.70M  1.46MB/s    eta 23s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA  76%[==============&gt;     ] 101.12M  1.48MB/s    eta 23s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_  76%[==============&gt;     ] 101.56M  1.51MB/s    eta 22s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F  76%[==============&gt;     ] 101.98M  1.52MB/s    eta 22s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  77%[==============&gt;     ] 102.37M  1.52MB/s    eta 22s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  77%[==============&gt;     ] 102.76M  1.49MB/s    eta 22s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  77%[==============&gt;     ] 103.10M  1.48MB/s    eta 21s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  77%[==============&gt;     ] 103.38M  1.49MB/s    eta 21s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  78%[==============&gt;     ] 103.91M  1.51MB/s    eta 21s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  78%[==============&gt;     ] 104.29M  1.53MB/s    eta 21s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  78%[==============&gt;     ] 104.58M  1.52MB/s    eta 20s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  78%[==============&gt;     ] 104.92M  1.46MB/s    eta 20s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  79%[==============&gt;     ] 105.38M  1.45MB/s    eta 20s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  79%[==============&gt;     ] 105.80M  1.45MB/s    eta 20s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  79%[==============&gt;     ] 106.20M  1.44MB/s    eta 19s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  80%[===============&gt;    ] 106.61M  1.43MB/s    eta 19s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  80%[===============&gt;    ] 106.97M  1.43MB/s    eta 19s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  80%[===============&gt;    ] 107.28M  1.40MB/s    eta 19s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  80%[===============&gt;    ] 107.58M  1.38MB/s    eta 18s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  81%[===============&gt;    ] 107.92M  1.37MB/s    eta 18s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  81%[===============&gt;    ] 108.22M  1.36MB/s    eta 18s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  81%[===============&gt;    ] 108.62M  1.35MB/s    eta 18s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  81%[===============&gt;    ] 109.01M  1.36MB/s    eta 17s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  82%[===============&gt;    ] 109.45M  1.38MB/s    eta 17s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.3  82%[===============&gt;    ] 109.74M  1.37MB/s    eta 17s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.3   82%[===============&gt;    ] 110.13M  1.36MB/s    eta 17s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.3    83%[===============&gt;    ] 110.63M  1.40MB/s    eta 16s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.3     83%[===============&gt;    ] 111.13M  1.39MB/s    eta 16s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.3      83%[===============&gt;    ] 111.51M  1.41MB/s    eta 16s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.3       84%[===============&gt;    ] 111.88M  1.41MB/s    eta 16s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.3        84%[===============&gt;    ] 112.46M  1.47MB/s    eta 14s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.3         84%[===============&gt;    ] 112.83M  1.49MB/s    eta 14s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.3          85%[================&gt;   ] 113.25M  1.50MB/s    eta 14s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.3           85%[================&gt;   ] 113.67M  1.54MB/s    eta 14s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.3            85%[================&gt;   ] 114.06M  1.54MB/s    eta 13s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.3             86%[================&gt;   ] 114.62M  1.57MB/s    eta 13s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.3              86%[================&gt;   ] 114.95M  1.56MB/s    eta 13s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.3               86%[================&gt;   ] 115.28M  1.56MB/s    eta 13s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>csv.3                87%[================&gt;   ] 115.69M  1.56MB/s    eta 12s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sv.3                 87%[================&gt;   ] 115.98M  1.53MB/s    eta 12s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>v.3                  87%[================&gt;   ] 116.54M  1.54MB/s    eta 12s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.3                   87%[================&gt;   ] 116.95M  1.55MB/s    eta 12s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3                    88%[================&gt;   ] 117.32M  1.53MB/s    eta 11s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     88%[================&gt;   ] 117.73M  1.50MB/s    eta 11s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                  F  88%[================&gt;   ] 118.12M  1.49MB/s    eta 11s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 FP  89%[================&gt;   ] 118.49M  1.48MB/s    eta 11s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                FPA  89%[================&gt;   ] 118.82M  1.48MB/s    eta 10s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>               FPA_  89%[================&gt;   ] 119.30M  1.48MB/s    eta 10s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              FPA_F  90%[=================&gt;  ] 119.83M  1.52MB/s    eta 10s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             FPA_FO  90%[=================&gt;  ] 120.32M  1.52MB/s    eta 10s    
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            FPA_FOD  90%[=================&gt;  ] 120.68M  1.51MB/s    eta 9s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           FPA_FOD_  91%[=================&gt;  ] 121.00M  1.51MB/s    eta 9s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          FPA_FOD_w  91%[=================&gt;  ] 121.46M  1.53MB/s    eta 9s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         FPA_FOD_we  91%[=================&gt;  ] 121.80M  1.51MB/s    eta 9s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        FPA_FOD_wes  91%[=================&gt;  ] 122.14M  1.45MB/s    eta 8s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       FPA_FOD_west  92%[=================&gt;  ] 122.58M  1.48MB/s    eta 8s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      FPA_FOD_west_  92%[=================&gt;  ] 122.94M  1.47MB/s    eta 8s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     FPA_FOD_west_c  92%[=================&gt;  ] 123.31M  1.47MB/s    eta 8s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    FPA_FOD_west_cl  93%[=================&gt;  ] 123.70M  1.46MB/s    eta 6s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   FPA_FOD_west_cle  93%[=================&gt;  ] 124.25M  1.51MB/s    eta 6s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  FPA_FOD_west_clea  93%[=================&gt;  ] 124.64M  1.52MB/s    eta 6s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> FPA_FOD_west_clean  94%[=================&gt;  ] 125.10M  1.49MB/s    eta 6s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane  94%[=================&gt;  ] 125.53M  1.46MB/s    eta 5s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PA_FOD_west_cleaned  94%[=================&gt;  ] 125.92M  1.47MB/s    eta 5s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A_FOD_west_cleaned.  95%[==================&gt; ] 126.34M  1.49MB/s    eta 5s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_FOD_west_cleaned.c  95%[==================&gt; ] 126.71M  1.47MB/s    eta 5s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FOD_west_cleaned.cs  95%[==================&gt; ] 127.10M  1.48MB/s    eta 4s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OD_west_cleaned.csv  95%[==================&gt; ] 127.49M  1.51MB/s    eta 4s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D_west_cleaned.csv.  96%[==================&gt; ] 127.82M  1.46MB/s    eta 4s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_west_cleaned.csv.3  96%[==================&gt; ] 128.19M  1.47MB/s    eta 4s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>west_cleaned.csv.3   96%[==================&gt; ] 128.68M  1.51MB/s    eta 3s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>est_cleaned.csv.3    96%[==================&gt; ] 128.93M  1.48MB/s    eta 3s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>st_cleaned.csv.3     97%[==================&gt; ] 129.32M  1.47MB/s    eta 3s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t_cleaned.csv.3      97%[==================&gt; ] 129.60M  1.39MB/s    eta 3s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_cleaned.csv.3       97%[==================&gt; ] 130.00M  1.41MB/s    eta 2s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cleaned.csv.3        98%[==================&gt; ] 130.34M  1.37MB/s    eta 2s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>leaned.csv.3         98%[==================&gt; ] 130.64M  1.34MB/s    eta 2s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eaned.csv.3          98%[==================&gt; ] 131.05M  1.34MB/s    eta 2s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>aned.csv.3           98%[==================&gt; ] 131.42M  1.35MB/s    eta 1s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ned.csv.3            99%[==================&gt; ] 131.78M  1.34MB/s    eta 1s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ed.csv.3             99%[==================&gt; ] 132.08M  1.30MB/s    eta 1s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>d.csv.3              99%[==================&gt; ] 132.37M  1.29MB/s    eta 1s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.csv.3               99%[==================&gt; ] 132.73M  1.30MB/s    eta 0s     
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPA_FOD_west_cleane 100%[===================&gt;] 132.94M  1.32MB/s    in 93s     
 
-2025-07-29 10:18:53 (1.26 MB/s) - ‘FPA_FOD_west_cleaned.csv.2’ saved [139402360/139402360]
+2025-07-31 00:07:50 (1.43 MB/s) - ‘FPA_FOD_west_cleaned.csv.3’ saved [139402360/139402360]
 
---2025-07-29 10:18:53--  http://data/
+--2025-07-31 00:07:50--  http://data/
 Resolving data (data)... failed: nodename nor servname provided, or not known.
 wget: unable to resolve host address ‘data’
-FINISHED --2025-07-29 10:18:53--
-Total wall clock time: 1m 46s
-Downloaded: 1 files, 133M in 1m 46s (1.26 MB/s)
+FINISHED --2025-07-31 00:07:51--
+Total wall clock time: 1m 34s
+Downloaded: 1 files, 133M in 1m 33s (1.43 MB/s)
 </pre></div>
 </div>
 </div>
@@ -2732,7 +2602,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x140da7040&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x1696be880&gt;
 </pre></div>
 </div>
 <img alt="../../_images/2049ad8408294998aaaa97d379d306c91035a30790c2b031eb45437add842868.png" src="../../_images/2049ad8408294998aaaa97d379d306c91035a30790c2b031eb45437add842868.png" />
@@ -2745,7 +2615,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x34775be20&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x1696be8e0&gt;
 </pre></div>
 </div>
 <img alt="../../_images/be8bbc71a55392f1ab047d5fa36e05899189ebcbf18887853275dcee6d363de1.png" src="../../_images/be8bbc71a55392f1ab047d5fa36e05899189ebcbf18887853275dcee6d363de1.png" />
@@ -2977,7 +2847,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x34781b970&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x3499f1d60&gt;
 </pre></div>
 </div>
 <img alt="../../_images/265bbe3d785a5c74c32ce3c1b6801a50f4a7191b22a11f75cccb3e6cdf73da18.png" src="../../_images/265bbe3d785a5c74c32ce3c1b6801a50f4a7191b22a11f75cccb3e6cdf73da18.png" />
@@ -2990,7 +2860,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x31e4c8070&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x177b7dfd0&gt;
 </pre></div>
 </div>
 <img alt="../../_images/09f87d33b5701aff7e99ffc2d8d799d3516be71a8a23ef5a0407f3b866cb6ae5.png" src="../../_images/09f87d33b5701aff7e99ffc2d8d799d3516be71a8a23ef5a0407f3b866cb6ae5.png" />
@@ -3003,7 +2873,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x31e4b2eb0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x177b95e50&gt;
 </pre></div>
 </div>
 <img alt="../../_images/e166bcc0ce25b29b979501069ec367388a6d9c40a04d6ca580df21790f819e6c.png" src="../../_images/e166bcc0ce25b29b979501069ec367388a6d9c40a04d6ca580df21790f819e6c.png" />
@@ -3016,7 +2886,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x17685c970&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x177fa8610&gt;
 </pre></div>
 </div>
 <img alt="../../_images/3d9473c50b69294d8c88339dbbb6fa5ff85afe32bd1211e5c807b8145d6e71f2.png" src="../../_images/3d9473c50b69294d8c88339dbbb6fa5ff85afe32bd1211e5c807b8145d6e71f2.png" />
@@ -3071,7 +2941,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x176cb1370&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x349fdb460&gt;
 </pre></div>
 </div>
 <img alt="../../_images/8ffe8e0e86c3a36d439e0cee571afba0fc5d5bf2286960dd8da2452c5ec7ce4f.png" src="../../_images/8ffe8e0e86c3a36d439e0cee571afba0fc5d5bf2286960dd8da2452c5ec7ce4f.png" />
@@ -3156,7 +3026,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>31.520920991897583
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>31.887067794799805
 </pre></div>
 </div>
 </div>
@@ -3377,7 +3247,7 @@ Requirement already satisfied: threadpoolctl&gt;=2.0.0 in /opt/anaconda3/envs/ML
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>50.96438789367676
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>52.15599298477173
 </pre></div>
 </div>
 </div>
@@ -3390,7 +3260,7 @@ Requirement already satisfied: threadpoolctl&gt;=2.0.0 in /opt/anaconda3/envs/ML
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/4fd63f695eca9a3c652676237f1f844c1c2f36108bd7de9e60e84b1d5233ca93.png" src="../../_images/4fd63f695eca9a3c652676237f1f844c1c2f36108bd7de9e60e84b1d5233ca93.png" />
+<img alt="../../_images/f941b82801bbd534ffdc5c94d38e7f9681c38d3f6513ea719d20396763f30040.png" src="../../_images/f941b82801bbd534ffdc5c94d38e7f9681c38d3f6513ea719d20396763f30040.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3409,22 +3279,22 @@ Requirement already satisfied: threadpoolctl&gt;=2.0.0 in /opt/anaconda3/envs/ML
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                            precision    recall  f1-score   support
 
-                        Arson/incendiarism       0.42      0.45      0.43      2521
-                   Debris and open burning       0.50      0.54      0.52      3850
-                 Equipment and vehicle use       0.48      0.54      0.51      4313
-               Firearms and explosives use       0.66      0.32      0.43       314
-                                 Fireworks       0.52      0.33      0.40      1032
-                 Misuse of fire by a minor       0.28      0.23      0.25      1357
-                                   Natural       0.86      0.90      0.88     16133
-                              Other causes       0.19      0.08      0.11       462
-Power generation/transmission/distribution       0.24      0.15      0.18      1005
-       Railroad operations and maintenance       0.34      0.19      0.25       556
-                   Recreation and ceremony       0.54      0.50      0.52      4116
-                                   Smoking       0.22      0.25      0.24      1194
+                        Arson/incendiarism       0.43      0.46      0.44      2534
+                   Debris and open burning       0.50      0.53      0.52      3866
+                 Equipment and vehicle use       0.47      0.54      0.50      4211
+               Firearms and explosives use       0.65      0.31      0.42       315
+                                 Fireworks       0.53      0.32      0.40      1061
+                 Misuse of fire by a minor       0.25      0.22      0.23      1334
+                                   Natural       0.86      0.89      0.87     16154
+                              Other causes       0.17      0.07      0.10       496
+Power generation/transmission/distribution       0.26      0.15      0.19      1053
+       Railroad operations and maintenance       0.36      0.20      0.25       591
+                   Recreation and ceremony       0.53      0.50      0.51      4068
+                                   Smoking       0.20      0.23      0.21      1170
 
                                   accuracy                           0.63     36853
-                                 macro avg       0.44      0.37      0.39     36853
-                              weighted avg       0.62      0.63      0.63     36853
+                                 macro avg       0.43      0.37      0.39     36853
+                              weighted avg       0.62      0.63      0.62     36853
 </pre></div>
 </div>
 </div>
@@ -3440,7 +3310,7 @@ Power generation/transmission/distribution       0.24      0.15      0.18      1
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/dcc8b0143d71ead2c0608157a9ddde5112b49becbfeed1c8de56e5bd4239a16a.png" src="../../_images/dcc8b0143d71ead2c0608157a9ddde5112b49becbfeed1c8de56e5bd4239a16a.png" />
+<img alt="../../_images/832a996928e6a846a8a077452254143b8c030a6094b1c01983b7c1e362356098.png" src="../../_images/832a996928e6a846a8a077452254143b8c030a6094b1c01983b7c1e362356098.png" />
 </div>
 </div>
 </section>
