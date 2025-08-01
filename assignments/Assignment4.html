@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Assignment 2: Predicting Health Impacts from Air Quality Factors &#8212; Earth Data Science &amp; Machine Learning</title>
+    <title>Assignment 4: Flood Risk Prediction with Neural Network Regression &#8212; Earth Data Science &amp; Machine Learning</title>
   
   
   
@@ -62,11 +62,10 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'assignments/Assignment2';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'assignments/Assignment4';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Unsupervised Machine Learning" href="../lectures_ML/UnsupervisedML/unsupervisedML.html" />
-    <link rel="prev" title="Decision Trees and Random Forests (Wildfire cause prediction)" href="../lectures_ML/SupervisedML/randomforests.html" />
+    <link rel="prev" title="Tutorial on Global Temperature Trends with Deep Learning" href="../lectures_ML/DeepLearning/ANN_CNN.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -182,10 +181,10 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="Assignment1.html">Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction to Supervised Machine Learning</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../lectures_ML/SupervisedML/supervisedml.html">Supervised Machine Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lectures_ML/SupervisedML/randomforests.html">Decision Trees and Random Forests (Wildfire cause prediction)</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Assignment 2: Predicting Health Impacts from Air Quality Factors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Assignment2.html">Assignment 2: Predicting Health Impacts from Air Quality Factors</a></li>
 
 
 
@@ -205,10 +204,10 @@ const thebe_selector_output = ".output, .cell_output"
 
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction to Deep Learning</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../lectures_ML/DeepLearning/ANN.html">Artificial Neural Networks (ANN)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../lectures_ML/DeepLearning/ANN_CNN.html">Tutorial on Global Temperature Trends with Deep Learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Assignment4.html">Assignment 4: Flood Risk Prediction with Neural Network Regression</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Assignment 4: Flood Risk Prediction with Neural Network Regression</a></li>
 
 
 
@@ -285,7 +284,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/kdlamb/ML4Climate2025/issues/new?title=Issue%20on%20page%20%2Fassignments/Assignment2.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/kdlamb/ML4Climate2025/issues/new?title=Issue%20on%20page%20%2Fassignments/Assignment4.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -315,7 +314,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../_sources/assignments/Assignment2.ipynb" target="_blank"
+      <li><a href="../_sources/assignments/Assignment4.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -399,7 +398,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Assignment 2: Predicting Health Impacts from Air Quality Factors</h1>
+    <h1>Assignment 4: Flood Risk Prediction with Neural Network Regression</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -409,13 +408,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Assignment 2: Predicting Health Impacts from Air Quality Factors</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-data-from-kaggle">Download the data from Kaggle</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-data-exploration">Part 1: Data exploration</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Assignment 4: Flood Risk Prediction with Neural Network Regression</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-load-and-preprocess-the-flood-data-set">Part 1: Load and Preprocess the Flood Data Set</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-preprocessing">Part 2: Preprocessing</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-training-validation-and-test-split">Part 3: Training, validation, and test split</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-train-a-random-forest-classifier">Part 4: Train a Random Forest Classifier</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-train-a-random-forest-regressor">Part 5: Train a Random Forest Regressor</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-training-validation-and-test-splits">Part 3: Training, validation, and test splits</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-train-a-neural-network">Part 4: Train a Neural Network</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#train-and-evaluate-the-model">Train and Evaluate the Model</a></li>
 </ul>
 
             </nav>
@@ -428,21 +426,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="assignment-2-predicting-health-impacts-from-air-quality-factors">
-<h1>Assignment 2: Predicting Health Impacts from Air Quality Factors<a class="headerlink" href="#assignment-2-predicting-health-impacts-from-air-quality-factors" title="Permalink to this heading">#</a></h1>
-<p>In this assignment, we will use a (synthetic) data set looking at how health impacts are related to air quality factors. This data set is available at <a class="reference external" href="https://www.kaggle.com/datasets/rabieelkharoua/air-quality-and-health-impact-dataset">https://www.kaggle.com/datasets/rabieelkharoua/air-quality-and-health-impact-dataset</a>. The data includes public health outcomes and how they are related to air quality and meteorological factors.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">os</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="download-the-data-from-kaggle">
-<h1>Download the data from Kaggle<a class="headerlink" href="#download-the-data-from-kaggle" title="Permalink to this heading">#</a></h1>
+  <section id="assignment-4-flood-risk-prediction-with-neural-network-regression">
+<h1>Assignment 4: Flood Risk Prediction with Neural Network Regression<a class="headerlink" href="#assignment-4-flood-risk-prediction-with-neural-network-regression" title="Permalink to this heading">#</a></h1>
+<p>For this assignment you will develop a machine learning model to predict the probability of a flood given both environmental and social factors. The data set we will use for this assignment comes from the Kaggle <a class="reference external" href="https://www.kaggle.com/datasets/naiyakhalid/flood-prediction-dataset">Flood Prediction Dataset</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># To facilitate downloading data from Kaggle, we can install this python package</span>
@@ -468,7 +454,7 @@ Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/anaconda3/envs/ML4C
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">kagglehub</span>
 
 <span class="c1"># Download latest version</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">kagglehub</span><span class="o">.</span><span class="n">dataset_download</span><span class="p">(</span><span class="s2">&quot;rabieelkharoua/air-quality-and-health-impact-dataset&quot;</span><span class="p">)</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">kagglehub</span><span class="o">.</span><span class="n">dataset_download</span><span class="p">(</span><span class="s2">&quot;naiyakhalid/flood-prediction-dataset&quot;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Path to dataset files:&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 </pre></div>
@@ -478,149 +464,83 @@ Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/anaconda3/envs/ML4C
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning: Looks like you&#39;re using an outdated `kagglehub` version, please consider updating (latest version: 0.3.12)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Path to dataset files: /Users/karalamb/.cache/kagglehub/datasets/rabieelkharoua/air-quality-and-health-impact-dataset/versions/1
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Path to dataset files: /Users/karalamb/.cache/kagglehub/datasets/naiyakhalid/flood-prediction-dataset/versions/1
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;air_quality_health_impact_data.csv&#39;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;flood.csv&#39;]
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="part-1-data-exploration">
-<h1>Part 1: Data exploration<a class="headerlink" href="#part-1-data-exploration" title="Permalink to this heading">#</a></h1>
+<section id="part-1-load-and-preprocess-the-flood-data-set">
+<h1>Part 1: Load and Preprocess the Flood Data Set<a class="headerlink" href="#part-1-load-and-preprocess-the-flood-data-set" title="Permalink to this heading">#</a></h1>
 <ol class="arabic simple">
-<li><p>Load in the csv file as a dataframe using <code class="docutils literal notranslate"><span class="pre">pandas</span></code>.</p></li>
+<li><p>Load in the flood data set using <code class="docutils literal notranslate"><span class="pre">pandas</span></code></p></li>
 </ol>
 <ol class="arabic simple" start="2">
-<li><p>Check whether there are any NaN’s in the dataframe</p></li>
+<li><p>Make a histogram plot of the different numerical variables in the dataset</p></li>
 </ol>
 <ol class="arabic simple" start="3">
-<li><p>Make a histogram of the different numerical variables in the dataframe</p></li>
-</ol>
-<ol class="arabic simple" start="4">
-<li><p>There are two possible targets in the dataframe. One is a categorical variable <code class="docutils literal notranslate"><span class="pre">HealthImpactClass</span></code>, and the other is a numerical variable <code class="docutils literal notranslate"><span class="pre">HealthImpactScore</span></code>. Create numpy arrays, one named <code class="docutils literal notranslate"><span class="pre">y_classification</span></code>, containing the <code class="docutils literal notranslate"><span class="pre">HealthImpactClass</span></code>, and one named <code class="docutils literal notranslate"><span class="pre">y_regression</span></code>, containing the <code class="docutils literal notranslate"><span class="pre">HealthImpactScore</span></code>.</p></li>
-</ol>
-<ol class="arabic simple" start="5">
-<li><p>Check how balanced the 5 classes are in <code class="docutils literal notranslate"><span class="pre">HealthImpactClass</span></code>.</p></li>
-</ol>
-<ol class="arabic simple" start="6">
-<li><p>Create a numpy array called <code class="docutils literal notranslate"><span class="pre">features</span></code> that includes the following 9 variables:</p>
-<ul class="simple">
-<li><p>AQI</p></li>
-<li><p>PM10</p></li>
-<li><p>PM2_5</p></li>
-<li><p>NO2</p></li>
-<li><p>SO2</p></li>
-<li><p>O3</p></li>
-<li><p>Temperature</p></li>
-<li><p>Humidity</p></li>
-<li><p>WindSpeed</p></li>
-</ul>
-</li>
+<li><p>Create the feature matrix and the targets vector. The target will be the flood probability, and the predictors will be all of the other variables in the data frame. Put the flood probability into a <code class="docutils literal notranslate"><span class="pre">numpy</span></code> array called <code class="docutils literal notranslate"><span class="pre">y</span></code> and the other variables into <code class="docutils literal notranslate"><span class="pre">numpy</span></code> array called <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p></li>
 </ol>
 </section>
 <section id="part-2-preprocessing">
 <h1>Part 2: Preprocessing<a class="headerlink" href="#part-2-preprocessing" title="Permalink to this heading">#</a></h1>
+<ol class="arabic simple" start="4">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> method to scale the numerical variables in the <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> arrays.</p></li>
+</ol>
+</section>
+<section id="part-3-training-validation-and-test-splits">
+<h1>Part 3: Training, validation, and test splits<a class="headerlink" href="#part-3-training-validation-and-test-splits" title="Permalink to this heading">#</a></h1>
+<ol class="arabic simple" start="5">
+<li><p>Split the data into training, validation, and test data sets, with 80% of the data used for training, and 10% each for validation and testing.</p></li>
+</ol>
+</section>
+<section id="part-4-train-a-neural-network">
+<h1>Part 4: Train a Neural Network<a class="headerlink" href="#part-4-train-a-neural-network" title="Permalink to this heading">#</a></h1>
+<ol class="arabic simple" start="6">
+<li><p>Using <code class="docutils literal notranslate"><span class="pre">tensorflow</span></code>, create a fully connected neural network that takes as input a feature matrix of size 20, and has 3 dense layers with 100 neurons and <code class="docutils literal notranslate"><span class="pre">ReLU</span></code> activation and a final dense layer (with no activation) to get to a single output value.</p></li>
+</ol>
 <ol class="arabic simple" start="7">
-<li><p>Create two python lists, one including the class names, and the other including the feature names. The classification of health impact is derived from the health impact score, using the following thresholds:</p></li>
+<li><p>Print off a summary of the model. How many total trainable parameters does it have?</p></li>
 </ol>
-<ul class="simple">
-<li><p>0: ‘Very High’ (HealthImpactScore &gt;= 80)</p></li>
-<li><p>1: ‘High’ (60 &lt;= HealthImpactScore &lt; 80)</p></li>
-<li><p>2: ‘Moderate’ (40 &lt;= HealthImpactScore &lt; 60)</p></li>
-<li><p>3: ‘Low’ (20 &lt;= HealthImpactScore &lt; 40)</p></li>
-<li><p>4: ‘Very Low’ (HealthImpactScore &lt; 20)</p></li>
-</ul>
 <ol class="arabic simple" start="8">
-<li><p>Use the <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> method to scale the numerical variables in the <code class="docutils literal notranslate"><span class="pre">feature</span></code> array, and save this as a numpy array <code class="docutils literal notranslate"><span class="pre">X</span></code></p></li>
+<li><p>Compile the model with MSE loss and use the <code class="docutils literal notranslate"><span class="pre">Adam</span></code> optimizer. As a metric, include the Root Mean Squared Error.</p></li>
 </ol>
 </section>
-<section id="part-3-training-validation-and-test-split">
-<h1>Part 3: Training, validation, and test split<a class="headerlink" href="#part-3-training-validation-and-test-split" title="Permalink to this heading">#</a></h1>
+<section id="train-and-evaluate-the-model">
+<h1>Train and Evaluate the Model<a class="headerlink" href="#train-and-evaluate-the-model" title="Permalink to this heading">#</a></h1>
 <ol class="arabic simple" start="9">
-<li><p>Split the data into training, validation, and test data sets, with 80% of the data used for training, and 10% each for validation and testing. Create separate regression and classification targets, using <code class="docutils literal notranslate"><span class="pre">y_classification</span></code> and <code class="docutils literal notranslate"><span class="pre">y_regression</span></code>.</p></li>
+<li><p>Train the model for 30 epochs on the training data set you created earlier, using the validation data set to validate the model.</p></li>
 </ol>
-</section>
-<section id="part-4-train-a-random-forest-classifier">
-<h1>Part 4: Train a Random Forest Classifier<a class="headerlink" href="#part-4-train-a-random-forest-classifier" title="Permalink to this heading">#</a></h1>
 <ol class="arabic simple" start="10">
-<li><p>Train a <code class="docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code> with 120 estimators and with a maximum depth of 10. Set the class_weight to “balanced”, since the classes are imbalanced. You can use the default values for other hyperparmameters.</p></li>
+<li><p>Make a plot of the training and validation loss vs. epoch number.</p></li>
 </ol>
 <ol class="arabic simple" start="11">
-<li><p>Create a heatmap plot for the confusion matrix showing the performance of the trained classifier on the validation data set. Label the heatmap with the <code class="docutils literal notranslate"><span class="pre">classnames</span></code> on the x and y axis.</p></li>
+<li><p>Save the trained model.</p></li>
 </ol>
-<p>Because the classes are imbalanced, the confusion matrix shows that the classifier does not perform that well on the classes that are not well-represented in the data. One way to improve this is to use over-sampling to augment the data set. Using the <code class="docutils literal notranslate"><span class="pre">imbalanced-learn</span></code> library, we can use the <code class="docutils literal notranslate"><span class="pre">SMOTE</span></code> algorithm <a class="reference external" href="https://arxiv.org/pdf/1106.1813">(https://arxiv.org/pdf/1106.1813)</a> to oversample the data set, using the lines of code below.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>imbalanced-learn
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: imbalanced-learn in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (0.12.4)
-Requirement already satisfied: numpy&gt;=1.17.3 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from imbalanced-learn) (1.24.3)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from imbalanced-learn) (1.10.1)
-Requirement already satisfied: scikit-learn&gt;=1.0.2 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from imbalanced-learn) (1.3.2)
-Requirement already satisfied: joblib&gt;=1.1.1 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from imbalanced-learn) (1.4.2)
-Requirement already satisfied: threadpoolctl&gt;=2.0.0 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from imbalanced-learn) (3.5.0)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_resampled</span><span class="p">,</span> <span class="n">y_resampled</span> <span class="o">=</span> <span class="n">SMOTE</span><span class="p">()</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_classification_train</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">X_resampled</span><span class="p">,</span> <span class="n">y_resampled</span> <span class="o">=</span> <span class="n">SMOTE</span><span class="p">()</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_classification_train</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;X_train&#39; is not defined
-</pre></div>
-</div>
-</div>
-</div>
 <ol class="arabic simple" start="12">
-<li><p>Train a new random forest classifier using <code class="docutils literal notranslate"><span class="pre">X_resampled</span></code> and <code class="docutils literal notranslate"><span class="pre">y_resampled</span></code>. Use the same hyperparameters as your original random forest.</p></li>
+<li><p>Evaluate the model on the test data set (i.e. print off the MSE loss and the Root Mean Squared Error).</p></li>
 </ol>
 <ol class="arabic simple" start="13">
-<li><p>Create a new heatmap plot for the confusion matrix showing the performance of the classifier that was trained on the oversampled data set, evaluated on the validation data set. Label the heatmap with the <code class="docutils literal notranslate"><span class="pre">classnames</span></code> list on the x and y axis.</p></li>
+<li><p>Get the model predictions for the test data set.</p></li>
 </ol>
-</section>
-<section id="part-5-train-a-random-forest-regressor">
-<h1>Part 5: Train a Random Forest Regressor<a class="headerlink" href="#part-5-train-a-random-forest-regressor" title="Permalink to this heading">#</a></h1>
 <ol class="arabic simple" start="14">
-<li><p>Train a <code class="docutils literal notranslate"><span class="pre">RandomForestRegressor</span></code> on the training data set, using the regression target. Set the number of estimators to 120 and the maximum tree depth to 10. You can use the other default hyperparameters.</p></li>
+<li><p>Unscale both <code class="docutils literal notranslate"><span class="pre">y_test</span></code> and the model predictions for the flood probabilities by using the inverse transformation for the standard scalar.</p></li>
 </ol>
 <ol class="arabic simple" start="15">
-<li><p>Using your trained <code class="docutils literal notranslate"><span class="pre">RandomForestRegressor</span></code>, predict the target values for the validation data set and calculate the coefficient of determination between the true targets and the values predicted by the <code class="docutils literal notranslate"><span class="pre">RandomForestRegressor</span></code>.</p></li>
-</ol>
-<ol class="arabic simple" start="16">
-<li><p>Make a barplot of the feature importance in your trained random forest. Label the x-axis with the feature names.</p></li>
-</ol>
-<ol class="arabic simple" start="17">
-<li><p>What are the 4 most important features in terms of determining the health impact score? Print them out.</p></li>
+<li><p>Make a scatter plot of the predicted flood probabilities compared with the true flood probabilities for the test data set.</p></li>
 </ol>
 </section>
 
@@ -655,22 +575,13 @@ Requirement already satisfied: threadpoolctl&gt;=2.0.0 in /opt/anaconda3/envs/ML
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../lectures_ML/SupervisedML/randomforests.html"
+       href="../lectures_ML/DeepLearning/ANN_CNN.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Decision Trees and Random Forests (Wildfire cause prediction)</p>
+        <p class="prev-next-title">Tutorial on Global Temperature Trends with Deep Learning</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="../lectures_ML/UnsupervisedML/unsupervisedML.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Unsupervised Machine Learning</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -687,13 +598,12 @@ Requirement already satisfied: threadpoolctl&gt;=2.0.0 in /opt/anaconda3/envs/ML
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Assignment 2: Predicting Health Impacts from Air Quality Factors</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-data-from-kaggle">Download the data from Kaggle</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-data-exploration">Part 1: Data exploration</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Assignment 4: Flood Risk Prediction with Neural Network Regression</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-load-and-preprocess-the-flood-data-set">Part 1: Load and Preprocess the Flood Data Set</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-preprocessing">Part 2: Preprocessing</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-training-validation-and-test-split">Part 3: Training, validation, and test split</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-train-a-random-forest-classifier">Part 4: Train a Random Forest Classifier</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-train-a-random-forest-regressor">Part 5: Train a Random Forest Regressor</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-training-validation-and-test-splits">Part 3: Training, validation, and test splits</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-train-a-neural-network">Part 4: Train a Neural Network</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#train-and-evaluate-the-model">Train and Evaluate the Model</a></li>
 </ul>
 
   </nav></div>
