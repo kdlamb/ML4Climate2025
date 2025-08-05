@@ -30,7 +30,7 @@ parts:
     - file: lectures_ML/DeepLearning/ANN
     - file: lectures_ML/DeepLearning/ANN_CNN
     - file: assignments/Assignment4
-#    - file: lectures_ML/DeepLearning/RNN
+    - file: lectures_ML/DeepLearning/RNN
 #    - file: lectures_ML/DeepLearning/generativemodels
 #  - caption: Advanced Topics
 #    chapters:
