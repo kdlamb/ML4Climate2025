@@ -471,7 +471,7 @@ Using simple examples of physical systems, we will explore how prior physical kn
 <p>By including known symmetries into our machine learning models, we can often reduce the complexity of our machine learning models, and improve the robustness of our predictions.</p>
 <p>One way to include this type of prior physical knowledge is through the training process. For example, if we don’t expect that rotations of our input would have a physical effect on our output, we can impose translational or rotational invariance by augmenting our data sets with random translations or rotations.</p>
 <p>Another approach is through the architecture of the network itself. Different types of models implicity assume different types of invariances.</p>
-<p><img alt="InductiveBias" src="https://drive.google.com/uc?export=view&amp;id=1LgydMXSXEORzo_awkn1R88MjFahiFIEP" /></p>
+<p><img alt="InductiveBias" src="../../_images/Invariances.png" /></p>
 <p>The above figures come from <a href="https://arxiv.org/pdf/1806.01261.pdf" >Battaglia et al. 2018</a></p>
 </section>
 </section>
@@ -623,7 +623,7 @@ We write the time dependence of our cup of coffee in python:</p>
 </div>
 </div>
 <p>We will first train the neural network with mean squared error (MSE) loss. The input for our network here is the 10 times that we measured our cup of coffee <span class="math notranslate nohighlight">\(t\)</span>, and the output here are the 10 temperatures that we measured at those times.</p>
-<p><img alt="vanilla" src="https://drive.google.com/uc?export=view&amp;id=1ePvG5gvuXvFl10cyuSBbt81U1Qe1mdLP" /> Image credit: <a href="https://benmoseley.blog/my-research/so-what-is-a-physics-informed-neural-network/">B. Moseley </a></p>
+<p><img alt="vanilla" src="../../_images/Vanilla_NN.png" /> Image credit: <a href="https://benmoseley.blog/my-research/so-what-is-a-physics-informed-neural-network/">B. Moseley </a></p>
 <p>Because the neural network acts as a univeral function approximator, we will denote the neural network as <span class="math notranslate nohighlight">\(f(t|\theta)\)</span>. That is, it takes in the time <span class="math notranslate nohighlight">\(t\)</span> and maps this to a prediction for the temperature, given the values of the weights of the neural network <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p>MSE loss for the 10 data points is calculated by
 \begin{equation}
@@ -649,40 +649,40 @@ Loss_{MSE} = \frac{1}{10}\sum_{j=0}^{10} (f(t_{j}|\theta)-T_{j})^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 4464.03
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 4537.24
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2000/20000, loss: 2514.70
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2000/20000, loss: 2494.97
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4000/20000, loss: 2149.17
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4000/20000, loss: 2019.84
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 6000/20000, loss: 862.74
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 6000/20000, loss: 413.49
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8000/20000, loss: 18.84
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8000/20000, loss: 4.79
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 10000/20000, loss: 2.87
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 10000/20000, loss: 2.37
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 12000/20000, loss: 1.95
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 12000/20000, loss: 2.35
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 14000/20000, loss: 1.82
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 14000/20000, loss: 2.34
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 16000/20000, loss: 1.62
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 16000/20000, loss: 2.33
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 18000/20000, loss: 1.35
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 18000/20000, loss: 2.33
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Epoch&#39;)
 </pre></div>
 </div>
-<img alt="../../_images/d8c6252a44232183ac9a081f7b0548f1da378849275f69b26b9fe680d2cde8ed.png" src="../../_images/d8c6252a44232183ac9a081f7b0548f1da378849275f69b26b9fe680d2cde8ed.png" />
+<img alt="../../_images/52c2b2d362eb76ce2357b8711320027b8edb810d14e02bb2f209711fac5c3d03.png" src="../../_images/52c2b2d362eb76ce2357b8711320027b8edb810d14e02bb2f209711fac5c3d03.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -726,11 +726,11 @@ Loss_{MSE} = \frac{1}{10}\sum_{j=0}^{10} (f(t_{j}|\theta)-T_{j})^2
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../../_images/2f05e9ff86c10ec2083182ab7e98d2fb1c580b7285ae54ef9011b8d0b707fbb2.png" src="../../_images/2f05e9ff86c10ec2083182ab7e98d2fb1c580b7285ae54ef9011b8d0b707fbb2.png" />
+<img alt="../../_images/542acb26995d9c9e787ad6db8ecf14d4eb56b7c0ef56006c3201273ff35c83d4.png" src="../../_images/542acb26995d9c9e787ad6db8ecf14d4eb56b7c0ef56006c3201273ff35c83d4.png" />
 </div>
 </div>
 <p>As can be seen, the neural network does a decent job of predicting the temperature of the cup of coffee for the first 300 seconds, but it does a very poor job extrapolating to future times (t&gt;300 seconds) because the neural network has no physical constraints on its prediction. It also is not quite sure how to handle the initial points.</p>
-<p><img alt="PINN" src="https://drive.google.com/uc?export=view&amp;id=1XWeajPbDrc4OyEAjSO8WwgNSnEVH8VCX" /> Image credit: <a href="https://benmoseley.blog/my-research/so-what-is-a-physics-informed-neural-network/">B. Moseley </a></p>
+<p><img alt="PINN" src="../../_images/PINN.png" /> Image credit: <a href="https://benmoseley.blog/my-research/so-what-is-a-physics-informed-neural-network/">B. Moseley </a></p>
 <p>Next, we will look at how to use a physics-informed neural network instead. The idea behind PINN’s is that we can impose a physical constraint on our neural network prediction, given our prior physical knowledge about the system. To do this, we will use what are called colloction points. Collocation points are points that we will evaluate our network at during the training process to ensure that the neural network prediction will be consistent with our known prior physical knowledge.</p>
 <p>In this case, our prior physical knowledge is Newton’s cooling law, so we can write this constraint as
 \begin{equation}
@@ -746,7 +746,7 @@ where we have just replaced the temperature with the prediction from our neural 
 Loss_{physics} = \frac{1}{M}\sum_{i=0}^{M} \left(\frac{df(t_{i}|\theta)}{dt_{i}} - r(T_{env}-f(t_{i}|\theta))\right)^2
 \end{equation}.</p>
 <p>In order to evalute this term, we need to take the derivative of our neural network as its being trained. We can use automatic differentiation to do this.</p>
-<p><img alt="AD" src="https://drive.google.com/uc?export=view&amp;id=1sDB_-FFq_2oVDhM5QtRUF2-XfxCNRXWb" /></p>
+<p><img alt="AD" src="../../_images/AD_Baydin2015.png" /></p>
 <p>The above figure comes from <a href="https://arxiv.org/abs/1502.05767">Baydin et al. 2015 </a>.</p>
 <p>Pytorch has a function called <em>torch.autograd.grad</em> that uses automatic diffentiation to compute and return the sum of gradients of outputs with respect to the inputs (the Jax package has similar functionality that can be used with Tensorflow).</p>
 <div class="cell docutils container">
@@ -793,40 +793,40 @@ where <span class="math notranslate nohighlight">\(\lambda\)</span> is a hyperpa
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 4712.75
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 4576.68
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2000/20000, loss: 2521.65
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2000/20000, loss: 2510.06
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4000/20000, loss: 2240.42
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4000/20000, loss: 2126.20
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 6000/20000, loss: 718.75
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 6000/20000, loss: 377.94
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8000/20000, loss: 9.07
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8000/20000, loss: 3.49
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 10000/20000, loss: 4.49
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 10000/20000, loss: 2.99
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 12000/20000, loss: 4.34
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 12000/20000, loss: 2.78
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 14000/20000, loss: 4.14
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 14000/20000, loss: 2.52
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 16000/20000, loss: 3.33
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 16000/20000, loss: 2.26
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 18000/20000, loss: 2.51
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 18000/20000, loss: 1.69
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Epoch&#39;)
 </pre></div>
 </div>
-<img alt="../../_images/20a31894696200e2409e1505085b760bb71d53fb9e742eba2f7846108fd61e1e.png" src="../../_images/20a31894696200e2409e1505085b760bb71d53fb9e742eba2f7846108fd61e1e.png" />
+<img alt="../../_images/c783d13905b7e31cb58c5527c6d9fde296f520fb32dafce5310648652ba0f0d1.png" src="../../_images/c783d13905b7e31cb58c5527c6d9fde296f520fb32dafce5310648652ba0f0d1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -869,7 +869,7 @@ where <span class="math notranslate nohighlight">\(\lambda\)</span> is a hyperpa
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../../_images/24e6b15daca87297ee659a473af414fa4c872bdf462dbd635308de216df8370f.png" src="../../_images/24e6b15daca87297ee659a473af414fa4c872bdf462dbd635308de216df8370f.png" />
+<img alt="../../_images/5720823696858b6e7b2df9e567419974b86c9b6d3f4649f7cfa1a42dcba4b23c.png" src="../../_images/5720823696858b6e7b2df9e567419974b86c9b6d3f4649f7cfa1a42dcba4b23c.png" />
 </div>
 </div>
 <p>The PINN performs much better than the original Vanilla network that was trained without any physics constraint.</p>
@@ -931,40 +931,40 @@ where <span class="math notranslate nohighlight">\(T(t)\)</span> is the temperat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/40000, loss: 4393.35
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/40000, loss: 4532.58
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4000/40000, loss: 2505.32
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4000/40000, loss: 2535.08
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8000/40000, loss: 1940.62
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8000/40000, loss: 2366.50
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 12000/40000, loss: 212.96
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 12000/40000, loss: 1064.32
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 16000/40000, loss: 3.49
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 16000/40000, loss: 28.83
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 20000/40000, loss: 2.41
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 20000/40000, loss: 1.46
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 24000/40000, loss: 1.97
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 24000/40000, loss: 1.42
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 28000/40000, loss: 1.55
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 28000/40000, loss: 1.37
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 32000/40000, loss: 1.36
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 32000/40000, loss: 1.34
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 36000/40000, loss: 1.33
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 36000/40000, loss: 1.34
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Epoch&#39;)
 </pre></div>
 </div>
-<img alt="../../_images/3a96da0ff6eb47405deababf7e522e31399e23480e8305578dd4cf4b6c0be208.png" src="../../_images/3a96da0ff6eb47405deababf7e522e31399e23480e8305578dd4cf4b6c0be208.png" />
+<img alt="../../_images/8777562b886277fef28d7a80336900d2bcbfcd8fa9c8bbff09fbfe30ca0cdabb.png" src="../../_images/8777562b886277fef28d7a80336900d2bcbfcd8fa9c8bbff09fbfe30ca0cdabb.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1009,7 +1009,7 @@ where <span class="math notranslate nohighlight">\(T(t)\)</span> is the temperat
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../../_images/b32c70aceadaa3c5853839f4d3916561d3faff5ff5d73f4460d475e94999f5be.png" src="../../_images/b32c70aceadaa3c5853839f4d3916561d3faff5ff5d73f4460d475e94999f5be.png" />
+<img alt="../../_images/ca2fbf39f4328ad814d9ba5e0871460b63a455cf6821178fef7e79b1229573c5.png" src="../../_images/ca2fbf39f4328ad814d9ba5e0871460b63a455cf6821178fef7e79b1229573c5.png" />
 </div>
 </div>
 <p>Finally we can look at the value that was learned by the network for <span class="math notranslate nohighlight">\(r\)</span>. This just requires the following code:</p>
@@ -1020,7 +1020,7 @@ where <span class="math notranslate nohighlight">\(T(t)\)</span> is the temperat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0050865900702774525
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.005273221060633659
 </pre></div>
 </div>
 </div>
@@ -1036,7 +1036,7 @@ where <span class="math notranslate nohighlight">\(T(t)\)</span> is the temperat
 \end{equation}</p>
 <p>To learn the unknown function <span class="math notranslate nohighlight">\(f(h(t), t, \theta)\)</span>, which is parameterized as a neural network with weights <span class="math notranslate nohighlight">\(\theta\)</span>, we can perform back-propogation through typical numerical ODE solvers.</p>
 <p>We’ll continue with the example of Newton’s Law of Cooling, and create a NODE model trained on observed temperature points to then predict future states of the system. In this case, we do not directly include the physical law function (as we did with PINN’s), but we use neural ODE’s to learn the function <span class="math notranslate nohighlight">\(dT/dt\)</span>.</p>
-<p><img alt="AD" src="https://drive.google.com/uc?export=view&amp;id=1P6Ows1rqKNgLo0mbZQB8aIQTrc51eKYw" /></p>
+<p><img alt="AD" src="../../_images/RNNvsNODE.png" /></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this line installs the python library from Chen et al. 2018</span>
@@ -1187,19 +1187,19 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/anaconda3/envs/M
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 7006.68
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 65912.64
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4000/20000, loss: 0.94
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4000/20000, loss: 1.06
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8000/20000, loss: 0.30
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8000/20000, loss: 0.54
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 12000/20000, loss: 0.13
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 12000/20000, loss: 0.37
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 16000/20000, loss: 0.08
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 16000/20000, loss: 0.29
 </pre></div>
 </div>
 </div>
@@ -1228,7 +1228,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/anaconda3/envs/M
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/913ad30ba4d7aca6294fd11ba15c7f8188d66f9b6c368336eb11994f34081554.png" src="../../_images/913ad30ba4d7aca6294fd11ba15c7f8188d66f9b6c368336eb11994f34081554.png" />
+<img alt="../../_images/f39db773fcc493c43a5c96bc689574c9730d1e0f8a5b419085f9c762ef2538bb.png" src="../../_images/f39db773fcc493c43a5c96bc689574c9730d1e0f8a5b419085f9c762ef2538bb.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1257,7 +1257,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/anaconda3/envs/M
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../../_images/ab1d70ac47d91d335388c72a2ccc770d3cf783c6faa34acf0e0f6c5a6ab1d136.png" src="../../_images/ab1d70ac47d91d335388c72a2ccc770d3cf783c6faa34acf0e0f6c5a6ab1d136.png" />
+<img alt="../../_images/cabecb2dce52d91a2f93cc6b5d4ff9d6eb5d57a625fed51ec33e807f17ea46fd.png" src="../../_images/cabecb2dce52d91a2f93cc6b5d4ff9d6eb5d57a625fed51ec33e807f17ea46fd.png" />
 </div>
 </div>
 <p>The NODE model doesn’t do quite as well as the PINN’s, but it does significantly better than the vanilla neural network. Recall that we have not explicitly included any physical constraint here, except the assumption that our observed temperature observations are the result of integrating a continous function.</p>
@@ -1297,7 +1297,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/anaconda3/envs/M
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-1.0, 0.1)
 </pre></div>
 </div>
-<img alt="../../_images/6a14bc2a25f2bec14fbe1d4b2fbb5e360be0bd2d15d3038477d86719ddcc42b7.png" src="../../_images/6a14bc2a25f2bec14fbe1d4b2fbb5e360be0bd2d15d3038477d86719ddcc42b7.png" />
+<img alt="../../_images/79b92c3da6e68cb228290021e54f10b76b6ec5bf7d545d8998b0f90d05200d11.png" src="../../_images/79b92c3da6e68cb228290021e54f10b76b6ec5bf7d545d8998b0f90d05200d11.png" />
 </div>
 </div>
 <p>The learned function is piecewise continous but this is likely due to using Runge-Kutta 4th order and the very few observations that we are training on (we do worse at the higher temperatures, when the rate of change is the largest). But overall the learned function dT/dt reasonably approximates the true derivative.</p>
