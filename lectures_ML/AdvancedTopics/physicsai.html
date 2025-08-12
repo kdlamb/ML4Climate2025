@@ -1,0 +1,1423 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Introduction to physics-informed machine learning &#8212; Earth Data Science &amp; Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lectures_ML/AdvancedTopics/physicsai';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Recurrent Neural Networks (RNN’s) for Time Series Prediction" href="../DeepLearning/RNN.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo_class.png" class="logo__image only-light" alt="Earth Data Science & Machine Learning - Home"/>
+    <script>document.write(`<img src="../../_static/logo_class.png" class="logo__image only-dark" alt="Earth Data Science & Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Welcome to the Earth Data Science and Machine Learning Course Series
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Introduction/What-is-ML.html">What is machine learning?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Introduction/ML-for-climate-env.html">Machine Learning for Climate and Environmental Sustainability</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../Introduction/computing-environment.html">Computing Environment for Class</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Preprocessing and Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreprocessing.html">Data Exploration and Data Pre-Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DataPreprocessing/datapreparation.html">Tutorial on Data Preprocessing (US Wildfires)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/Assignment1.html">Assignment 1: Data Pre-Processing of Historical Tropical Cyclone Records</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction to Supervised Machine Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../SupervisedML/supervisedml.html">Supervised Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SupervisedML/randomforests.html">Decision Trees and Random Forests (Wildfire cause prediction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/Assignment2.html">Assignment 2: Predicting Health Impacts from Air Quality Factors</a></li>
+
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Unsupervised Machine Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../UnsupervisedML/unsupervisedML.html">Unsupervised Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UnsupervisedML/PCA.html">Dimensionality Reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/Assignment3.html">Assignment 3: Using Unsupervised Machine Learning to Discover Climate Zones</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction to Deep Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../DeepLearning/ANN.html">Artificial Neural Networks (ANN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DeepLearning/ANN_CNN.html">Tutorial on Global Temperature Trends with Deep Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/Assignment4.html">Assignment 4: Flood Risk Prediction with Neural Network Regression</a></li>
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../DeepLearning/RNN.html">Recurrent Neural Networks (RNN’s) for Time Series Prediction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Topics</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction to physics-informed machine learning</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/kdlamb/ML4Climate2025" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/kdlamb/ML4Climate2025/issues/new?title=Issue%20on%20page%20%2Flectures_ML/AdvancedTopics/physicsai.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/lectures_ML/AdvancedTopics/physicsai.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Introduction to physics-informed machine learning</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-physical-knowledge-into-our-neural-networks">Embedding physical knowledge into our neural networks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soft-and-hard-physical-constraints">Soft and hard physical constraints</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symmetries-invariances-and-equivariances">Symmetries, invariances, and equivariances</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-physics-ml-approaches">Hybrid Physics-ML approaches</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#physics-informed-neural-networks">Physics-Informed Neural Networks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-ordinary-differential-equations-node-s">Neural Ordinary Differential Equations (NODE’s)</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-physics-informed-machine-learning">
+<h1>Introduction to physics-informed machine learning<a class="headerlink" href="#introduction-to-physics-informed-machine-learning" title="Permalink to this heading">#</a></h1>
+<p>This Colab Notebook demonstrates how we might include physics into our machine learning models.</p>
+<p>In the environmental sciences, we generally have some prior physical knowledge about the system we are interested in modeling. In this module, we will introduce some ways in which physical knowledge can be integrated with machine learning to improve predictions.</p>
+<p><strong>Some examples in the environmental sciences</strong></p>
+<ul class="simple">
+<li><p><a href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.126.098302"> T. Beucler et al.”Enforcing Analytic Constraints in Neural Networks Emulating Physical Systems.” Phys. Rev. Lett. 126, 09830</a></p></li>
+<li><p><a href="https://royalsocietypublishing.org/doi/full/10.1098/rsta.2020.0093"> K. Kashinath et al. 2021 Physics-informed machine learning: case studies for weather and climate modelling. Phil. Trans. R. Soc. A.3792020009320200093</a></p></li>
+<li><p><a href="https://iopscience.iop.org/article/10.1088/1748-9326/acbbe0/meta">R. ElGhawi et al. “Hybrid modeling of evapotranspiration: inferring stomatal and aerodynamic resistances using combined physics-based and machine learning” Env. Res. Lett. 18, 034039, 2023.</a></p></li>
+<li><p><a href="https://www.nature.com/articles/s41586-024-07744-y">D. Kochkov et al. “Neural general circulation models for weather and climate” Nature, 632, 1060–1066 (2024).</a></p></li>
+</ul>
+<p><strong>Goal</strong>
+Using simple examples of physical systems, we will explore how prior physical knowledge can be included in machine learning models</p>
+<p><strong>Methods to be discussed:</strong></p>
+<ul class="simple">
+<li><p>Soft and Hard Physical Constraints</p></li>
+<li><p>Hybrid physics-ML approaches</p></li>
+<li><p>Physics-Informed Neural Networks</p></li>
+<li><p>Neural Ordinary Differential Equations</p></li>
+</ul>
+<p>We load pre-trained neural network weights that we will use in the example later here:</p>
+<section id="embedding-physical-knowledge-into-our-neural-networks">
+<h2>Embedding physical knowledge into our neural networks<a class="headerlink" href="#embedding-physical-knowledge-into-our-neural-networks" title="Permalink to this heading">#</a></h2>
+<p>Neural networks can act as universal function approximators (Hornik et al. 1989). This property makes them very useful for supervised regression tasks where we want learn a non-linear mapping between inputs and outputs. However, unlike physical models, which generally have some limiting factors in terms of how “wrong” they can be, when neural networks are wrong, they generally produce extremely unphysical predictions. In particular, unconstrained neural networks will generalize very poorly outside of the data regime in which they are trained.</p>
+<section id="soft-and-hard-physical-constraints">
+<h3>Soft and hard physical constraints<a class="headerlink" href="#soft-and-hard-physical-constraints" title="Permalink to this heading">#</a></h3>
+<p>One way that we can improve a neural networks prediction for physical models is to include constraints on the neural network’s prediction. We often distinguish between two types of constraints:</p>
+<ul class="simple">
+<li><p><strong>Soft physical constraints</strong> refer to adding an additional term to the loss function in order to impose a physical constraint that we know a priori about our system. These will be problem specific, as they will depend on the specific physical laws that we want to enforce.</p></li>
+<li><p><strong>Hard physical constraints</strong> refer to updating the architecture of our neural network to impose specific physical functions.</p></li>
+</ul>
+</section>
+<section id="symmetries-invariances-and-equivariances">
+<h3>Symmetries, invariances, and equivariances<a class="headerlink" href="#symmetries-invariances-and-equivariances" title="Permalink to this heading">#</a></h3>
+<p>By including known symmetries into our machine learning models, we can often reduce the complexity of our machine learning models, and improve the robustness of our predictions.</p>
+<p>One way to include this type of prior physical knowledge is through the training process. For example, if we don’t expect that rotations of our input would have a physical effect on our output, we can impose translational or rotational invariance by augmenting our data sets with random translations or rotations.</p>
+<p>Another approach is through the architecture of the network itself. Different types of models implicity assume different types of invariances.</p>
+<p><img alt="InductiveBias" src="https://drive.google.com/uc?export=view&amp;id=1LgydMXSXEORzo_awkn1R88MjFahiFIEP" /></p>
+<p>The above figures come from <a href="https://arxiv.org/pdf/1806.01261.pdf" >Battaglia et al. 2018</a></p>
+</section>
+</section>
+<section id="hybrid-physics-ml-approaches">
+<h2>Hybrid Physics-ML approaches<a class="headerlink" href="#hybrid-physics-ml-approaches" title="Permalink to this heading">#</a></h2>
+<p>Sometimes we want to integrate a lot of prior physical knowledge into our system, but we also want to include a neural network prediction to model parts of the system that we don’t know. One way to do this is through using hybrid-physics machine learning models. Hybrid physics-machine learning models are ones that include both domain knowledge (first principles physical knowledge about our system) as well as data-driven methods.</p>
+<p>Physical models lend themselves to interpretability, but suffer from high computational costs (in some cases) and can also have uncertainty in terms of both parameters in the equations and the structure of the equations themselves.</p>
+<p>Data-driven models are learned directly from data or higher resolution simulations that explicity resolve physics that may be uncertain at lower resolutions. However, they are hard to interpret, and the parameters that they learn do not correspond to parameters of the system, and thus may not be physically interpretable.</p>
+<p>By combining both physical models and data-driven models, hybrid models will have improved intretability over purely data-driven models, but also may have improved accuracy by their ability to learn unknown or uncertain physics directly from observations.</p>
+</section>
+<section id="physics-informed-neural-networks">
+<h2>Physics-Informed Neural Networks<a class="headerlink" href="#physics-informed-neural-networks" title="Permalink to this heading">#</a></h2>
+<p>One type of hybrid-physics machine learning model is a physics-informed neural networks. Physics-informed neural networks (Raissi et al. 2019) are an approach that we can use to enforce physical constraints on our machine learning model.</p>
+<p>When we are in a regime where don’t have a lot of data but do have prior physical knowledge, we can regularize our neural network with differential equations. The example that we will go through below to demonstrate how this works in practice largely follows the tutorial from  <a href="https://medium.com/@theo.wolf/physics-informed-neural-networks-a-simple-tutorial-with-pytorch-f28a890b874a"> Theo Wolf </a>. We’ll start by loading some python packages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As an example, we will use Newton’s law of cooling. This equation describes the temperature of an object (for example, a cup of coffee) placed into an environment that is at a different temperature (here, we’ll assume the cup of coffee is placed onto the table at room temperature). We can write this as an ordinary differential equation describing the rate of heat loss from the object:
+\begin{equation}
+\frac{dT(t)}{dt} = r(T_{env}-T(t))
+\end{equation}
+where <span class="math notranslate nohighlight">\(T(t)\)</span> is the temperature of our cup of coffee at time t, <span class="math notranslate nohighlight">\(T_{env}\)</span> is the temperature of the ambient environment, and <span class="math notranslate nohighlight">\(r\)</span> is the cooling rate.</p>
+<p>In this case we can find an analytical solution to this ordinary differential equation, describing the temperature of our cup of coffee after <span class="math notranslate nohighlight">\(t\)</span> seconds as
+\begin{equation}
+T(t) = T_{env}+(T_{0}-T_{env})e^{-rt}
+\end{equation}
+where <span class="math notranslate nohighlight">\(T_{0}\)</span> is the initial temperature of our cup of coffee, and <span class="math notranslate nohighlight">\(T(t)\)</span> is the temperature of the coffee after <span class="math notranslate nohighlight">\(t\)</span> seconds have passed.
+We write the time dependence of our cup of coffee in python:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cooling_law</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">Tenv</span><span class="p">,</span> <span class="n">T0</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">Tenv</span> <span class="o">+</span> <span class="p">(</span><span class="n">T0</span> <span class="o">-</span> <span class="n">Tenv</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">R</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">T</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will use the analytical solution to show the true solution of our differential equation, given an initial temperature of our cup of coffee at <span class="math notranslate nohighlight">\(T_{0}=100\)</span> <span class="math notranslate nohighlight">\(^{\circ}C\)</span>, and the initial temperature of the environment is <span class="math notranslate nohighlight">\(T_{env}=25\)</span> <span class="math notranslate nohighlight">\(^{\circ}C\)</span>. We plot this function below, and also create a training data set of 10 data points for our machine learning model. These 10 data points represent measurements of our cup of coffee over time (so we’ll add some normally distributed noise). These 10 measurements are evenly spaced over the first 300 seconds that we are observing our cup of coffee.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">Tenv</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">T0</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">R</span> <span class="o">=</span> <span class="mf">0.005</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">eq</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">cooling_law</span><span class="p">,</span> <span class="n">Tenv</span><span class="o">=</span><span class="n">Tenv</span><span class="p">,</span> <span class="n">T0</span><span class="o">=</span><span class="n">T0</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span><span class="p">)</span>
+<span class="n">temps</span> <span class="o">=</span> <span class="n">eq</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+
+<span class="c1"># Make training data</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">eq</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span>  <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">temps</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Equation&#39;</span><span class="p">,</span> <span class="s1">&#39;Training data&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Temperature (C)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/03568a372a649e6c8efe5a167aac40aa12fc75a4c25e4ff3c725d2a19b882d7a.png" src="../../_images/03568a372a649e6c8efe5a167aac40aa12fc75a4c25e4ff3c725d2a19b882d7a.png" />
+</div>
+</div>
+<p>First, we will look at what happens if we train a simple neural network (a fully connected multi-layer perceptron with ReLU activations). The code below creates an MLP using the Pytorch framework, and can be used for both training and inference.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
+<span class="kn">import</span> <span class="nn">torch.utils.data</span> <span class="k">as</span> <span class="nn">thdat</span>
+
+<span class="n">DEVICE</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">np_to_th</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+  <span class="c1"># this is just a simple helper function to turn numpy arrays into pytorch tensors</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">input_dim</span><span class="p">,</span><span class="n">output_dim</span><span class="p">,</span><span class="n">n_units</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">loss</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">(),</span><span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+                 <span class="n">loss2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">loss2_weight</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss2</span> <span class="o">=</span> <span class="n">loss2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss2_weight</span> <span class="o">=</span> <span class="n">loss2_weight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr</span> <span class="o">=</span> <span class="n">lr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_units</span> <span class="o">=</span> <span class="n">n_units</span>
+
+        <span class="c1"># the code here are (the layers of our MLP)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_units</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_units</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_units</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_units</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_units</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_units</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_units</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">out</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_units</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="c1"># this is where we train the neural network</span>
+        <span class="n">Xt</span> <span class="o">=</span> <span class="n">np_to_th</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">np_to_th</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="n">optimiser</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
+            <span class="n">optimiser</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">yt</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss2</span><span class="p">:</span>
+                <span class="n">loss</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss2_weight</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss2_weight</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">optimiser</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">ep</span> <span class="o">%</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">ep</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">, loss: </span><span class="si">{</span><span class="n">losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">losses</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="c1"># this is where we do inference</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">np_to_th</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will first train the neural network with mean squared error (MSE) loss. The input for our network here is the 10 times that we measured our cup of coffee <span class="math notranslate nohighlight">\(t\)</span>, and the output here are the 10 temperatures that we measured at those times.</p>
+<p><img alt="vanilla" src="https://drive.google.com/uc?export=view&amp;id=1ePvG5gvuXvFl10cyuSBbt81U1Qe1mdLP" /> Image credit: <a href="https://benmoseley.blog/my-research/so-what-is-a-physics-informed-neural-network/">B. Moseley </a></p>
+<p>Because the neural network acts as a univeral function approximator, we will denote the neural network as <span class="math notranslate nohighlight">\(f(t|\theta)\)</span>. That is, it takes in the time <span class="math notranslate nohighlight">\(t\)</span> and maps this to a prediction for the temperature, given the values of the weights of the neural network <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>MSE loss for the 10 data points is calculated by
+\begin{equation}
+Loss_{MSE} = \frac{1}{10}\sum_{j=0}^{10} (f(t_{j}|\theta)-T_{j})^2
+\end{equation}</p>
+<p>The code below trains the MLP for 20000 epochs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">loss2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">losses</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epoch&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 4464.03
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2000/20000, loss: 2514.70
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4000/20000, loss: 2149.17
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 6000/20000, loss: 862.74
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8000/20000, loss: 18.84
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 10000/20000, loss: 2.87
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 12000/20000, loss: 1.95
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 14000/20000, loss: 1.82
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 16000/20000, loss: 1.62
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 18000/20000, loss: 1.35
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Epoch&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/d8c6252a44232183ac9a081f7b0548f1da378849275f69b26b9fe680d2cde8ed.png" src="../../_images/d8c6252a44232183ac9a081f7b0548f1da378849275f69b26b9fe680d2cde8ed.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This line saves the network weights</span>
+<span class="c1">#torch.save(net.state_dict(), &quot;vanilla_network_weights&quot;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this line reloads the saved network weights</span>
+<span class="c1">#net.load_state_dict(torch.load(&quot;/content/vanilla_network_weights&quot;))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s look at how well the trained neural network does. We first use the train neural network to predict the temperature of our cup of coffee over the entire 1000 seconds in our data set. The code below does inference with the trained neural network to give us predictions for the temperature.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preds</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, let’s plot the predictions of the neural network and compare it with the true equation for the temperature of the cup of coffee.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">temps</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Equation&#39;</span><span class="p">,</span><span class="s1">&#39;Training data&#39;</span><span class="p">,</span> <span class="s1">&#39;Vanilla Network&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Temperature (C)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/2f05e9ff86c10ec2083182ab7e98d2fb1c580b7285ae54ef9011b8d0b707fbb2.png" src="../../_images/2f05e9ff86c10ec2083182ab7e98d2fb1c580b7285ae54ef9011b8d0b707fbb2.png" />
+</div>
+</div>
+<p>As can be seen, the neural network does a decent job of predicting the temperature of the cup of coffee for the first 300 seconds, but it does a very poor job extrapolating to future times (t&gt;300 seconds) because the neural network has no physical constraints on its prediction. It also is not quite sure how to handle the initial points.</p>
+<p><img alt="PINN" src="https://drive.google.com/uc?export=view&amp;id=1XWeajPbDrc4OyEAjSO8WwgNSnEVH8VCX" /> Image credit: <a href="https://benmoseley.blog/my-research/so-what-is-a-physics-informed-neural-network/">B. Moseley </a></p>
+<p>Next, we will look at how to use a physics-informed neural network instead. The idea behind PINN’s is that we can impose a physical constraint on our neural network prediction, given our prior physical knowledge about the system. To do this, we will use what are called colloction points. Collocation points are points that we will evaluate our network at during the training process to ensure that the neural network prediction will be consistent with our known prior physical knowledge.</p>
+<p>In this case, our prior physical knowledge is Newton’s cooling law, so we can write this constraint as
+\begin{equation}
+g(t,T) = \frac{dT(t)}{dt} - r(T_{env}-T(t)) = 0
+\end{equation}.</p>
+<p>We can use Newton’s cooling law to write a physics loss term for the data as</p>
+<p>\begin{equation}
+g(t,f(t|\theta)) = \frac{df(t|\theta)}{dt} - r(T_{env}-f(t|\theta))
+\end{equation}
+where we have just replaced the temperature with the prediction from our neural network.</p>
+<p>We will then evaluate this physics loss term at <span class="math notranslate nohighlight">\(M = 1000\)</span> collocation points. Our physics loss term is
+\begin{equation}
+Loss_{physics} = \frac{1}{M}\sum_{i=0}^{M} \left(\frac{df(t_{i}|\theta)}{dt_{i}} - r(T_{env}-f(t_{i}|\theta))\right)^2
+\end{equation}.</p>
+<p>In order to evalute this term, we need to take the derivative of our neural network as its being trained. We can use automatic differentiation to do this.</p>
+<p><img alt="AD" src="https://drive.google.com/uc?export=view&amp;id=1sDB_-FFq_2oVDhM5QtRUF2-XfxCNRXWb" /></p>
+<p>The above figure comes from <a href="https://arxiv.org/abs/1502.05767">Baydin et al. 2015 </a>.</p>
+<p>Pytorch has a function called <em>torch.autograd.grad</em> that uses automatic diffentiation to compute and return the sum of gradients of outputs with respect to the inputs (the Jax package has similar functionality that can be used with Tensorflow).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the partial derivative of an output with respect to an input.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">grad_outputs</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">outputs</span><span class="p">),</span> <span class="n">create_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">physics_loss</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The physics loss of the model&quot;&quot;&quot;</span>
+    <span class="c1"># make M = 1000 collocation points</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># run the collocation points through the network</span>
+    <span class="n">temps</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+    <span class="c1"># get the gradient</span>
+    <span class="n">dT</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">temps</span><span class="p">,</span> <span class="n">ts</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># compute the ODE</span>
+    <span class="n">ode</span> <span class="o">=</span> <span class="n">dT</span> <span class="o">-</span> <span class="n">R</span><span class="o">*</span><span class="p">(</span><span class="n">Tenv</span> <span class="o">-</span> <span class="n">temps</span><span class="p">)</span>
+    <span class="c1"># MSE of ODE</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ode</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now that we have the physics loss function, we will train the model with both the MSE loss term and the physics loss term. The training objective is now to minimize this loss function:
+\begin{equation}
+Loss_{MSE}+\lambda Loss_{physics}
+\end{equation}
+where <span class="math notranslate nohighlight">\(\lambda\)</span> is a hyperparameter that weighs the second loss term. Here we will choose <span class="math notranslate nohighlight">\(\lambda\)</span>=1. We will again train the network for 20000 epochs, but now training for both loss terms.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">netpinn</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">loss2</span><span class="o">=</span><span class="n">physics_loss</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">loss2_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">losses</span> <span class="o">=</span> <span class="n">netpinn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epoch&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 4712.75
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2000/20000, loss: 2521.65
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4000/20000, loss: 2240.42
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 6000/20000, loss: 718.75
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8000/20000, loss: 9.07
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 10000/20000, loss: 4.49
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 12000/20000, loss: 4.34
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 14000/20000, loss: 4.14
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 16000/20000, loss: 3.33
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 18000/20000, loss: 2.51
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Epoch&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/20a31894696200e2409e1505085b760bb71d53fb9e742eba2f7846108fd61e1e.png" src="../../_images/20a31894696200e2409e1505085b760bb71d53fb9e742eba2f7846108fd61e1e.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This line saves the network weights</span>
+<span class="c1">#torch.save(netpinn.state_dict(), &quot;pinn_network_weights&quot;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This line reloads the saved network weights</span>
+<span class="c1">#netpinn.load_state_dict(torch.load(&quot;/content/pinn_network_weights&quot;))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now that the model is trained, we will look at the predictions from the PINN model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predspinn</span> <span class="o">=</span> <span class="n">netpinn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">temps</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">predspinn</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Equation&#39;</span><span class="p">,</span><span class="s1">&#39;Training data&#39;</span><span class="p">,</span> <span class="s1">&#39;Vanilla Network&#39;</span><span class="p">,</span> <span class="s1">&#39;PINN&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Temperature (C)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/24e6b15daca87297ee659a473af414fa4c872bdf462dbd635308de216df8370f.png" src="../../_images/24e6b15daca87297ee659a473af414fa4c872bdf462dbd635308de216df8370f.png" />
+</div>
+</div>
+<p>The PINN performs much better than the original Vanilla network that was trained without any physics constraint.</p>
+<p>Next, we will look at how we can use the PINN to learn unknown parameters in our model. For example, if we did not know the parameter <span class="math notranslate nohighlight">\(r\)</span> in our differential equation, how can we use a PINN to estimate what it is?</p>
+<p>Recall that Newton’s law of cooling is
+\begin{equation}
+\frac{dT(t)}{dt} = r(T_{env}-T(t))
+\end{equation}
+where <span class="math notranslate nohighlight">\(T(t)\)</span> is the temperature of our cup of coffee at time t, <span class="math notranslate nohighlight">\(T_{env}\)</span> is the temperature of the ambient environment, and <span class="math notranslate nohighlight">\(r\)</span> is the cooling rate.</p>
+<p>To add <span class="math notranslate nohighlight">\(r\)</span> as a differentiable parameter that will be learned along with the weights of the network, we need to update our neural network, and also update our physics loss function.</p>
+<p>The code below updates our network to include a trainable parameter for <span class="math notranslate nohighlight">\(r\)</span>. This is defined as a pytorch Parameter, which means that it is differentiable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">NetDiscovery</span><span class="p">(</span><span class="n">Net</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">input_dim</span><span class="p">,</span><span class="n">output_dim</span><span class="p">,</span><span class="n">n_units</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">loss</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">(),</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+                 <span class="n">loss2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">loss2_weight</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">input_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">,</span> <span class="n">n_units</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">loss2</span><span class="p">,</span> <span class="n">loss2_weight</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To update the physics loss term, we use the current value of the <span class="math notranslate nohighlight">\(r\)</span> parameter, rather than known value of the <span class="math notranslate nohighlight">\(r\)</span> (recall that we used <span class="math notranslate nohighlight">\(r=0.005\)</span> when we created our data set)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">physics_loss_discovery</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="c1"># make M = 1000 collocation points</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+    <span class="c1"># run the collocation points through the network</span>
+    <span class="n">temps</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+    <span class="c1"># get the gradient</span>
+    <span class="n">dT</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">temps</span><span class="p">,</span> <span class="n">ts</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># compute the ODE</span>
+    <span class="c1"># note that here we now use model.r rather than R because this parameter will be updated as the model is trained</span>
+    <span class="n">ode</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">Tenv</span> <span class="o">-</span> <span class="n">temps</span><span class="p">)</span> <span class="o">-</span> <span class="n">dT</span>
+    <span class="c1"># MSE of ODE</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ode</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we will train the network with this updated loss function. The network will learn how to predict the temperature, given the time, and the current value for <span class="math notranslate nohighlight">\(r\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">netdisc</span> <span class="o">=</span> <span class="n">NetDiscovery</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">loss2</span><span class="o">=</span><span class="n">physics_loss_discovery</span><span class="p">,</span> <span class="n">loss2_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">40000</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span> <span class="mf">5e-6</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">losses</span> <span class="o">=</span> <span class="n">netdisc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epoch&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/40000, loss: 4393.35
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4000/40000, loss: 2505.32
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8000/40000, loss: 1940.62
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 12000/40000, loss: 212.96
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 16000/40000, loss: 3.49
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 20000/40000, loss: 2.41
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 24000/40000, loss: 1.97
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 28000/40000, loss: 1.55
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 32000/40000, loss: 1.36
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 36000/40000, loss: 1.33
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Epoch&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/3a96da0ff6eb47405deababf7e522e31399e23480e8305578dd4cf4b6c0be208.png" src="../../_images/3a96da0ff6eb47405deababf7e522e31399e23480e8305578dd4cf4b6c0be208.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This line saves the network weights</span>
+<span class="c1">#torch.save(netdisc.state_dict(), &quot;pinndisc_network_weights&quot;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This line reloads the network weights</span>
+<span class="c1">#netdisc.load_state_dict(torch.load(&quot;/content/pinndisc_network_weights&quot;))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Similar to before, we will use the trained model to predict the temperature over the entire range of values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predspinndiscover</span> <span class="o">=</span> <span class="n">netdisc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can look at how the prediction compares against our previous models and the true values. Even though the model had to learn the <span class="math notranslate nohighlight">\(r\)</span> parameter along with the functional dependence of Temperature as a function of time, the predictions are on par with the predictions of the PINN model where we used the cooling rate that we knew in the physics loss function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">temps</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">predspinn</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">predspinndiscover</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Equation&#39;</span><span class="p">,</span><span class="s1">&#39;Training data&#39;</span><span class="p">,</span> <span class="s1">&#39;Vanilla Neural Network&#39;</span><span class="p">,</span><span class="s1">&#39;PINN&#39;</span><span class="p">,</span><span class="s1">&#39;discovery PINN&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Temperature (C)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/b32c70aceadaa3c5853839f4d3916561d3faff5ff5d73f4460d475e94999f5be.png" src="../../_images/b32c70aceadaa3c5853839f4d3916561d3faff5ff5d73f4460d475e94999f5be.png" />
+</div>
+</div>
+<p>Finally we can look at the value that was learned by the network for <span class="math notranslate nohighlight">\(r\)</span>. This just requires the following code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">netdisc</span><span class="o">.</span><span class="n">r</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0050865900702774525
+</pre></div>
+</div>
+</div>
+</div>
+<p>Our model found a value very close to the real value <span class="math notranslate nohighlight">\(r=0.005\)</span>.</p>
+<p>A great resource for more complex applications of PINN’s is <a href="https://arxiv.org/abs/2308.08468">Wang et al. 2023 </a>.</p>
+</section>
+<section id="neural-ordinary-differential-equations-node-s">
+<h2>Neural Ordinary Differential Equations (NODE’s)<a class="headerlink" href="#neural-ordinary-differential-equations-node-s" title="Permalink to this heading">#</a></h2>
+<p>Another way that we can include physics in our machine learning model is through using neural ordinary differential equations (NODE’s). NODE’s were introduced in <a href="https://arxiv.org/abs/1806.07366">Chen et al. 2018</a>, and use neural networks to learn an unknown function that is the derivative of an observed quantity. That is, we can use a neural network to parameterize the function <span class="math notranslate nohighlight">\(f(h(t), t, \theta)\)</span>, where <span class="math notranslate nohighlight">\(f(h(t), t, \theta)\)</span> is the derivative of a function <span class="math notranslate nohighlight">\(h(t)\)</span>:
+\begin{equation}
+\frac{dh(t)}{dt} = f(h(t),t,\theta)
+\end{equation}</p>
+<p>To learn the unknown function <span class="math notranslate nohighlight">\(f(h(t), t, \theta)\)</span>, which is parameterized as a neural network with weights <span class="math notranslate nohighlight">\(\theta\)</span>, we can perform back-propogation through typical numerical ODE solvers.</p>
+<p>We’ll continue with the example of Newton’s Law of Cooling, and create a NODE model trained on observed temperature points to then predict future states of the system. In this case, we do not directly include the physical law function (as we did with PINN’s), but we use neural ODE’s to learn the function <span class="math notranslate nohighlight">\(dT/dt\)</span>.</p>
+<p><img alt="AD" src="https://drive.google.com/uc?export=view&amp;id=1P6Ows1rqKNgLo0mbZQB8aIQTrc51eKYw" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this line installs the python library from Chen et al. 2018</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>torchdiffeq
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: torchdiffeq in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (0.2.5)
+Requirement already satisfied: torch&gt;=1.5.0 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from torchdiffeq) (2.4.1)
+Requirement already satisfied: scipy&gt;=1.4.0 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from torchdiffeq) (1.10.1)
+Requirement already satisfied: numpy&lt;1.27.0,&gt;=1.19.5 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from scipy&gt;=1.4.0-&gt;torchdiffeq) (1.24.3)
+Requirement already satisfied: filelock in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from torch&gt;=1.5.0-&gt;torchdiffeq) (3.16.1)
+Requirement already satisfied: typing-extensions&gt;=4.8.0 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from torch&gt;=1.5.0-&gt;torchdiffeq) (4.11.0)
+Requirement already satisfied: sympy in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from torch&gt;=1.5.0-&gt;torchdiffeq) (1.13.3)
+Requirement already satisfied: networkx in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from torch&gt;=1.5.0-&gt;torchdiffeq) (3.1)
+Requirement already satisfied: jinja2 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from torch&gt;=1.5.0-&gt;torchdiffeq) (3.1.4)
+Requirement already satisfied: fsspec in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from torch&gt;=1.5.0-&gt;torchdiffeq) (2025.3.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: MarkupSafe&gt;=2.0 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from jinja2-&gt;torch&gt;=1.5.0-&gt;torchdiffeq) (2.1.3)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/anaconda3/envs/ML4Climate2025/lib/python3.8/site-packages (from sympy-&gt;torch&gt;=1.5.0-&gt;torchdiffeq) (1.3.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torchdiffeq</span> <span class="kn">import</span> <span class="n">odeint</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll start by parameterizing the temperature derivative as a neural network. The class dTdt is an MLP that will be used to learn the temperature derivative as an unknown function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">dTdt</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">dTdt</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nh</span> <span class="o">=</span> <span class="mi">100</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nh</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nh</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nh</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nh</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nh</span><span class="p">),</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nh</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lin</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span><span class="n">mean</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">std</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">ones_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lin</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minTemp</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Temprange</span> <span class="o">=</span> <span class="mf">105.0</span>
+        
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
+        <span class="c1"># do the normalization here</span>
+        <span class="n">Tscaled</span> <span class="o">=</span> <span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">minTemp</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">Temprange</span>
+
+        <span class="n">dTi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">(</span><span class="n">Tscaled</span><span class="o">.</span><span class="n">float</span><span class="p">()))</span>
+        
+        <span class="k">return</span> <span class="n">dTi</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We then use the odeint function from the torchdiffeq library to numerically integrate the function that we are learning. The code to do this is below. For the sake of speed, we will use Runge-Kutta 4th order method (“rk4”), but other numerical integration methods can also be used (e.g. Dormand-Prince method “dopri5”).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">node</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ode_method</span> <span class="o">=</span> <span class="s2">&quot;rk4&quot;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ode_method</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dTdt</span> <span class="o">=</span> <span class="n">dTdt</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T0</span><span class="p">,</span> <span class="n">times</span><span class="p">):</span>
+        <span class="c1"># T0 - the initial value of the temperature</span>
+        <span class="c1"># times - a vector of times that we want to integrate our unknown function over.</span>
+
+        <span class="n">Ts</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_kernel</span><span class="p">,</span> <span class="n">T0</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">)</span>
+        <span class="n">Ts</span><span class="o">.</span><span class="n">transpose_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Ts</span>
+
+    <span class="k">def</span> <span class="nf">eval_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">Temp</span><span class="p">):</span>
+        <span class="n">dTi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dTdt</span><span class="p">(</span><span class="n">Temp</span><span class="p">)</span> 
+        
+        <span class="k">return</span> <span class="n">dTi</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="mf">0.0001</span> 
+<span class="n">num_iterations</span> <span class="o">=</span> <span class="mi">20000</span>
+
+<span class="c1"># We&#39;ll use MSE loss here.</span>
+<span class="n">loss1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+
+<span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">nodemodel</span> <span class="o">=</span> <span class="n">node</span><span class="p">(</span><span class="n">ode_method</span> <span class="o">=</span> <span class="s2">&quot;rk4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span><span class="n">nodemodel</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Recall that an ODE initial value problem has the form
+\begin{equation}
+\frac{dy}{dt} = f(y(t),t,\theta),\quad y(0) = y_{0}
+\end{equation}</p>
+<p>We’ll give the initial temperature point <span class="math notranslate nohighlight">\(T_{0}\)</span> to our node mode, along with a vector of integration times. Then we will optimize the node model against the 10 observed temperature points, in order to learn the optimal parameters <span class="math notranslate nohighlight">\(\theta\)</span> for the neural network parameterizing dTdt.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the time points we are integrate over</span>
+<span class="n">inttimes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+
+<span class="c1"># The initial observed temperature </span>
+<span class="n">T0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nodemodel</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">itr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">j</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">Temps</span> <span class="o">=</span> <span class="n">nodemodel</span><span class="p">(</span><span class="n">T0</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">),</span><span class="n">inttimes</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">))</span>
+    
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">loss1</span><span class="p">(</span><span class="n">Temps</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">],</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">))</span>
+
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    
+    <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">itr</span><span class="o">%</span><span class="k">4000</span>==0:
+        <span class="c1">#print(itr, loss.item())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">itr</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">num_iterations</span><span class="si">}</span><span class="s2">, loss: </span><span class="si">{</span><span class="n">losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 7006.68
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 4000/20000, loss: 0.94
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 8000/20000, loss: 0.30
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 12000/20000, loss: 0.13
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 16000/20000, loss: 0.08
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This line saves the network weights</span>
+<span class="c1">#torch.save(nodemodel.state_dict(), &quot;nodemodel_network_weights&quot;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This line reloads the network weights</span>
+<span class="c1">#nodemodel.load_state_dict(torch.load(&quot;/content/nodemodel_network_weights&quot;))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/913ad30ba4d7aca6294fd11ba15c7f8188d66f9b6c368336eb11994f34081554.png" src="../../_images/913ad30ba4d7aca6294fd11ba15c7f8188d66f9b6c368336eb11994f34081554.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extraptimes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+<span class="n">extrapTemps</span> <span class="o">=</span> <span class="n">nodemodel</span><span class="p">(</span><span class="n">T0</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">),</span><span class="n">extraptimes</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">))</span>
+<span class="n">intTemps</span> <span class="o">=</span> <span class="n">nodemodel</span><span class="p">(</span><span class="n">T0</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">),</span><span class="n">inttimes</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">temps</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">predspinn</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">extraptimes</span><span class="p">,</span><span class="n">extrapTemps</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Equation&#39;</span><span class="p">,</span><span class="s1">&#39;Training data&#39;</span><span class="p">,</span> <span class="s1">&#39;Vanilla Neural Network&#39;</span><span class="p">,</span><span class="s1">&#39;PINN&#39;</span><span class="p">,</span><span class="s1">&#39;NODE&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Temperature (C)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/ab1d70ac47d91d335388c72a2ccc770d3cf783c6faa34acf0e0f6c5a6ab1d136.png" src="../../_images/ab1d70ac47d91d335388c72a2ccc770d3cf783c6faa34acf0e0f6c5a6ab1d136.png" />
+</div>
+</div>
+<p>The NODE model doesn’t do quite as well as the PINN’s, but it does significantly better than the vanilla neural network. Recall that we have not explicitly included any physical constraint here, except the assumption that our observed temperature observations are the result of integrating a continous function.</p>
+<p>Since we have learned the derivative <span class="math notranslate nohighlight">\(dT/dt\)</span> here, we can also look at the functional dependence of the trained neural network to try to better understand the properties of this function. In cases where we don’t have a prior physical constraint on this function, or only have partial physical understanding of this function, NODE’s can be powerful tools to improve predictions and to potentially even to learn unknown physics by optimizing against observations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="mf">0.005</span>
+<span class="n">Tenv</span> <span class="o">=</span> <span class="mi">25</span>
+
+<span class="n">dTdtreal</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">dTdtnode</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">Temperatures</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Temperatures</span><span class="p">)):</span>
+    <span class="n">Tcurr</span> <span class="o">=</span> <span class="n">Temperatures</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="n">dT</span> <span class="o">=</span> <span class="n">nodemodel</span><span class="o">.</span><span class="n">dTdt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">Tcurr</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">dTdtreal</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="n">Tenv</span><span class="o">-</span><span class="n">Tcurr</span><span class="p">))</span>
+    <span class="n">dTdtnode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dT</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">dTdtreal</span><span class="p">,</span><span class="n">dTdtnode</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">Temperatures</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Temperatures&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.6</span><span class="p">,</span><span class="mf">0.2</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.6</span><span class="p">,</span><span class="mf">0.2</span><span class="p">),</span><span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;dT/dt (Real)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;dT/dt (NODE)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-1.0, 0.1)
+</pre></div>
+</div>
+<img alt="../../_images/6a14bc2a25f2bec14fbe1d4b2fbb5e360be0bd2d15d3038477d86719ddcc42b7.png" src="../../_images/6a14bc2a25f2bec14fbe1d4b2fbb5e360be0bd2d15d3038477d86719ddcc42b7.png" />
+</div>
+</div>
+<p>The learned function is piecewise continous but this is likely due to using Runge-Kutta 4th order and the very few observations that we are training on (we do worse at the higher temperatures, when the rate of change is the largest). But overall the learned function dT/dt reasonably approximates the true derivative.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./lectures_ML/AdvancedTopics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../DeepLearning/RNN.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Recurrent Neural Networks (RNN’s) for Time Series Prediction</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-physical-knowledge-into-our-neural-networks">Embedding physical knowledge into our neural networks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soft-and-hard-physical-constraints">Soft and hard physical constraints</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symmetries-invariances-and-equivariances">Symmetries, invariances, and equivariances</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hybrid-physics-ml-approaches">Hybrid Physics-ML approaches</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#physics-informed-neural-networks">Physics-Informed Neural Networks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-ordinary-differential-equations-node-s">Neural Ordinary Differential Equations (NODE’s)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Kara Lamb & Dhruv Balwada
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
